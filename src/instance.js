@@ -8,10 +8,8 @@ import is from './utils/is';
 import { maxValue } from './utils';
 import { isPropATween, mapPropToTween } from './utils/tween';
 
-class Instance extends Emittery {
+class Instance {
   constructor(options) {
-    super(options);
-
     this.options = Object.assign({}, {
       container: document.documentElement,
       forceHeight: true,
@@ -21,10 +19,13 @@ class Instance extends Emittery {
     this.container = this.options.container;
     this.tweens = [];
     this.ticking = false;
+    this.started = false;
+    this.lastScrollY = 0;
     this.scrollY = 0;
 
     this.add = this.add.bind(this);
     this.onScroll = this.onScroll.bind(this);
+
     this.events();
   }
 
@@ -82,21 +83,35 @@ class Instance extends Emittery {
     return maxValue(durations);
   }
 
+  getDirection() {
+    return this.scrollY >= this.lastScrollY ? 'down' : 'up';
+  }
+
   getHeight() {
     return this.container.clientHeight;
   }
 
   //
-  on() {}
-  off() {}
+  on(eventName, listener) {
+    this.emitter.on(eventName, listener);
+    return this;
+  }
+
+  off(eventName, listener) {
+    this.emitter.off(eventName, listener);
+    return this;
+  }
 
   //
   events() {
+    this.emitter = new Emittery();
+
     this.scrollEl = this.container === document.documentElement ? window : this.container;
     this.scrollEl.addEventListener('scroll', this.onScroll);
   }
 
   onScroll() {
+    this.lastScrollY = this.scrollY;
     this.scrollY = this.getScrollTop();
 
     if (this.ticking) {
@@ -106,9 +121,24 @@ class Instance extends Emittery {
     requestAnimationFrame(() => {
       this.tick();
       this.ticking = false;
+
+      this.emitter.emit('update', {
+        scrollY: this.scrollY,
+        direction: this.getDirection()
+      });
     });
 
     this.ticking = true;
+
+    if ( this.scrollY === 0 && !this.started ) {
+      this.started = true;
+      this.emitter.emit('begin');
+    }
+
+    if ( this.scrollY >= this.getTotalDuration() ) {
+      this.completed = true;
+      this.emitter.emit('complete');
+    }
   }
 
   //
@@ -129,13 +159,21 @@ class Instance extends Emittery {
   }
 
   destroy() {
-    this.scrollEl.removeEventListener('scroll', this.onScroll);
+    this.scrollEl
+      .removeEventListener('scroll', this.onScroll);
 
     return this;
   }
 
   init() {
+    //
     this.refresh();
+
+    //
+    this.tweens
+      .forEach((tween) => tween.applyFirstRender());
+
+    //
     this.onScroll();
 
     return this;

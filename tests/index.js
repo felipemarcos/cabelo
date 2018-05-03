@@ -1,8 +1,9 @@
 import skrollr, { Easing } from '../src/index';
 
 const run = () => {
-  skrollr()
-    .add({
+  const tl = skrollr()
+
+  tl.add({
       targets: '.title',
       duration: [0, 1000, 1500],
       // scale: [0, 1],
@@ -19,6 +20,15 @@ const run = () => {
       immediateRender: true, // Type: Boolean - Default: true - If you want to render the first value immediately when the tween is created, set immediateRender to true.
       // begin() {},
       // complete() {}
+    })
+    .on('update', ({scrollY, direction}) => {
+      console.log(scrollY, direction);
+    })
+    .on('begin', () => {
+      console.log('begin');
+    })
+    .on('complete', () => {
+      console.log('complete');
     })
     .init();
 };

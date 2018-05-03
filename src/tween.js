@@ -36,8 +36,6 @@ class Tween {
     this.tween  = this.normalizeTween();
 
     this.transforms = {};
-
-    this.applyFirstRender();
   }
 
   normalizeTween() {
