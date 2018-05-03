@@ -1,0 +1,10 @@
+{
+  "privete": true,
+  "dependencies": {
+    "emittery": "^0.3.0",
+    "webpack": "^4.6.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^2.1.2"
+  }
+}
