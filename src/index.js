@@ -2,7 +2,6 @@ import Instance from './instance';
 import Easing from './easing';
 
 let activeInstances = [];
-window.instances = activeInstances;
 
 function skroller(options) {
   const instance = new Instance(options);

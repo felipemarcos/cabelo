@@ -8,6 +8,11 @@ import is from './utils/is';
 import { maxValue } from './utils';
 import { isPropATween, mapPropToTween } from './utils/tween';
 
+const DIRECTION = {
+  UP: 'up',
+  DOWN: 'down'
+};
+
 class Instance {
   constructor(options) {
     this.options = Object.assign({}, {
@@ -20,8 +25,8 @@ class Instance {
     this.tweens = [];
     this.ticking = false;
     this.started = false;
-    this.lastScrollY = 0;
-    this.scrollY = 0;
+    this.lastScrollPosition = 0;
+    this.scrollPosition = 0;
 
     this.add = this.add.bind(this);
     this.onScroll = this.onScroll.bind(this);
@@ -33,12 +38,13 @@ class Instance {
     // get extra tweens from current tween if there are any
     this.getExtraTweens(t);
 
-    // create tween
+    // create new target
     const targets = new Targets(t.targets);
 
     targets.forEach((target) => {
       delete t.targets;
-      const tween = new Tween({ ...t, target: target });
+
+      const tween = new Tween({ ...t, id: 1, target });
       this.tweens.push(tween);
     });
 
@@ -53,8 +59,7 @@ class Instance {
   }
 
   tick() {
-    this.tweens
-      .forEach((tween) => tween.tick(this.scrollY));
+    this.tweens.forEach((tween) => tween.tick(this.scrollPosition));
   }
 
   getExtraTweens(t) {
@@ -69,7 +74,7 @@ class Instance {
       }
     });
 
-    extraTweens.forEach(this.add);
+    extraTweens.forEach((t) => this.add(t));
   }
 
   getScrollTop() {
@@ -84,14 +89,14 @@ class Instance {
   }
 
   getDirection() {
-    return this.scrollY >= this.lastScrollY ? 'down' : 'up';
+    return this.scrollPosition >= this.lastScrollPosition ? DIRECTION.DOWN : DIRECTION.UP;
   }
 
   getHeight() {
     return this.container.clientHeight;
   }
 
-  //
+  // emitter
   on(eventName, listener) {
     this.emitter.on(eventName, listener);
     return this;
@@ -107,12 +112,17 @@ class Instance {
     this.emitter = new Emittery();
 
     this.scrollEl = this.container === document.documentElement ? window : this.container;
-    this.scrollEl.addEventListener('scroll', this.onScroll);
+
+    this.scrollEl
+      .addEventListener('scroll', this.onScroll);
+
+    this.scrollEl
+      .addEventListener('resize', this.onScroll);
   }
 
   onScroll() {
-    this.lastScrollY = this.scrollY;
-    this.scrollY = this.getScrollTop();
+    this.lastScrollPosition = this.scrollPosition;
+    this.scrollPosition = this.getScrollTop();
 
     if (this.ticking) {
       return;
@@ -123,19 +133,19 @@ class Instance {
       this.ticking = false;
 
       this.emitter.emit('update', {
-        scrollY: this.scrollY,
+        scrollPosition: this.scrollPosition,
         direction: this.getDirection()
       });
     });
 
     this.ticking = true;
 
-    if ( this.scrollY === 0 && !this.started ) {
+    if ( this.scrollPosition === 0 && !this.started ) {
       this.started = true;
       this.emitter.emit('begin');
     }
 
-    if ( this.scrollY >= this.getTotalDuration() ) {
+    if ( this.scrollPosition >= this.getTotalDuration() ) {
       this.completed = true;
       this.emitter.emit('complete');
     }
@@ -162,16 +172,15 @@ class Instance {
     this.scrollEl
       .removeEventListener('scroll', this.onScroll);
 
+    this.scrollEl
+      .removeEventListener('resize', this.refresh);
+
     return this;
   }
 
   init() {
     //
     this.refresh();
-
-    //
-    this.tweens
-      .forEach((tween) => tween.applyFirstRender());
 
     //
     this.onScroll();

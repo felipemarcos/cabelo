@@ -5,6 +5,8 @@ import {
   stringToHyphens
 } from './index';
 
+import { colorToRgb } from './colors';
+
 import is from './is';
 
 const validTransforms = ['x', 'y', 'translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY', 'perspective'];
@@ -50,7 +52,7 @@ export function decomposeValue(target, prop, val) {
   const rgx = /-?\d*\.?\d+/g;
 
   const originalValue = getOriginalTargetValue( target, prop );
-  const unit = getUnit(val) || getUnit(originalValue);
+  const unit = getUnit(val) || getUnit(originalValue) || '';
 
   const value = validateValue(val, unit) + '';
   const number = parseInt(value.replace(unit, ''), 10);

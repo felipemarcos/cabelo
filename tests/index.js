@@ -1,35 +1,44 @@
 import skrollr, { Easing } from '../src/index';
 
 const run = () => {
-  const tl = skrollr()
+  const tl = skrollr();
+  const scrollPositionEl = document.querySelector('.scroll-position');
 
-  tl.add({
+  tl
+    .add({
       targets: '.title',
-      duration: [0, 1000, 1500],
-      // scale: [0, 1],
-      x: ['-100%', '0%', '100%'],
-      // y: [0, 250, 500],
-      // scale: {
-      //   duration: [150, 200],
-      //   value: [0, 1]
-      // },
-      // rotate: [100, 50, 0],
-      opacity: [0, 0.5, 1],
-      // backgroundColor: ['#fff', '#252525', '#000'],
-      easing: Easing.linear,
-      immediateRender: true, // Type: Boolean - Default: true - If you want to render the first value immediately when the tween is created, set immediateRender to true.
-      // begin() {},
-      // complete() {}
+      duration: [0, 1000],
+      y: [-1000, 0],
+      rotate: [100, 0],
+      scale: {
+        duration: [100, 2000],
+        value: [0, 1]
+      },
+      backgroundColor: ['#fff', '#252525'],
     })
-    .on('update', ({scrollY, direction}) => {
-      console.log(scrollY, direction);
+    .add({
+      targets: '.title',
+      duration: [1500, 3000],
+      rotate: [0, 360]
     })
-    .on('begin', () => {
-      console.log('begin');
+    .hook({
+      duration: 2000,
+      enter() {
+        console.log('enter');
+      },
+      leave() {
+        console.log('leave');
+      }
     })
-    .on('complete', () => {
-      console.log('complete');
+    .on('update', ({ scrollPosition, direction }) => {
+      scrollPositionEl.textContent = scrollPosition;
     })
+    // .on('begin', () => {
+    //   console.log('begin');
+    // })
+    // .on('complete', () => {
+    //   console.log('complete');
+    // })
     .init();
 };
 
