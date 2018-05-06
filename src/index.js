@@ -1,11 +1,11 @@
 import Instance from './instance';
 import Easing from './easing';
 
-let activeInstances = [];
+let instances = [];
 
 function skroller(options) {
   const instance = new Instance(options);
-  activeInstances.push(instance);
+  instances.push(instance);
 
   return instance;
 }

@@ -1,5 +1,10 @@
 import { maxValue } from './utils';
 
+import {
+  getFunctionValue,
+} from './utils/tween';
+
+
 import Easing from './easing';
 import transforms from './transforms';
 
@@ -26,9 +31,11 @@ class Tween {
   constructor(tween) {
     this._tween = Object.assign({}, defaultOptions, tween);
     this.target = this._tween.target;
-    this.id     = this.getID();
-    this.props  = this.getProps();
-    this.edge   = null;
+    this.targetIndex = this._tween.targetIndex;
+    this.duration = getFunctionValue(this._tween.duration, this.target, this.targetIndex)
+    this.id = this.getID();
+    this.props = this.getProps();
+    this.edge = null;
   }
 
   getID() {
@@ -65,7 +72,7 @@ class Tween {
   }
 
   getMaxDuration() {
-    return maxValue(this._tween.duration);
+    return maxValue(this.duration);
   }
 
   updateTransform() {
@@ -82,7 +89,7 @@ class Tween {
   }
 
   updateEdges(scrollPosition) {
-    const durations = this._tween.duration;
+    const durations = this.duration;
 
     const firstDuration = durations[0];
     const lastDuration = durations[durations.length - 1];
@@ -109,12 +116,12 @@ class Tween {
   }
 
   updateProgress(scrollPosition) {
-    this._tween.duration
+    this.duration
       .forEach((duration, index) => {
         const nextIndex = index + 1;
 
         const start = duration;
-        const end = this._tween.duration[nextIndex];
+        const end = this.duration[nextIndex];
 
         if (scrollPosition >= start && scrollPosition <= end) {
           this.props
