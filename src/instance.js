@@ -13,13 +13,15 @@ const DIRECTION = {
   DOWN: 'down'
 };
 
+const defaultOptions = {
+  container: document.scrollingElement || document.documentElement,
+  forceHeight: true,
+  debug: false
+};
+
 class Instance {
   constructor(options) {
-    this.options = Object.assign({}, {
-      container: document.documentElement,
-      forceHeight: true,
-      debug: false
-    }, options);
+    this.options = Object.assign({}, defaultOptions, options);
 
     this.container = this.options.container;
     this.tweens = [];
@@ -29,6 +31,7 @@ class Instance {
     this.scrollPosition = 0;
 
     this.add = this.add.bind(this);
+    this.refresh  = this.refresh.bind(this);
     this.onScroll = this.onScroll.bind(this);
 
     this.events();
@@ -62,19 +65,51 @@ class Instance {
     this.tweens.forEach((tween) => tween.tick(this.scrollPosition));
   }
 
-  getExtraTweens(t) {
+  onScroll() {
+    this.lastScrollPosition = this.scrollPosition;
+    this.scrollPosition = this.getScrollTop();
+
+    if (this.ticking) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      this.tick();
+      this.ticking = false;
+
+      this.emitter.emit('update', {
+        scrollPosition: this.scrollPosition,
+        direction: this.getDirection()
+      });
+    });
+
+    this.ticking = true;
+
+    if ( this.scrollPosition === 0 && !this.began ) {
+      this.began = true;
+      this.emitter.emit('begin');
+    }
+
+    if ( this.scrollPosition >= this.getTotalDuration() ) {
+      this.completed = true;
+      this.emitter.emit('complete');
+    }
+  }
+
+  getExtraTweens(tween) {
     const extraTweens = [];
-    Object.keys(t).forEach((prop) => {
-      if ( isPropATween(t[prop]) ) {
+
+    Object.keys(tween).forEach((prop) => {
+      if ( isPropATween(tween[prop]) ) {
         extraTweens.push(
-          mapPropToTween(prop, t[prop], t)
+          mapPropToTween(prop, tween[prop], tween)
         );
 
-        delete t[prop];
+        delete tween[prop];
       }
     });
 
-    extraTweens.forEach((t) => this.add(t));
+    extraTweens.forEach(this.add);
   }
 
   getScrollTop() {
@@ -113,41 +148,13 @@ class Instance {
 
     this.scrollEl = this.container === document.documentElement ? window : this.container;
 
-    this.scrollEl
-      .addEventListener('scroll', this.onScroll);
+    this.scrollEl.addEventListener('scroll', this.onScroll);
 
-    this.scrollEl
-      .addEventListener('resize', this.onScroll);
-  }
-
-  onScroll() {
-    this.lastScrollPosition = this.scrollPosition;
-    this.scrollPosition = this.getScrollTop();
-
-    if (this.ticking) {
-      return;
-    }
-
-    requestAnimationFrame(() => {
-      this.tick();
-      this.ticking = false;
-
-      this.emitter.emit('update', {
-        scrollPosition: this.scrollPosition,
-        direction: this.getDirection()
-      });
-    });
-
-    this.ticking = true;
-
-    if ( this.scrollPosition === 0 && !this.began ) {
-      this.began = true;
-      this.emitter.emit('begin');
-    }
-
-    if ( this.scrollPosition >= this.getTotalDuration() ) {
-      this.completed = true;
-      this.emitter.emit('complete');
+    if (typeof window.ResizeObserver !== 'undefined') {
+      this.ro = new ResizeObserver(this.refresh);
+      this.ro.observe(this.container);
+    } else {
+      this.scrollEl.addEventListener('resize', this.onScroll);
     }
   }
 
@@ -169,20 +176,19 @@ class Instance {
   }
 
   destroy() {
-    this.scrollEl
-      .removeEventListener('scroll', this.onScroll);
+    this.scrollEl.removeEventListener('scroll', this.onScroll);
 
-    this.scrollEl
-      .removeEventListener('resize', this.refresh);
+    if (this.ro) {
+      this.ro.disconnect();
+    } else {
+      this.scrollEl.removeEventListener('resize', this.refresh);
+    }
 
     return this;
   }
 
   init() {
-    //
     this.refresh();
-
-    //
     this.onScroll();
 
     return this;

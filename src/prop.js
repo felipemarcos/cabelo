@@ -1,7 +1,7 @@
 import {
   decomposeValue,
   getAnimationType,
-  mapPropToTransform,
+  mapPropToCSSProp,
   setTweenProgress
 } from './utils/tween';
 
@@ -10,10 +10,10 @@ import is from './utils/is';
 class Prop {
   constructor(options) {
     this.id = options.id;
-    this.target  = options.target;
-    this.name    = mapPropToTransform(options.name);
-    this.easing  = options.easing;
-    this.type    = getAnimationType(this.target, this.name);
+    this.target = options.target;
+    this.name   = mapPropToCSSProp(options.name);
+    this.easing = options.easing;
+    this.type   = getAnimationType(this.target, this.name);
 
     this.values  = options.values.map((value) => {
       return decomposeValue(this.target, this.name, value);
@@ -22,23 +22,8 @@ class Prop {
     this.isColor = is.col(this.values[0].original);
   }
 
-  setValue(value) {
-    setTweenProgress[this.type](this.target, this.name, value, this.id);
-  }
-
   tweenValue(start, end, position) {
     return start + (end - start) * this.easing(position);
-  }
-
-  updateEdge(beforeFirst, afterLast) {
-    const values = this.values;
-    const firstValues = values[0];
-    const lastValues  = values[values.length - 1];
-
-    const finalValues = beforeFirst ? firstValues : lastValues;
-    const output = this.formatValue(finalValues.numbers, finalValues.strings);
-
-    this.setValue(output);
   }
 
   formatValue(numbers, strings) {
@@ -68,12 +53,26 @@ class Prop {
       .join('');
   }
 
+  setValue(value) {
+    setTweenProgress[this.type](this.target, this.name, value, this.id);
+  }
+
+  updateEdge(beforeFirst, afterLast) {
+    const values = this.values;
+    const firstValues = values[0];
+    const lastValues  = values[values.length - 1];
+
+    const finalValues = beforeFirst ? firstValues : lastValues;
+    const output = this.formatValue(finalValues.numbers, finalValues.strings);
+
+    this.setValue(output);
+  }
+
   tick(durationStart, durationEnd, index, nextIndex, scrollPosition) {
     const values = this.values;
 
-    const start = (values[index] || {});
-    const end = (values[nextIndex] || {});
-    const unit = this.unit;
+    const start = values[index] || {};
+    const end   = values[nextIndex] || {};
 
     const progress = (scrollPosition - durationStart) / (durationEnd - durationStart);
 

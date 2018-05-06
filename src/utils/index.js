@@ -1,14 +1,5 @@
-import is from './is';
-
 export function random (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function toArray(o) {
-  if (is.arr(o)) return o;
-  if (is.str(o)) o = selectString(o) || o;
-  if (o instanceof NodeList || o instanceof HTMLCollection) return [].slice.call(o);
-  return [o];
 }
 
 export function stringContains(str, text) {

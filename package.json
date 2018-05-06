@@ -5,9 +5,12 @@
     "webpack": "^4.6.0"
   },
   "devDependencies": {
+    "jest": "^22.4.3",
     "webpack-cli": "^2.1.2"
   },
   "scripts": {
-    "start": "webpack --watch"
+    "start": "webpack --watch --mode=development",
+    "build": "webpack --mode=production",
+    "test": "jest"
   }
 }

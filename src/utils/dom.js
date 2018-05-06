@@ -1,3 +1,3 @@
 export const getNode = (node) => {
-  return [].slice.call(document.querySelectorAll(node));
+  return Array.from(document.querySelectorAll(node));
 };

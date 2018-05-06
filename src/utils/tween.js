@@ -12,13 +12,13 @@ import transforms from '../transforms';
 
 const validTransforms = ['x', 'y', 'translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY', 'perspective'];
 
-const mappedTransforms = {
+const mappedCSSProps = {
   x: 'translateX',
   y: 'translateY'
 };
 
-export function mapPropToTransform(prop) {
-  return mappedTransforms[prop] || prop;
+export function mapPropToCSSProp(prop) {
+  return mappedCSSProps[prop] || prop;
 }
 
 export function getTransformUnit(propName) {
@@ -53,7 +53,7 @@ export function decomposeValue(target, prop, val) {
   const rgx = /-?\d*\.?\d+/g;
 
   const originalValue = getOriginalTargetValue( target, prop );
-  const unit = getUnit(val) || getUnit(originalValue) || '';
+  const unit = getUnit(val) || getUnit(originalValue);
 
   const value = validateValue(val, unit) + '';
 
@@ -73,7 +73,11 @@ function getTransformValue(el, propName) {
   const defaultUnit = getTransformUnit(propName);
   const defaultVal = stringContains(propName, 'scale') ? 1 : 0 + defaultUnit;
   const str = el.style.transform;
-  if (!str) return defaultVal;
+
+  if (!str) {
+    return defaultVal;
+  }
+
   let match = [];
   let props = [];
   let values = [];
@@ -82,8 +86,8 @@ function getTransformValue(el, propName) {
     props.push(match[1]);
     values.push(match[2]);
   }
-  const value = values
-    .filter((val, i) => props[i] === propName);
+
+  const value = values.filter((val, i) => props[i] === propName);
 
   return value.length ? value[0] : defaultVal;
 }
