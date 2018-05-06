@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Easing Test</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .boxes {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 5vw;
+      right: 5vw;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .box {
+      display: block;
+      width: 50px;
+      height: 50px;
+      margin: 15px 0;
+      background-color: #3F51B5;
+    }
+  </style>
+</head>
+<body>
+  <div class="boxes">
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+    <span class="box"></span>
+  </div>
+
+  <span class="scroll-position">0</span>
+
+  <script src="/dist/skrollr.js"></script>
+  <script>
+    const tl = skrollr();
+    const scrollPositionEl = document.querySelector('.scroll-position');
+
+    const boxesEl = [].slice.call(document.querySelectorAll('.box'));
+    console.log(boxesEl);
+
+
+    const easings = [
+      'linear',
+      'ease-in-out-cubic',
+      'ease-in-out-circ',
+      'ease-in-out-expo',
+      'ease-in-out-quad',
+      'ease-in-out-quart',
+      'ease-in-out-quint',
+      'ease-in-out-sine',
+      'ease-in-out-back'
+    ];
+
+    boxesEl.forEach((box, index) => {
+      tl.add({
+        targets: box,
+        duration: [0, 2000],
+        x: [0, '85vw'],
+        easing: easings[index]
+      });
+    });
+
+    tl
+      .on('update', ({ scrollPosition, direction }) => {
+        scrollPositionEl.textContent = scrollPosition;
+      })
+      // .hook({
+      //   duration: 2000,
+      //   enter() {
+      //     console.log('enter');
+      //   },
+      //   leave() {
+      //     console.log('leave');
+      //   }
+      // })
+      // .on('begin', () => {
+      //   console.log('begin');
+      // })
+      // .on('complete', () => {
+      //   console.log('complete');
+      // })
+      .init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+body {
+  font-family: 'Helvetica Neue';
+  margin: 0;
+}
+
+.scroll-position {
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #fff;
+  line-height: 1;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.7);
+}

@@ -6,7 +6,7 @@ class Targets {
       throw 'Cannot tween a null target.';
     }
 
-    return (typeof targets === 'string') ? getNode(targets) : targets;
+    return (typeof targets === 'string') ? getNode(targets) : [targets];
   }
 }
 

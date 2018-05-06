@@ -2,6 +2,7 @@
   "private": true,
   "main": "dist/skrollr.js",
   "dependencies": {
+    "bezier-easing": "^2.0.3",
     "emittery": "^0.3.0",
     "lodash.omit": "^4.5.0",
     "webpack": "^4.6.0"

@@ -1,11 +1,12 @@
 import { maxValue } from './utils';
-
+import is from './utils/is';
 import {
   getFunctionValue,
   updateTransform,
 } from './utils/tween';
 
 import Easing from './easing';
+import BezierEasing from 'bezier-easing';
 import transforms from './transforms';
 
 const defaultOptions = {
@@ -13,7 +14,7 @@ const defaultOptions = {
   target: null,
   targetIndex: 0,
   duration: [],
-  easing: Easing.linear,
+  easing: 'linear',
   immediateRender: true
 };
 
@@ -23,6 +24,11 @@ const EDGE = {
 };
 
 import Prop from './prop';
+
+function normalizeEasing(easing) {
+  const ease = is.str(easing) ? Easing[easing] : easing;
+  return BezierEasing.apply(this, ease);
+}
 
 //
 const cachedTargets = [];
@@ -34,6 +40,7 @@ class Tween {
     this.targetIndex = this._tween.targetIndex;
     this.duration = getFunctionValue(this._tween.duration, this.target, this.targetIndex)
     this.id = this.getID();
+    this.easing = normalizeEasing(this._tween.easing);
     this.props = this.getProps();
     this.edge = null;
   }
@@ -66,7 +73,7 @@ class Tween {
 
           name: name,
           values: this._tween[name],
-          easing: this._tween.easing
+          easing: this.easing
         });
       });
   }
