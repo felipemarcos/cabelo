@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Square Test</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 400px;
+      height: 300px;
+      transform: translate(-50%, -50%);
+    }
+
+    .box {
+      display: block;
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="box"></span>
+  </div>
+
+  <script src="/dist/skrollr.js"></script>
+  <script>
+    const tl = skrollr();
+
+    tl
+      .add({
+        targets: '.box',
+        duration: [0, 750, 1500, 2250, 3000],
+        x: [0, 300, 300, 0, 0],
+        y: [0, 0, 200, 200, 0],
+        rotateY: [0, 180, 180, 0, 0],
+        rotateX: [0, 0, 180, 180, 0],
+        background: ['#9B65DE', '#14D790', '#FF1C68', '#198FE3', '#9B65DE' ]
+      })
+      .init();
+  </script>
+</body>
+</html>

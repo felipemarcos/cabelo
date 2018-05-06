@@ -23,6 +23,19 @@ const mappedCSSProps = {
   y: 'translateY'
 };
 
+export function updateTransform(target, id) {
+  const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
+
+  if (!hasTransforms || !transforms.values[id]) {
+    return;
+  }
+
+  target.style[transforms.prefix] = Object
+    .keys(transforms.values[id])
+    .map((k) => transforms.values[id][k])
+    .join(' ');
+}
+
 export function mapPropToCSSProp(prop) {
   return mappedCSSProps[prop] || prop;
 }
@@ -80,7 +93,7 @@ export function getUnit(val) {
   if (split) return split[2];
 }
 
-function getTransformValue(el, propName) {
+export function getTransformValue(el, propName) {
   const defaultUnit = getTransformUnit(propName);
   const defaultVal = stringContains(propName, 'scale') ? 1 : 0 + defaultUnit;
   const str = el.style.transform;
@@ -144,19 +157,6 @@ export function mapPropToTween(propName, propValue, parentTween) {
     duration: propValue.duration,
     [propName]: propValue.value
   }
-}
-
-export function updateTransform(target, id) {
-  const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
-
-  if (!hasTransforms || !transforms.values[id]) {
-    return;
-  }
-
-  target.style[transforms.prefix] = Object
-    .keys(transforms.values[id])
-    .map((k) => transforms.values[id][k])
-    .join(' ');
 }
 
 export const setTweenProgress = {

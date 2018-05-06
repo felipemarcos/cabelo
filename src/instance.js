@@ -33,7 +33,7 @@ class Instance {
 
     this.add = this.add.bind(this);
     this.refresh  = this.refresh.bind(this);
-    this.onScroll = this.onScroll.bind(this);
+    this.animate = this.animate.bind(this);
 
     this.events();
   }
@@ -65,7 +65,7 @@ class Instance {
     this.tweens.forEach((tween) => tween.tick(this.scrollPosition));
   }
 
-  onScroll() {
+  animate() {
     this.lastScrollPosition = this.scrollPosition;
     this.scrollPosition = this.getScrollTop();
 
@@ -148,13 +148,13 @@ class Instance {
 
     this.scrollEl = this.container === document.documentElement ? window : this.container;
 
-    this.scrollEl.addEventListener('scroll', this.onScroll);
+    this.scrollEl.addEventListener('scroll', this.animate);
 
     if (typeof window.ResizeObserver !== 'undefined') {
-      this.ro = new ResizeObserver(this.refresh);
-      this.ro.observe(this.container);
+      this.resizeObserver = new ResizeObserver(this.refresh);
+      this.resizeObserver.observe(this.container);
     } else {
-      this.scrollEl.addEventListener('resize', this.onScroll);
+      this.scrollEl.addEventListener('resize', this.animate);
     }
   }
 
@@ -176,10 +176,10 @@ class Instance {
   }
 
   destroy() {
-    this.scrollEl.removeEventListener('scroll', this.onScroll);
+    this.scrollEl.removeEventListener('scroll', this.animate);
 
-    if (this.ro) {
-      this.ro.disconnect();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
     } else {
       this.scrollEl.removeEventListener('resize', this.refresh);
     }
@@ -189,7 +189,7 @@ class Instance {
 
   init() {
     this.refresh();
-    this.onScroll();
+    this.animate();
 
     return this;
   }
