@@ -1,4 +1,5 @@
 import Emittery from 'emittery';
+import omit from 'lodash.omit';
 
 import Targets from './targets';
 import Tween from './tween';
@@ -39,16 +40,15 @@ class Instance {
 
   add(t) {
     // get extra tweens from current tween if there are any
-    this.getExtraTweens(t);
+    const propsToRemove = this.getNestedTweens(t);
+    t = omit(t, propsToRemove);
 
     // create new target
     const targets = new Targets(t.targets);
 
     targets.forEach((target, targetIndex) => {
-      delete t.targets;
-
-      const tween = new Tween({ ...t, target, targetIndex });
-      this.tweens.push(tween);
+      const newTween = Object.assign({}, omit(t, ['targets']), { target, targetIndex });
+      this.tweens.push( new Tween(newTween) );
     });
 
     return this;
@@ -96,21 +96,20 @@ class Instance {
     }
   }
 
-  getExtraTweens(tween) {
-    const extraTweens = [];
+  getNestedTweens(tween) {
+    const removeProps = [];
 
-    Object.keys(tween).forEach((prop) => {
-      const values = tween[prop];
-      if ( isPropATween(values) ) {
-        extraTweens.push(
-          mapPropToTween(prop, values, tween)
-        );
+    Object.keys(tween)
+      .forEach((p) => {
+        const values = tween[p];
 
-        delete tween[prop];
-      }
-    });
+        if ( isPropATween(values) ) {
+          this.add( mapPropToTween(p, values, tween) );
+          removeProps.push(p);
+        }
+      });
 
-    extraTweens.forEach(this.add);
+    return removeProps;
   }
 
   getScrollTop() {
