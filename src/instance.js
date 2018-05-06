@@ -24,7 +24,7 @@ class Instance {
     this.container = this.options.container;
     this.tweens = [];
     this.ticking = false;
-    this.started = false;
+    this.began = false;
     this.lastScrollPosition = 0;
     this.scrollPosition = 0;
 
@@ -140,8 +140,8 @@ class Instance {
 
     this.ticking = true;
 
-    if ( this.scrollPosition === 0 && !this.started ) {
-      this.started = true;
+    if ( this.scrollPosition === 0 && !this.began ) {
+      this.began = true;
       this.emitter.emit('begin');
     }
 

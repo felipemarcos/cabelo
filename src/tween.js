@@ -1,16 +1,5 @@
 import { maxValue } from './utils';
 
-import {
-  mapPropToTransform,
-  getTransformUnit,
-  getAnimationType,
-  getCSSValue,
-  validateValue,
-  decomposeValue,
-  getOriginalTargetValue,
-  getUnit
-} from './utils/tween';
-
 import Easing from './easing';
 import transforms from './transforms';
 
@@ -27,81 +16,58 @@ const EDGE = {
   AFTER: 'after'
 };
 
+import Prop from './prop';
+
 //
 const cachedTargets = [];
 
 class Tween {
-  get setProgress() {
-    return {
-      css: (t, p, v) => t.style[p] = v,
-      attribute: (t, p, v) => t.setAttribute(p, v),
-      transform: (t, p, v) => {
-        if (!transforms.values[this.id]) {
-          transforms.values[this.id] = [];
-        }
-
-        const prop = mapPropToTransform(p);
-        transforms.values[this.id][prop] = `${prop}(${v})`;
-      }
-    }
-  }
-
   constructor(tween) {
     this._tween = Object.assign({}, defaultOptions, tween);
-    this.tween = this.normalizeTween();
-    this.target = this.tween.target;
-    this.edge = null;
-    this.id = this.getID();
-  }
-
-  normalizeTween() {
-    const tween = { ...this._tween };
-    const props = this.getProps();
-
-    props.map((prop) => {
-      tween[prop] = tween[prop].map((value) => {
-        return decomposeValue( tween.target, prop, value );
-      });
-    });
-
-    return tween;
+    this.target = this._tween.target;
+    this.id     = this.getID();
+    this.props  = this.getProps();
+    this.edge   = null;
   }
 
   getID() {
     const cachedTarget = cachedTargets
       .find((t) => t.target === this.target);
 
-    let id = null;
-
     if (!cachedTarget) {
-      id = Symbol();
-      cachedTargets.push({ id: id, target: this.target });
-    } else {
-      id = cachedTarget.id;
+      const id = Symbol();
+      cachedTargets.push({ id, target: this.target });
+
+      return id;
     }
 
-    return id;
+    return cachedTarget.id;
   }
 
   getProps() {
     return Object
       .keys(this._tween)
-      // remove default options
-      .filter( (p) => !defaultOptions.hasOwnProperty(p) );
+      // remove default properties
+      .filter( (p) => !defaultOptions.hasOwnProperty(p) )
+      .map((name) => {
+        return new Prop({
+          id: this.id,
+          target: this.target,
+          name: name,
+          values: this._tween[name],
+          easing: this._tween.easing
+        });
+      });
   }
 
   getMaxDuration() {
-    return maxValue(this.tween.duration);
+    return maxValue(this._tween.duration);
   }
 
   updateTransform() {
     const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
 
-    if (!hasTransforms) {
-      return;
-    }
-
-    if (!transforms.values[this.id]) {
+    if (!hasTransforms || !transforms.values[this.id]) {
       return;
     }
 
@@ -111,34 +77,9 @@ class Tween {
       .join(' ');
   }
 
-  tweenValue(start, end, position) {
-    return start + (end - start) * this.tween.easing(position);
-  }
+  updateEdges(scrollPosition) {
+    const durations = this._tween.duration;
 
-  getUnit(prop, values) {
-    const units = values.map((value) => value.unit);
-    return units[0];
-  }
-
-  setPropValue(prop, value) {
-    const type = getAnimationType(this.target, prop);
-    this.setProgress[type](this.target, prop, value);
-  }
-
-  updateProgress(prop, durationStart, durationEnd, index, nextIndex, scrollPosition) {
-    const values = this.tween[prop];
-
-    const start = (values[index] || {}).number;
-    const end = (values[nextIndex] || {}).number;
-    const unit = this.getUnit(prop, values);
-
-    const progress = (scrollPosition - durationStart) / (durationEnd - durationStart);
-    const tweenedValue = this.tweenValue(start, end, progress);
-
-    this.setPropValue(prop, `${tweenedValue}${unit}`);
-  }
-
-  updateEdges(props, durations, scrollPosition) {
     const firstDuration = durations[0];
     const lastDuration = durations[durations.length - 1];
     const beforeFirst = scrollPosition < firstDuration;
@@ -146,19 +87,12 @@ class Tween {
 
     if (beforeFirst || afterLast) {
       if (beforeFirst && this.edge !== EDGE.BEFORE || afterLast && this.edge !== EDGE.AFTER) {
-        if (beforeFirst && !this.tween.immediateRender) {
+        if (beforeFirst && !this._tween.immediateRender) {
           return;
         }
 
-        props.forEach((prop) => {
-          const values = this.tween[prop];
-          const firstValue = values[0];
-          const lastValue  = values[values.length - 1];
-
-          const value = beforeFirst ? firstValue : lastValue;
-          const unit = this.getUnit(prop, values);
-
-          this.setPropValue(prop, `${value.number}${unit}`)
+        this.props.forEach((prop) => {
+          prop.updateEdge(beforeFirst, afterLast);
         });
 
         this.updateTransform();
@@ -170,33 +104,31 @@ class Tween {
     }
   }
 
-  updateDurations(props, durations, scrollPosition) {
-    durations.forEach((duration, index) => {
-      const nextIndex = index + 1;
+  updateProgress(scrollPosition) {
+    this._tween.duration
+      .forEach((duration, index) => {
+        const nextIndex = index + 1;
 
-      const start = duration;
-      const end = durations[nextIndex];
+        const start = duration;
+        const end = this._tween.duration[nextIndex];
 
-      if (scrollPosition >= start && scrollPosition <= end) {
-        props
-          .forEach((prop) => {
-            this.updateProgress(prop, start, end, index, nextIndex, scrollPosition);
-          });
+        if (scrollPosition >= start && scrollPosition <= end) {
+          this.props
+            .forEach((prop) => {
+              prop.tick(start, end, index, nextIndex, scrollPosition);
+            });
 
-        this.updateTransform();
-      }
-    });
+          this.updateTransform();
+        }
+      });
   }
 
   tick(scrollPosition) {
-    const props = this.getProps();
-    const durations = this.tween.duration;
-
-    // If we are before/after the first/last duration, set the correct styles accordingly.
-    this.updateEdges(props, durations, scrollPosition);
+    // If we are before/after the first/last duration, set the styles accordingly.
+    this.updateEdges(scrollPosition);
 
     // Update props progress
-    this.updateDurations(props, durations, scrollPosition);
+    this.updateProgress(scrollPosition);
   }
 }
 

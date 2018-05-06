@@ -8,6 +8,7 @@ import {
 import { colorToRgb } from './colors';
 
 import is from './is';
+import transforms from '../transforms';
 
 const validTransforms = ['x', 'y', 'translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY', 'perspective'];
 
@@ -55,12 +56,11 @@ export function decomposeValue(target, prop, val) {
   const unit = getUnit(val) || getUnit(originalValue) || '';
 
   const value = validateValue(val, unit) + '';
-  const number = parseInt(value.replace(unit, ''), 10);
 
   return {
     original: value,
-    number,
-    unit
+    numbers: value.match(rgx) ? value.match(rgx).map(Number) : [0],
+    strings: (is.str(val) || unit) ? value.split(rgx) : []
   };
 }
 
@@ -70,7 +70,6 @@ export function getUnit(val) {
 }
 
 function getTransformValue(el, propName) {
-  propName = mapPropToTransform(propName);
   const defaultUnit = getTransformUnit(propName);
   const defaultVal = stringContains(propName, 'scale') ? 1 : 0 + defaultUnit;
   const str = el.style.transform;
@@ -104,8 +103,20 @@ export function isPropATween(prop) {
 
 export function mapPropToTween(propName, propValue, parentTween) {
   return {
-    targets: parentTween.target || parentTween.targets,
+    targets: parentTween.targets,
     duration: propValue.duration,
     [propName]: propValue.value
   }
 }
+
+export const setTweenProgress = {
+  css: (t, p, v) => t.style[p] = v,
+  attribute: (t, p, v) => t.setAttribute(p, v),
+  transform: (t, p, v, id) => {
+    if (!transforms.values[id]) {
+      transforms.values[id] = [];
+    }
+
+    transforms.values[id][p] = `${p}(${v})`;
+  }
+};

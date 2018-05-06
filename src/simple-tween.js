@@ -10,16 +10,30 @@ class SimpleTween {
   }
 
   tick(scrollY) {
-    if (scrollY >= this.tween.duration ) {
+    if (scrollY >= this.tween.duration) {
       if (this.edge !== EADGES.ENTER) {
-        this.tween.enter();
+        this.enter();
+
         this.edge = EADGES.ENTER;
       }
     } else {
       if (this.edge !== EADGES.LEAVE) {
-        this.tween.leave();
+        this.leave();
+
         this.edge = EADGES.LEAVE;
       }
+    }
+  }
+
+  enter() {
+    if (this.tween.enter) {
+      this.tween.enter();
+    }
+  }
+
+  leave() {
+    if (this.tween.leave) {
+      this.tween.leave();
     }
   }
 
