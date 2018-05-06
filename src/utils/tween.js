@@ -49,6 +49,11 @@ export function validateValue(val, unit) {
   return unit && !/\s/g.test(val) ? unitLess + unit : unitLess;
 }
 
+export function getFunctionValue(val, el, index) {
+  if (!is.fnc(val)) return val;
+  return val(el, index);
+}
+
 export function decomposeValue(target, prop, val) {
   const rgx = /-?\d*\.?\d+/g;
 

@@ -24,15 +24,15 @@ const run = () => {
       duration: [1500, 3000],
       rotate: [0, 360]
     })
-    // .hook({
-    //   duration: 2000,
-    //   enter() {
-    //     console.log('enter');
-    //   },
-    //   leave() {
-    //     console.log('leave');
-    //   }
-    // })
+    .hook({
+      duration: 2000,
+      enter() {
+        console.log('enter');
+      },
+      leave() {
+        console.log('leave');
+      }
+    })
     .on('update', ({ scrollPosition, direction }) => {
       scrollPositionEl.textContent = scrollPosition;
     })

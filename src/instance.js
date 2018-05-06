@@ -44,10 +44,10 @@ class Instance {
     // create new target
     const targets = new Targets(t.targets);
 
-    targets.forEach((target) => {
+    targets.forEach((target, targetIndex) => {
       delete t.targets;
 
-      const tween = new Tween({ ...t, id: 1, target });
+      const tween = new Tween({ ...t, id: 1, target, targetIndex });
       this.tweens.push(tween);
     });
 

@@ -1,23 +1,24 @@
 import {
   decomposeValue,
+  getFunctionValue,
   getAnimationType,
   mapPropToCSSProp,
-  setTweenProgress
+  setTweenProgress,
 } from './utils/tween';
 
 import is from './utils/is';
 
 class Prop {
   constructor(options) {
-    this.id = options.id;
+    this.id     = options.id;
     this.target = options.target;
+    this.targetIndex = options.targetIndex;
     this.name   = mapPropToCSSProp(options.name);
     this.easing = options.easing;
     this.type   = getAnimationType(this.target, this.name);
 
-    this.values  = options.values.map((value) => {
-      return decomposeValue(this.target, this.name, value);
-    });
+    this.values = getFunctionValue(options.values, this.target, this.targetIndex)
+      .map((value) => decomposeValue(this.target, this.name, value));
 
     this.isColor = is.col(this.values[0].original);
   }

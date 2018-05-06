@@ -6,6 +6,7 @@ import transforms from './transforms';
 const defaultOptions = {
   id: null,
   target: null,
+  targetIndex: 0,
   duration: [],
   easing: Easing.linear,
   immediateRender: true
@@ -52,7 +53,10 @@ class Tween {
       .map((name) => {
         return new Prop({
           id: this.id,
+
           target: this.target,
+          targetIndex: this._tween.targetIndex,
+
           name: name,
           values: this._tween[name],
           easing: this._tween.easing
