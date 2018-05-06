@@ -135,6 +135,19 @@ export function mapPropToTween(propName, propValue, parentTween) {
   }
 }
 
+export function updateTransform(target, id) {
+  const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
+
+  if (!hasTransforms || !transforms.values[id]) {
+    return;
+  }
+
+  target.style[transforms.prefix] = Object
+    .keys(transforms.values[id])
+    .map((k) => transforms.values[id][k])
+    .join(' ');
+}
+
 export const setTweenProgress = {
   css: (t, p, v) => t.style[p] = v,
   attribute: (t, p, v) => t.setAttribute(p, v),

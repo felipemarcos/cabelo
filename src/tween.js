@@ -2,8 +2,8 @@ import { maxValue } from './utils';
 
 import {
   getFunctionValue,
+  updateTransform,
 } from './utils/tween';
-
 
 import Easing from './easing';
 import transforms from './transforms';
@@ -75,19 +75,6 @@ class Tween {
     return maxValue(this.duration);
   }
 
-  updateTransform() {
-    const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
-
-    if (!hasTransforms || !transforms.values[this.id]) {
-      return;
-    }
-
-    this.target.style[transforms.prefix] = Object
-      .keys(transforms.values[this.id])
-      .map((k) => transforms.values[this.id][k])
-      .join(' ');
-  }
-
   updateEdges(scrollPosition) {
     const durations = this.duration;
 
@@ -106,7 +93,7 @@ class Tween {
           prop.updateEdge(beforeFirst, afterLast);
         });
 
-        this.updateTransform();
+        updateTransform(this.target, this.id);
       }
 
       this.edge = beforeFirst ? EDGE.BEFORE : EDGE.AFTER;
@@ -126,10 +113,10 @@ class Tween {
         if (scrollPosition >= start && scrollPosition <= end) {
           this.props
             .forEach((prop) => {
-              prop.tick(start, end, index, nextIndex, scrollPosition);
+              prop.tick({ start, end }, { index, nextIndex }, scrollPosition);
             });
 
-          this.updateTransform();
+          updateTransform(this.target, this.id);
         }
       });
   }

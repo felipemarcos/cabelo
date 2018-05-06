@@ -47,7 +47,7 @@ class Instance {
     targets.forEach((target, targetIndex) => {
       delete t.targets;
 
-      const tween = new Tween({ ...t, id: 1, target, targetIndex });
+      const tween = new Tween({ ...t, target, targetIndex });
       this.tweens.push(tween);
     });
 
@@ -100,9 +100,10 @@ class Instance {
     const extraTweens = [];
 
     Object.keys(tween).forEach((prop) => {
-      if ( isPropATween(tween[prop]) ) {
+      const values = tween[prop];
+      if ( isPropATween(values) ) {
         extraTweens.push(
-          mapPropToTween(prop, tween[prop], tween)
+          mapPropToTween(prop, values, tween)
         );
 
         delete tween[prop];
