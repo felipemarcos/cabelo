@@ -3,10 +3,9 @@ import is from './utils/is';
 import {
   getFunctionValue,
   updateTransform,
+  normalizeEasing
 } from './utils/tween';
 
-import Easing from './easing';
-import BezierEasing from 'bezier-easing';
 import transforms from './transforms';
 
 const defaultOptions = {
@@ -24,11 +23,6 @@ const EDGE = {
 };
 
 import Prop from './prop';
-
-function normalizeEasing(easing) {
-  const ease = is.str(easing) ? Easing[easing] : easing;
-  return BezierEasing.apply(this, ease);
-}
 
 //
 const cachedTargets = [];

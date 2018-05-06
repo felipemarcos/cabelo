@@ -8,6 +8,12 @@ import {
 import { colorToRgb } from './colors';
 
 import is from './is';
+
+// Easing
+import BezierEasing from 'bezier-easing';
+import Easing from '../easing';
+
+// Transforms
 import transforms from '../transforms';
 
 const validTransforms = ['x', 'y', 'translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY', 'perspective'];
@@ -121,6 +127,11 @@ export function getRelativeValue(to, from) {
     case '-': return x - y + u;
     case '*': return x * y + u;
   }
+}
+
+export function normalizeEasing(easing) {
+  const ease = is.str(easing) ? Easing[easing] : easing;
+  return BezierEasing.apply(this, ease);
 }
 
 export function isPropATween(prop) {
