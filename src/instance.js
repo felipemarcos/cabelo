@@ -6,7 +6,7 @@ import Tween from './tween';
 import SimpleTween from './simple-tween';
 
 import is from './utils/is';
-import { maxValue } from './utils';
+import { assign, maxValue } from './utils';
 import { isPropATween, mapPropToTween } from './utils/tween';
 
 const DIRECTION = {
@@ -22,7 +22,7 @@ const defaultOptions = {
 
 class Instance {
   constructor(options) {
-    this.options = Object.assign({}, defaultOptions, options);
+    this.options = assign(defaultOptions, options);
 
     this.container = this.options.container;
     this.tweens = [];
@@ -40,30 +40,34 @@ class Instance {
     this.events();
   }
 
-  add(t) {
+  add(tween) {
     // get extra tweens from current tween if there are any
-    const propsToRemove = this.getNestedTweens(t);
-    t = omit(t, propsToRemove);
+    const propsToRemove = this.getNestedTweens(tween);
+    tween = omit(tween, propsToRemove);
 
     // create new target
-    const targets = new Targets(t.targets);
+    const targets = new Targets(tween.targets);
 
-    targets.forEach((target, targetIndex) => {
-      const newTween = Object.assign( {},
-        omit(t, ['targets']),
-        { target, targetIndex, getHeight: this.getHeight, getScrollTop: this.getScrollTop }
-      );
+    targets
+      .forEach((target, targetIndex) => {
+        const newTween = assign(
+          omit(tween, ['targets']),
+          {
+            target,
+            targetIndex,
+            getHeight: this.getHeight,
+            getScrollTop: this.getScrollTop
+          }
+        );
 
-      this.tweens.push( new Tween(newTween) );
-    });
+        this.tweens.push(new Tween(newTween));
+      });
 
     return this;
   }
 
   hook(t) {
-    const tween = new SimpleTween(t);
-    this.tweens.push(tween);
-
+    this.tweens.push(new SimpleTween(t));
     return this;
   }
 
@@ -91,12 +95,12 @@ class Instance {
 
     this.ticking = true;
 
-    if ( this.scrollTop === 0 && !this.began ) {
+    if (this.scrollTop === 0 && !this.began) {
       this.began = true;
       this.emitter.emit('begin');
     }
 
-    if ( this.scrollTop >= this.getTotalDuration() ) {
+    if (this.scrollTop >= this.getTotalDuration()) {
       this.completed = true;
       this.emitter.emit('complete');
     }
@@ -109,8 +113,8 @@ class Instance {
       .forEach((p) => {
         const values = tween[p];
 
-        if ( isPropATween(values) ) {
-          this.add( mapPropToTween(p, values, tween) );
+        if (isPropATween(values)) {
+          this.add(mapPropToTween(p, values, tween));
           removeProps.push(p);
         }
       });
@@ -135,6 +139,10 @@ class Instance {
 
   getHeight() {
     return this.container.clientHeight;
+  }
+
+  setHeight(height) {
+    this.container.style.height = `${height}px`;
   }
 
   // emitter
@@ -170,7 +178,7 @@ class Instance {
     const duration = this.getTotalDuration();
 
     if (this.options.forceHeight) {
-      this.container.style.height = `${height + duration}px`;
+      this.setHeight(height + duration);
     }
 
     return this;

@@ -54,7 +54,7 @@
   <script src="/dist/skrollr.js"></script>
   <script>
     const tl = skrollr();
-    const scrollPositionEl = document.querySelector('.scroll-position');
+    scrollTopEl = document.querySelector('.scroll-position');
 
     tl
       .add({
@@ -103,8 +103,8 @@
           value: ['#3F51B5', '#E91E63']
         }
       })
-      .on('update', ({ scrollPosition, direction }) => {
-        scrollPositionEl.textContent = scrollPosition;
+      .on('update', ({ scrollTop, direction }) => {
+        scrollTopEl.textContent = scrollTop;
       })
       // .hook({
       //   duration: 2000,

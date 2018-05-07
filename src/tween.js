@@ -1,4 +1,4 @@
-import { maxValue } from './utils';
+import { assign, maxValue } from './utils';
 import is from './utils/is';
 import {
   getFunctionValue,
@@ -36,7 +36,7 @@ const cachedTargets = [];
 
 class Tween {
   constructor(tween) {
-    this._tween = Object.assign({}, defaultOptions, tween);
+    this._tween = assign(defaultOptions, tween);
     this.target = this._tween.target;
     this.targetIndex = this._tween.targetIndex;
 
