@@ -6,6 +6,11 @@ import {
   normalizeEasing
 } from './utils/tween';
 
+import {
+  isRelativeValue,
+  relativeToAbsoluteValue
+} from './utils/relative';
+
 import transforms from './transforms';
 
 const defaultOptions = {
@@ -14,7 +19,9 @@ const defaultOptions = {
   targetIndex: 0,
   duration: [],
   easing: 'linear',
-  immediateRender: true
+  immediateRender: true,
+  getHeight: null,
+  getScrollTop: null
 };
 
 const EDGE = {
@@ -32,8 +39,9 @@ class Tween {
     this._tween = Object.assign({}, defaultOptions, tween);
     this.target = this._tween.target;
     this.targetIndex = this._tween.targetIndex;
-    this.duration = getFunctionValue(this._tween.duration, this.target, this.targetIndex)
+
     this.id = this.getID();
+    this.duration = this.getDuration();
     this.easing = normalizeEasing(this._tween.easing);
     this.props = this.getProps();
     this.edge = null;
@@ -51,6 +59,22 @@ class Tween {
     }
 
     return cachedTarget.id;
+  }
+
+  getDuration() {
+    return getFunctionValue(this._tween.duration, this.target, this.targetIndex)
+      .map((duration) => {
+        if (isRelativeValue(duration)) {
+          return relativeToAbsoluteValue(
+            this.target,
+            duration,
+            this._tween.getHeight,
+            this._tween.getScrollTop
+          );
+        }
+
+        return duration;
+      });
   }
 
   getProps() {
@@ -76,13 +100,13 @@ class Tween {
     return maxValue(this.duration);
   }
 
-  updateEdges(scrollPosition) {
+  updateEdges(scrollTop) {
     const durations = this.duration;
 
     const firstDuration = durations[0];
     const lastDuration = durations[durations.length - 1];
-    const beforeFirst = scrollPosition < firstDuration;
-    const afterLast = scrollPosition > lastDuration;
+    const beforeFirst = scrollTop < firstDuration;
+    const afterLast = scrollTop > lastDuration;
 
     if (beforeFirst || afterLast) {
       if (beforeFirst && this.edge !== EDGE.BEFORE || afterLast && this.edge !== EDGE.AFTER) {
@@ -103,7 +127,7 @@ class Tween {
     }
   }
 
-  updateProgress(scrollPosition) {
+  updateProgress(scrollTop) {
     this.duration
       .forEach((duration, index) => {
         const nextIndex = index + 1;
@@ -111,10 +135,10 @@ class Tween {
         const start = duration;
         const end = this.duration[nextIndex];
 
-        if (scrollPosition >= start && scrollPosition <= end) {
+        if (scrollTop >= start && scrollTop <= end) {
           this.props
             .forEach((prop) => {
-              prop.tick({ start, end }, { index, nextIndex }, scrollPosition);
+              prop.tick({ start, end }, { index, nextIndex }, scrollTop);
             });
 
           updateTransform(this.target, this.id);
@@ -122,12 +146,12 @@ class Tween {
       });
   }
 
-  tick(scrollPosition) {
+  tick(scrollTop) {
     // If we are before/after the first/last duration, set the styles accordingly.
-    this.updateEdges(scrollPosition);
+    this.updateEdges(scrollTop);
 
     // Update props progress
-    this.updateProgress(scrollPosition);
+    this.updateProgress(scrollTop);
   }
 }
 

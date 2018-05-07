@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Relative Test</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin-top: 100vh;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="box"></span>
+  </div>
+
+  <script src="/dist/skrollr.js"></script>
+  <script>
+    const tl = skrollr();
+
+    tl
+      .add({
+        targets: '.box',
+        duration: ['bottom-bottom', 'top-top'],
+        rotate: [0, 360]
+      })
+      .init();
+  </script>
+</body>
+</html>

@@ -28,12 +28,14 @@ class Instance {
     this.tweens = [];
     this.ticking = false;
     this.began = false;
-    this.lastScrollPosition = 0;
-    this.scrollPosition = 0;
+    this.lastscrollTop = 0;
+    this.scrollTop = 0;
 
     this.add = this.add.bind(this);
-    this.refresh  = this.refresh.bind(this);
+    this.refresh = this.refresh.bind(this);
     this.animate = this.animate.bind(this);
+    this.getHeight = this.getHeight.bind(this);
+    this.getScrollTop = this.getScrollTop.bind(this);
 
     this.events();
   }
@@ -47,7 +49,11 @@ class Instance {
     const targets = new Targets(t.targets);
 
     targets.forEach((target, targetIndex) => {
-      const newTween = Object.assign({}, omit(t, ['targets']), { target, targetIndex });
+      const newTween = Object.assign( {},
+        omit(t, ['targets']),
+        { target, targetIndex, getHeight: this.getHeight, getScrollTop: this.getScrollTop }
+      );
+
       this.tweens.push( new Tween(newTween) );
     });
 
@@ -62,12 +68,12 @@ class Instance {
   }
 
   tick() {
-    this.tweens.forEach((tween) => tween.tick(this.scrollPosition));
+    this.tweens.forEach((tween) => tween.tick(this.scrollTop));
   }
 
   animate() {
-    this.lastScrollPosition = this.scrollPosition;
-    this.scrollPosition = this.getScrollTop();
+    this.lastscrollTop = this.scrollTop;
+    this.scrollTop = this.getScrollTop();
 
     if (this.ticking) {
       return;
@@ -78,19 +84,19 @@ class Instance {
       this.ticking = false;
 
       this.emitter.emit('update', {
-        scrollPosition: this.scrollPosition,
+        scrollTop: this.scrollTop,
         direction: this.getDirection()
       });
     });
 
     this.ticking = true;
 
-    if ( this.scrollPosition === 0 && !this.began ) {
+    if ( this.scrollTop === 0 && !this.began ) {
       this.began = true;
       this.emitter.emit('begin');
     }
 
-    if ( this.scrollPosition >= this.getTotalDuration() ) {
+    if ( this.scrollTop >= this.getTotalDuration() ) {
       this.completed = true;
       this.emitter.emit('complete');
     }
@@ -124,7 +130,7 @@ class Instance {
   }
 
   getDirection() {
-    return this.scrollPosition >= this.lastScrollPosition ? DIRECTION.DOWN : DIRECTION.UP;
+    return this.scrollTop >= this.lastscrollTop ? DIRECTION.DOWN : DIRECTION.UP;
   }
 
   getHeight() {

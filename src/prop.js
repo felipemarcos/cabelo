@@ -69,13 +69,13 @@ class Prop {
     this.setValue(output);
   }
 
-  tick(duration, value, scrollPosition) {
+  tick(duration, value, scrollTop) {
     const values = this.values;
 
     const start = values[value.index] || {};
     const end   = values[value.nextIndex] || {};
 
-    const progress = (scrollPosition - duration.start) / (duration.end - duration.start);
+    const progress = (scrollTop - duration.start) / (duration.end - duration.start);
 
     const numbers = start.numbers
       .map((number, index) => {
