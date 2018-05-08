@@ -1,5 +1,6 @@
 import Emittery from 'emittery';
 import omit from 'lodash.omit';
+import autoBind from 'auto-bind';
 
 import Targets from './targets';
 import Tween from './tween';
@@ -31,12 +32,7 @@ class Instance {
     this.lastscrollTop = 0;
     this.scrollTop = 0;
 
-    this.add = this.add.bind(this);
-    this.refresh = this.refresh.bind(this);
-    this.animate = this.animate.bind(this);
-    this.getHeight = this.getHeight.bind(this);
-    this.getScrollTop = this.getScrollTop.bind(this);
-
+    autoBind(this);
     this.events();
   }
 

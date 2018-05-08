@@ -1,7 +1,9 @@
 {
-  "private": true,
+  "name": "skrollr",
   "main": "dist/skrollr.js",
+  "license": "MIT",
   "dependencies": {
+    "auto-bind": "^1.2.0",
     "bezier-easing": "^2.0.3",
     "emittery": "^0.3.0",
     "lodash.omit": "^4.5.0",
