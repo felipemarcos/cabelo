@@ -13,6 +13,8 @@ import {
 
 import transforms from './transforms';
 
+import Prop from './prop';
+
 const defaultOptions = {
   id: null,
   target: null,
@@ -28,8 +30,6 @@ const EDGE = {
   BEFORE: 'before',
   AFTER: 'after'
 };
-
-import Prop from './prop';
 
 //
 const cachedTargets = [];
