@@ -198,6 +198,8 @@ class Instance {
   }
 
   init() {
+    this.emitter.emit('ready');
+
     this.refresh();
     this.animate();
 
