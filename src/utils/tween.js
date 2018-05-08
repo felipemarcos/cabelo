@@ -16,12 +16,16 @@ import Easing from '../easing';
 // Transforms
 import transforms from '../transforms';
 
-const validTransforms = ['x', 'y', 'translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY', 'perspective'];
+const validTransforms = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skewX', 'skewY', 'perspective'];
 
 const mappedCSSProps = {
   x: 'translateX',
   y: 'translateY'
 };
+
+export function mapPropToCSSProp(prop) {
+  return mappedCSSProps[prop] || prop;
+}
 
 export function updateTransform(target, id) {
   const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
@@ -34,10 +38,6 @@ export function updateTransform(target, id) {
     .keys(transforms.values[id])
     .map((k) => transforms.values[id][k])
     .join(' ');
-}
-
-export function mapPropToCSSProp(prop) {
-  return mappedCSSProps[prop] || prop;
 }
 
 export function getTransformUnit(propName) {
