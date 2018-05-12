@@ -11,6 +11,15 @@ import { assign, maxValue } from './utils';
 import { isPropATween, mapPropToTween } from './utils/tween';
 import animate from './utils/animate';
 
+const EVENTS = {
+  BEGIN: 'begin',
+  COMPLETE: 'COMPLETE',
+  UPDATE: 'update',
+  READY: 'ready',
+  SCROLL: 'scroll',
+  RESIZE: 'resize'
+};
+
 const DIRECTION = {
   UP: 'up',
   DOWN: 'down'
@@ -85,7 +94,7 @@ class Instance {
       this.tick();
       this.ticking = false;
 
-      this.emitter.emit('update', {
+      this.emitter.emit(EVENTS.UPDATE, {
         scrollTop: this.scrollTop,
         direction: this.getDirection()
       });
@@ -95,12 +104,12 @@ class Instance {
 
     if (this.scrollTop === 0 && !this.began) {
       this.began = true;
-      this.emitter.emit('begin');
+      this.emitter.emit(EVENTS.BEGIN);
     }
 
     if (this.scrollTop >= this.getTotalDuration()) {
       this.completed = true;
-      this.emitter.emit('complete');
+      this.emitter.emit(EVENTS.COMPLETE);
     }
   }
 
@@ -188,13 +197,13 @@ class Instance {
 
     this.scrollEl = this.isDocument ? window : this.container;
 
-    this.scrollEl.addEventListener('scroll', this.animate);
+    this.scrollEl.addEventListener(EVENTS.SCROLL, this.animate);
 
     if (typeof window.ResizeObserver !== 'undefined') {
       this.resizeObserver = new ResizeObserver(this.refresh);
       this.resizeObserver.observe(this.container);
     } else {
-      this.scrollEl.addEventListener('resize', this.animate);
+      this.scrollEl.addEventListener(EVENTS.RESIZE, this.animate);
     }
   }
 
@@ -216,19 +225,19 @@ class Instance {
   }
 
   destroy() {
-    this.scrollEl.removeEventListener('scroll', this.animate);
+    this.scrollEl.removeEventListener(EVENTS.SCROLL, this.animate);
 
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     } else {
-      this.scrollEl.removeEventListener('resize', this.refresh);
+      this.scrollEl.removeEventListener(EVENTS.RESIZE, this.refresh);
     }
 
     return this;
   }
 
   init() {
-    this.emitter.emit('ready');
+    this.emitter.emit(EVENTS.READY);
 
     this.refresh();
     this.animate();
