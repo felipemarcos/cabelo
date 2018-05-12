@@ -62,7 +62,19 @@ class Tween {
   }
 
   getDuration() {
-    return getFunctionValue(this._tween.duration, this.target, this.targetIndex)
+    let durations = getFunctionValue(this._tween.duration, this.target, this.targetIndex);
+
+    if (durations.length && (this._tween.from || this._tween.to)) {
+      console.warn('You can\'t use `duration` and `from` or `to` in the same tween.', this._tween);
+    }
+
+    if (this._tween.from && this._tween.to) {
+      durations = [this._tween.from, this._tween.to];
+    } else if (this._tween.to) {
+      durations = [0, this._tween.to];
+    }
+
+    return durations
       .map((duration) => {
         if (isRelativeValue(duration)) {
           return relativeToAbsoluteValue(
