@@ -20,6 +20,8 @@ const defaultOptions = {
   target: null,
   targetIndex: 0,
   duration: [],
+  from: null,
+  to: null,
   easing: 'linear',
   immediateRender: true,
   getClientHeight: null,
