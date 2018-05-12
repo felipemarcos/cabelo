@@ -40,7 +40,7 @@ class Instance {
     this.tweens = [];
     this.ticking = false;
     this.began = false;
-    this.lastscrollTop = 0;
+    this.lastScrollTop = 0;
     this.scrollTop = 0;
 
     autoBind(this);
@@ -87,7 +87,7 @@ class Instance {
       return;
     }
 
-    this.lastscrollTop = this.scrollTop;
+    this.lastScrollTop = this.scrollTop;
     this.scrollTop = this.getScrollTop();
 
     requestAnimationFrame(() => {
@@ -149,7 +149,7 @@ class Instance {
   }
 
   getDirection() {
-    return this.scrollTop >= this.lastscrollTop ? DIRECTION.DOWN : DIRECTION.UP;
+    return this.scrollTop >= this.lastScrollTop ? DIRECTION.DOWN : DIRECTION.UP;
   }
 
   getClientHeight() {
