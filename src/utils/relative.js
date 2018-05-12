@@ -2,13 +2,13 @@ export function isRelativeValue(value) {
   return String(value).match(/^[a-z]+-[a-z]+$/) !== null;
 }
 
-export function relativeToAbsoluteValue(target, value, getContainerHeight, getScrollTop) {
+export function relativeToAbsoluteValue(target, value, getClientHeight, getScrollTop) {
   const anchors = value.split('-');
   const targetAnchor = anchors[0];
   const containerAnchor = anchors[1];
 
   const targetRect = target.getBoundingClientRect();
-  const containerHeight = getContainerHeight();
+  const containerHeight = getClientHeight();
   const scrollTop = getScrollTop();
 
   let y = 0;

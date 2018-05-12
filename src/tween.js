@@ -22,7 +22,7 @@ const defaultOptions = {
   duration: [],
   easing: 'linear',
   immediateRender: true,
-  getHeight: null,
+  getClientHeight: null,
   getScrollTop: null
 };
 
@@ -68,7 +68,7 @@ class Tween {
           return relativeToAbsoluteValue(
             this.target,
             duration,
-            this._tween.getHeight,
+            this._tween.getClientHeight,
             this._tween.getScrollTop
           );
         }

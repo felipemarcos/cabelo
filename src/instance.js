@@ -9,6 +9,7 @@ import SimpleTween from './simple-tween';
 import is from './utils/is';
 import { assign, maxValue } from './utils';
 import { isPropATween, mapPropToTween } from './utils/tween';
+import animate from './utils/animate';
 
 const DIRECTION = {
   UP: 'up',
@@ -26,6 +27,7 @@ class Instance {
     this.options = assign(defaultOptions, options);
 
     this.container = this.options.container;
+    this.isDocument = this.container === document.documentElement || this.container === document.body;
     this.tweens = [];
     this.ticking = false;
     this.began = false;
@@ -51,7 +53,7 @@ class Instance {
           {
             target,
             targetIndex,
-            getHeight: this.getHeight,
+            getClientHeight: this.getClientHeight,
             getScrollTop: this.getScrollTop
           }
         );
@@ -72,12 +74,12 @@ class Instance {
   }
 
   animate() {
-    this.lastscrollTop = this.scrollTop;
-    this.scrollTop = this.getScrollTop();
-
     if (this.ticking) {
       return;
     }
+
+    this.lastscrollTop = this.scrollTop;
+    this.scrollTop = this.getScrollTop();
 
     requestAnimationFrame(() => {
       this.tick();
@@ -122,6 +124,14 @@ class Instance {
     return this.container.scrollTop || 0;
   }
 
+  setScrollTop(newScrollTop) {
+    if (this.isDocument) {
+      window.scrollTo(0, newScrollTop);
+    } else {
+      this.container.scrollTop = newScrollTop;
+    }
+  }
+
   getTotalDuration() {
     const durations = this.tweens
       .map((tween) => tween.getMaxDuration());
@@ -133,12 +143,32 @@ class Instance {
     return this.scrollTop >= this.lastscrollTop ? DIRECTION.DOWN : DIRECTION.UP;
   }
 
-  getHeight() {
+  getClientHeight() {
     return this.container.clientHeight;
+  }
+
+  getHeight() {
+    return this.container.offsetHeight;
   }
 
   setHeight(height) {
     this.container.style.height = `${height}px`;
+  }
+
+  scrollTo(to, duration) {
+    const from = this.getScrollTop();
+
+    if (to === 'end') {
+      to = this.getHeight();
+    }
+
+    if (to === 'start') {
+      to = 0;
+    }
+
+    const props = { duration, from, to };
+
+    return animate(props, this.setScrollTop);
   }
 
   // emitter
@@ -156,7 +186,7 @@ class Instance {
   events() {
     this.emitter = new Emittery();
 
-    this.scrollEl = this.container === document.documentElement ? window : this.container;
+    this.scrollEl = this.isDocument ? window : this.container;
 
     this.scrollEl.addEventListener('scroll', this.animate);
 
@@ -170,7 +200,7 @@ class Instance {
 
   //
   reflow() {
-    const height = this.getHeight();
+    const height = this.getClientHeight();
     const duration = this.getTotalDuration();
 
     if (this.options.forceHeight) {
