@@ -21,6 +21,7 @@ class Prop {
       .map((value) => decomposeValue(this.target, this.name, value));
 
     this.isColor = is.col(this.values[0].original);
+    this.round = typeof options.round !== 'undefined' ? options.round : this.isColor;
   }
 
   tweenValue(start, end, position) {
@@ -61,7 +62,7 @@ class Prop {
   updateEdge(beforeFirst, afterLast) {
     const values = this.values;
     const firstValues = values[0];
-    const lastValues  = values[values.length - 1];
+    const lastValues = values[values.length - 1];
 
     const finalValues = beforeFirst ? firstValues : lastValues;
     const output = this.formatValue(finalValues.numbers, finalValues.strings);
@@ -69,20 +70,16 @@ class Prop {
     this.setValue(output);
   }
 
-  tick(duration, value, scrollTop) {
-    const values = this.values;
-
-    const start = values[value.index] || {};
-    const end   = values[value.nextIndex] || {};
-
-    const progress = (scrollTop - duration.start) / (duration.end - duration.start);
+  tick(progress, value, scrollTop) {
+    const start = this.values[value.index] || {};
+    const end   = this.values[value.nextIndex] || {};
 
     const numbers = start.numbers
       .map((number, index) => {
         const endNumber = end.numbers[index];
         let tweenedValue = this.tweenValue(number, endNumber, progress);
 
-        if (this.isColor) {
+        if (this.round) {
           tweenedValue = Math.round(tweenedValue);
         }
 
@@ -90,7 +87,7 @@ class Prop {
       });
 
     const strings = end.strings;
-    const output  = this.formatValue(numbers, strings);
+    const output = this.formatValue(numbers, strings);
 
     this.setValue(output);
   }

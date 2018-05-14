@@ -16,16 +16,17 @@ import transforms from './transforms';
 import Prop from './prop';
 
 const defaultOptions = {
-  id: null,
   target: null,
   targetIndex: 0,
+
   duration: [],
   from: null,
   to: null,
   easing: 'linear',
+  round: false,
+
   immediateRender: true,
-  getClientHeight: null,
-  getScrollTop: null
+  instance: null
 };
 
 const EDGE = {
@@ -82,8 +83,8 @@ class Tween {
           return relativeToAbsoluteValue(
             this.target,
             duration,
-            this._tween.getClientHeight,
-            this._tween.getScrollTop
+            this.instance.getClientHeight,
+            this.instance.getScrollTop
           );
         }
 
@@ -105,7 +106,9 @@ class Tween {
 
           name: name,
           values: this._tween[name],
-          easing: this.easing
+
+          easing: this.easing,
+          round: this._tween.round
         });
       });
   }
@@ -150,10 +153,11 @@ class Tween {
         const end = this.duration[nextIndex];
 
         if (scrollTop >= start && scrollTop <= end) {
-          this.props
-            .forEach((prop) => {
-              prop.tick({ start, end }, { index, nextIndex }, scrollTop);
-            });
+          const progress = (scrollTop - start) / (end - start);
+
+          this.props.forEach((prop) => {
+            prop.tick(progress, { index, nextIndex }, scrollTop);
+          });
 
           updateTransform(this.target, this.id);
         }
