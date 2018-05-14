@@ -42,6 +42,7 @@ class Tween {
     this._tween = assign(defaultOptions, tween);
     this.target = this._tween.target;
     this.targetIndex = this._tween.targetIndex;
+    this.instance = this._tween.instance;
 
     this.id = this.getID();
     this.duration = this.getDuration();
@@ -51,17 +52,14 @@ class Tween {
   }
 
   getID() {
-    const cachedTarget = cachedTargets
-      .find((t) => t.target === this.target);
+    let index = cachedTargets.indexOf(this.target);
 
-    if (!cachedTarget) {
-      const id = Symbol();
-      cachedTargets.push({ id, target: this.target });
-
-      return id;
+    if (index === -1) {
+      cachedTargets.push(this.target);
+      index = cachedTargets.indexOf(this.target);
     }
 
-    return cachedTarget.id;
+    return index;
   }
 
   getDuration() {

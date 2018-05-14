@@ -4,7 +4,7 @@ import Prop from '../src/prop';
 const div = document.createElement('div');
 
 const prop = new Prop({
-  id: Symbol(),
+  id: 1,
   target: div,
   targetIndex: 0,
   name: 'translateY',

@@ -28,7 +28,7 @@ export function mapPropToCSSProp(prop) {
 }
 
 export function updateTransform(target, id) {
-  const hasTransforms = Object.getOwnPropertySymbols(transforms.values).length;
+  const hasTransforms = Object.keys(transforms.values).length;
 
   if (!hasTransforms || !transforms.values[id]) {
     return;
