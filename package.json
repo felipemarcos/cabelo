@@ -1,6 +1,6 @@
 {
-  "name": "skrollr",
-  "main": "dist/skrollr.js",
+  "name": "cabelo",
+  "main": "dist/cabelo.js",
   "license": "MIT",
   "version": "0.0.0",
   "dependencies": {

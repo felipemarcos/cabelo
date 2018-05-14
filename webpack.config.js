@@ -10,8 +10,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'skrollr.js',
-    library: 'skrollr',
+    filename: 'cabelo.js',
+    library: 'cabelo',
     libraryTarget: 'umd',
     libraryExport: 'default'
   }

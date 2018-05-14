@@ -3,7 +3,7 @@ import Easing from './easing';
 
 let instances = [];
 
-function skrollr(options) {
+function cabelo(options) {
   const instance = new Instance(options);
   instances.push(instance);
 
@@ -11,4 +11,4 @@ function skrollr(options) {
 }
 
 export { Easing };
-export default skrollr;
+export default cabelo;

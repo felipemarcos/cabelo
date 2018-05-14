@@ -156,7 +156,7 @@ export function mapPropToTween(propName, propValue, parentTween) {
     targets: parentTween.targets,
     duration: propValue.duration,
     [propName]: propValue.value
-  }
+  };
 }
 
 export const setTweenProgress = {
@@ -169,4 +169,4 @@ export const setTweenProgress = {
 
     transforms.values[id][p] = `${p}(${v})`;
   }
-};
+}

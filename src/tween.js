@@ -94,7 +94,7 @@ class Tween {
     return Object
       .keys(this._tween)
       // remove default properties
-      .filter( (p) => !defaultOptions.hasOwnProperty(p) )
+      .filter((p) => !defaultOptions.hasOwnProperty(p))
       .map((name) => {
         return new Prop({
           id: this.id,

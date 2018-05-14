@@ -38,11 +38,11 @@ class Prop {
         const nextString = strings[index + 1];
         const number = numbers[index];
 
-        if ( isNaN(number) ) {
+        if (isNaN(number)) {
           return '';
         }
 
-        if ( !nextString ) {
+        if (!nextString) {
           return number + ' ';
         }
 
