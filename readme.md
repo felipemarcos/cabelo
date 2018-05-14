@@ -1,6 +1,7 @@
-# base
+# cabelo
+> Parallax scrolling animation library
 
-Description here
+Cabelo allows you to animate any css property based on the scroll position.
 
 ## Install
 
