@@ -2,11 +2,11 @@ import Emittery from 'emittery';
 import omit from 'lodash.omit';
 import autoBind from 'auto-bind';
 
-import Targets from './targets';
 import Tween from './tween';
-import SimpleTween from './simple-tween';
+import Hook from './hook';
 
 import is from './utils/is';
+import { getTargets } from './utils/dom';
 import { assign, maxValue } from './utils';
 import { isPropATween, mapPropToTween } from './utils/tween';
 import animate from './utils/animate';
@@ -53,7 +53,7 @@ class Instance {
     tween = omit(tween, propsToRemove);
 
     // create new target
-    const targets = new Targets(tween.targets);
+    const targets = getTargets(tween.targets);
 
     targets
       .forEach((target, targetIndex) => {
@@ -62,8 +62,7 @@ class Instance {
           {
             target,
             targetIndex,
-            getClientHeight: this.getClientHeight,
-            getScrollTop: this.getScrollTop
+            instance: this
           }
         );
 
@@ -74,7 +73,7 @@ class Instance {
   }
 
   hook(t) {
-    this.tweens.push(new SimpleTween(t));
+    this.tweens.push(new Hook(t));
     return this;
   }
 
@@ -83,12 +82,12 @@ class Instance {
   }
 
   animate() {
+    this.lastScrollTop = this.scrollTop;
+    this.scrollTop = this.getScrollTop();
+
     if (this.ticking) {
       return;
     }
-
-    this.lastScrollTop = this.scrollTop;
-    this.scrollTop = this.getScrollTop();
 
     requestAnimationFrame(() => {
       this.tick();
@@ -167,12 +166,12 @@ class Instance {
   scrollTo(to, duration) {
     const from = this.getScrollTop();
 
-    if (to === 'end') {
-      to = this.getHeight();
-    }
-
     if (to === 'start') {
       to = 0;
+    }
+
+    if (to === 'end') {
+      to = this.getHeight();
     }
 
     const props = { duration, from, to };
@@ -180,7 +179,6 @@ class Instance {
     return animate(props, this.setScrollTop);
   }
 
-  // emitter
   on(eventName, listener) {
     this.emitter.on(eventName, listener);
     return this;
@@ -191,7 +189,6 @@ class Instance {
     return this;
   }
 
-  //
   events() {
     this.emitter = new Emittery();
 
@@ -207,7 +204,6 @@ class Instance {
     }
   }
 
-  //
   reflow() {
     const height = this.getClientHeight();
     const duration = this.getTotalDuration();
