@@ -25,5 +25,8 @@
     "build": "webpack --mode=production",
     "test": "jest",
     "release": "np"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
