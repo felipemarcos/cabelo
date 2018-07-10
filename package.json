@@ -2,7 +2,7 @@
   "name": "cabelo",
   "main": "dist/cabelo.js",
   "license": "MIT",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "dependencies": {
     "auto-bind": "^1.2.0",
     "bezier-easing": "^2.0.3",
