@@ -1,4 +1,4 @@
-# cabelo
+# cabelo (WIP)
 > Parallax scrolling animation library
 
 Cabelo allows you to animate any css property based on the scroll position.
@@ -28,6 +28,7 @@ tl
 
 
 ## API
+Soon
 
 ## License
 
