@@ -163,6 +163,10 @@ class Instance {
     this.container.style.height = `${height}px`;
   }
 
+  unsetHeight() {
+    this.container.style.height = '';
+  }
+
   scrollTo(to, duration) {
     const from = this.getScrollTop();
 
@@ -228,6 +232,8 @@ class Instance {
     } else {
       this.scrollEl.removeEventListener(EVENTS.RESIZE, this.refresh);
     }
+
+    this.unsetHeight();
 
     return this;
   }
