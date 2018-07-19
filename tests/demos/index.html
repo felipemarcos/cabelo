@@ -106,6 +106,12 @@
       .on('update', ({ scrollTop, direction }) => {
         scrollTopEl.textContent = scrollTop;
       })
+      .on('begin', () => {
+        console.log('begin');
+      })
+      .on('complete', () => {
+        console.log('complete');
+      })
       .init();
   </script>
 </body>

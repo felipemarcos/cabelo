@@ -1,4 +1,4 @@
-import Emittery from 'emittery';
+import ee from 'event-emitter';
 import omit from 'lodash.omit';
 import autoBind from 'auto-bind';
 
@@ -13,7 +13,7 @@ import animate from './utils/animate';
 
 const EVENTS = {
   BEGIN: 'begin',
-  COMPLETE: 'COMPLETE',
+  COMPLETE: 'complete',
   UPDATE: 'update',
   READY: 'ready',
   SCROLL: 'scroll',
@@ -194,7 +194,7 @@ class Instance {
   }
 
   events() {
-    this.emitter = new Emittery();
+    this.emitter = ee();
 
     this.scrollEl = this.isDocument ? window : this.container;
 
