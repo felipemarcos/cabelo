@@ -25,6 +25,7 @@ const defaultOptions = {
   easing: 'linear',
   round: false,
 
+  edgeClassName: false,
   immediateRender: true,
   instance: null
 };
@@ -32,6 +33,12 @@ const defaultOptions = {
 const EDGE = {
   BEFORE: 'before',
   AFTER: 'after'
+};
+
+const CLASSNAMES = {
+  BEFORE: 'cabelo-before',
+  INSIDE: 'cabelo-inside',
+  AFTER: 'cabelo-after'
 };
 
 //
@@ -115,6 +122,18 @@ class Tween {
     return maxValue(this.duration);
   }
 
+  updateClass(className) {
+    if (!this._tween.edgeClassName) {
+      return;
+    }
+
+    const toRemove = Object.values(CLASSNAMES)
+      .filter((name) => name !== className);
+
+    this.target.classList.add(className);
+    this.target.classList.remove(...toRemove);
+  }
+
   updateEdges(scrollTop) {
     const durations = this.duration;
 
@@ -129,6 +148,12 @@ class Tween {
           return;
         }
 
+        if (beforeFirst) {
+          this.updateClass(CLASSNAMES.BEFORE);
+        } else {
+          this.updateClass(CLASSNAMES.AFTER);
+        }
+
         this.props.forEach((prop) => {
           prop.updateEdge(beforeFirst, afterLast);
         });
@@ -138,6 +163,7 @@ class Tween {
 
       this.edge = beforeFirst ? EDGE.BEFORE : EDGE.AFTER;
     } else if (this.edge !== null) {
+      this.updateClass(CLASSNAMES.INSIDE);
       this.edge = null;
     }
   }
