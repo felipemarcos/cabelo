@@ -239,10 +239,10 @@ class Instance {
   }
 
   init() {
-    this.emitter.emit(EVENTS.READY);
-
     this.refresh();
     this.animate();
+
+    this.emitter.emit(EVENTS.READY);
 
     return this;
   }
