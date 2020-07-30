@@ -4,22 +4,22 @@
   "license": "MIT",
   "version": "0.2.1",
   "dependencies": {
-    "auto-bind": "^1.2.0",
+    "auto-bind": "4.0.0",
     "bezier-easing": "^2.0.3",
     "event-emitter": "^0.3.5",
     "lodash.omit": "^4.5.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.10.4",
     "babel-core": "^6.26.3",
-    "babel-jest": "^22.4.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.6.1",
-    "jest": "^22.4.3",
-    "np": "^2.20.1",
-    "regenerator-runtime": "^0.11.1",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^2.1.2",
-    "webpack-dev-server": "^3.1.4"
+    "babel-jest": "^26.2.1",
+    "babel-loader": "^8.1.0",
+    "jest": "^26.2.1",
+    "np": "^6.3.2",
+    "regenerator-runtime": "^0.13.7",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
     "start": "webpack-dev-server --mode=development",
