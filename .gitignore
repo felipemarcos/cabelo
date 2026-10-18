@@ -10,3 +10,7 @@ yarn-error.log*
 
 # Coverage directory used by tools like istanbul
 coverage
+
+# VitePress
+docs/.vitepress/dist
+docs/.vitepress/cache

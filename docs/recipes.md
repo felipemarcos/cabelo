@@ -1,6 +1,6 @@
 # Recipes
 
-Patterns for common scroll effects. Most of them have a live version in the [examples](../examples).
+Patterns for common scroll effects. Most of them have a live version in the [examples](https://felipemarcos.github.io/cabelo/examples/).
 
 - [Reveal elements as they enter the screen](#reveal-elements-as-they-enter-the-screen)
 - [Parallax layers](#parallax-layers)

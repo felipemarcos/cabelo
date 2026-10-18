@@ -2,6 +2,8 @@
 
 > Tiny, dependency-free library to animate anything based on the scroll position.
 
+**[Documentation](https://felipemarcos.github.io/cabelo/)** · **[Live examples](https://felipemarcos.github.io/cabelo/examples/)**
+
 Cabelo turns the scroll position into a timeline. You describe what a property should look like at given scroll positions, and cabelo interpolates everything in between as the page scrolls, up and down, as fast as the user likes.
 
 ```js
@@ -101,6 +103,8 @@ Scrolling to 250px puts the box at `x: 150, y: 0`; scrolling to 750px puts it at
 
 ## Documentation
 
+The full documentation is at **<https://felipemarcos.github.io/cabelo/>**. The same guides are in the [`docs`](docs) folder:
+
 - [Getting started](docs/getting-started.md): the core ideas, step by step.
 - [Tweens](docs/tweens.md): targets, positions, values, properties, easing and how tweens combine.
 - [Hooks](docs/hooks.md): callbacks and class toggling at scroll positions.
@@ -108,14 +112,14 @@ Scrolling to 250px puts the box at `x: 150, y: 0`; scrolling to 750px puts it at
 - [Recipes](docs/recipes.md): reveal on scroll, progress bars, parallax, horizontal scroll, frameworks, reduced motion and more.
 - [Changelog](CHANGELOG.md)
 
-To try the examples locally, clone the repository and run:
+The [examples](https://felipemarcos.github.io/cabelo/examples/) can be tried online. To run them locally, clone the repository and run:
 
 ```sh
 npm install
 npm start
 ```
 
-Then open <http://localhost:8080/examples/>.
+Then open <http://localhost:8080/examples/>. To work on the documentation site, run `npm run docs:dev`.
 
 ## Browser support
 
