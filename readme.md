@@ -127,4 +127,4 @@ All modern browsers. Cabelo uses `ResizeObserver`, when available, to measure th
 
 ## License
 
-MIT © [Felipe Marcos](http://felipemarcos.com)
+MIT © [Felipe Marcos](https://felipe.zip)

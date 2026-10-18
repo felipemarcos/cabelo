@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Tiny, dependency-free library to animate anything based on the scroll position",
   "license": "MIT",
-  "author": "Felipe Marcos (http://felipemarcos.com)",
+  "author": "Felipe Marcos (https://felipe.zip)",
   "repository": "felipemarcos/cabelo",
   "homepage": "https://felipemarcos.github.io/cabelo/",
   "bugs": "https://github.com/felipemarcos/cabelo/issues",
