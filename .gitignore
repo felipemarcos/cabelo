@@ -14,3 +14,6 @@ coverage
 # VitePress
 docs/.vitepress/dist
 docs/.vitepress/cache
+
+# Build output, published to npm by the Release workflow
+dist

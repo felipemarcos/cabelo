@@ -42,7 +42,7 @@
     "test:watch": "vitest",
     "typecheck": "tsc -p types",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:build": "npm run build && vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "prepublishOnly": "npm test && npm run build",
     "release": "np --no-yarn --no-publish --no-release-draft"
