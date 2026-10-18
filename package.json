@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "Felipe Marcos (http://felipemarcos.com)",
   "repository": "felipemarcos/cabelo",
-  "homepage": "https://github.com/felipemarcos/cabelo#readme",
+  "homepage": "https://felipemarcos.github.io/cabelo/",
   "bugs": "https://github.com/felipemarcos/cabelo/issues",
   "keywords": [
     "scroll",
@@ -41,6 +41,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p types",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "prepublishOnly": "npm test && npm run build",
     "release": "np --no-yarn"
   },
@@ -50,6 +53,7 @@
     "np": "^10.2.0",
     "rollup": "^4.50.0",
     "typescript": "^5.9.2",
+    "vitepress": "^1.6.4",
     "vitest": "^3.2.4"
   },
   "publishConfig": {
