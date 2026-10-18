@@ -29,8 +29,31 @@ declare namespace cabelo {
 
   type Values = Value | ReadonlyArray<Value | FunctionValue<Value>> | FunctionValue<Value | Value[]>;
 
+  interface TweenDetails {
+    /** The target of the tween. */
+    target: any;
+    /** How far through the tween the scroll position is, from 0 to 1. */
+    progress: number;
+    direction: Direction;
+    scrollTop: number;
+    position: number;
+  }
+
+  type TweenCallback = (details: TweenDetails) => void;
+
+  interface TweenCallbacks {
+    /** Called when the scroll position enters the tween, from either side. */
+    onEnter?: TweenCallback;
+
+    /** Called when the scroll position leaves the tween, to either side. */
+    onLeave?: TweenCallback;
+
+    /** Called after rendering, whenever the progress of the tween changes. */
+    onUpdate?: TweenCallback;
+  }
+
   /** A property with its own positions and options. */
-  interface NestedTween {
+  interface NestedTween extends TweenCallbacks {
     value?: Values;
     values?: Values;
     duration?: Positions;
@@ -42,7 +65,7 @@ declare namespace cabelo {
     trigger?: string | Element | FunctionValue<string | Element>;
   }
 
-  interface TweenOptions {
+  interface TweenOptions extends TweenCallbacks {
     /** What to animate. */
     targets: Targets;
 
@@ -64,7 +87,10 @@ declare namespace cabelo {
     /** Defaults to `'linear'`. */
     easing?: EasingDefinition;
 
-    /** `true` rounds to integers, a number rounds to that many decimals. */
+    /**
+     * `true` rounds to integers, a number rounds to that many decimals.
+     * `zIndex` and `order` are always rounded to integers.
+     */
     round?: boolean | number;
 
     /**
@@ -80,11 +106,11 @@ declare namespace cabelo {
     immediateRender?: boolean;
 
     /**
-     * Any other key is an animated property: a transform (`x`, `y`, `rotate`,
-     * `scale`...), a CSS property, a CSS variable (`'--name'`), an attribute
+     * Any other key is an animated property: a transform (`x`, `y`, `xPercent`,
+     * `yPercent`, `rotate`, `scale`...), a CSS property, a CSS variable (`'--name'`), an attribute
      * or a property of the target.
      */
-    [property: string]: Values | NestedTween | Targets | boolean | EasingDefinition | undefined;
+    [property: string]: Values | NestedTween | Targets | boolean | EasingDefinition | TweenCallback | undefined;
   }
 
   interface HookDetails {

@@ -14,7 +14,11 @@ tl
     scale: { duration: ['top-bottom', 'bottom-top'], value: [0.5, 1], easing: 'ease-out' },
     easing: [0.2, 0, 0, 1],
     round: 2,
-    edgeClassName: 'hero'
+    edgeClassName: 'hero',
+    xPercent: [0, -50],
+    onEnter: ({ target, direction }) => target && direction === 'down',
+    onUpdate: ({ progress }) => progress.toFixed(2),
+    rotate: { value: [0, 90], onLeave: ({ position }) => position }
   })
   .add({
     targets: document.querySelectorAll('.item'),

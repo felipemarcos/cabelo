@@ -31,6 +31,9 @@ A rewrite of the internals with many new features and fixes. The API is the same
 - `scrollTo()` accepts an element or a selector and an easing, and returns a cancellable promise.
 - `destroy({ revert: true })` restores every animated property, transform and class.
 - Transforms already set inline on an element (and not animated) are kept.
+- `onEnter`, `onLeave` and `onUpdate` tween callbacks, which receive the tween's `progress`.
+- `xPercent` and `yPercent` transforms, to translate by a percentage of the element's size.
+- `zIndex` and `order` are always rounded to integers.
 - TypeScript types.
 - ES module build (`dist/cabelo.mjs`), minified browser build (`dist/cabelo.min.js`) and `exports`/`module`/`types` fields in `package.json`.
 - Warnings for common mistakes: unknown properties, selectors that match nothing, mismatched values and positions.

@@ -14,6 +14,9 @@ import { roundTo } from './utils/index.js';
 
 const linear = (t) => t;
 
+// CSS properties that only accept integers, so they are always rounded
+const integerProps = ['zIndex', 'order'];
+
 class Prop {
   constructor(options) {
     this.tween = options.tween || null;
@@ -23,6 +26,10 @@ class Prop {
     this.easing = options.easing || linear;
     this.round = is.und(options.round) ? false : options.round;
     this.type = getAnimationType(this.target, this.name);
+
+    if (this.type === 'css' && integerProps.indexOf(this.name) > -1) {
+      this.round = true;
+    }
 
     this.input = options.values;
     this.total = options.total || 1;

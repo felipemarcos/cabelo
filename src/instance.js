@@ -205,6 +205,7 @@ class Instance {
 
     this.tweens.forEach((tween) => tween.tick(scrollTop));
     this.tracks.forEach((track) => track.render(scrollTop));
+    this.tweens.forEach((tween) => tween.notify(scrollTop, this.direction));
     this.hooks.forEach((hook) => hook.tick(scrollTop, this.direction));
 
     this.updateState(scrollTop);

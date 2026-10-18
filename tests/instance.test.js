@@ -259,6 +259,142 @@ describe('tweens', () => {
   });
 });
 
+describe('integer properties', () => {
+  test('zIndex is always rounded', () => {
+    const el = box();
+    const tl = cabelo().add({ targets: el, duration: [0, 100], zIndex: [0, 10] });
+
+    tl.render(33);
+    expect(el.style.zIndex).toBe('3');
+    tl.render(100);
+    expect(el.style.zIndex).toBe('10');
+  });
+});
+
+describe('percent translations', () => {
+  test('xPercent and yPercent translate by a percentage', () => {
+    const el = box();
+    const tl = cabelo().add({ targets: el, duration: [0, 100], xPercent: [0, -50], yPercent: [0, 100] });
+
+    tl.render(50);
+    expect(el.style.transform).toBe('translate(-25%, 0) translate(0, 50%)');
+  });
+
+  test('combine with x and keep inline transforms', () => {
+    const el = box('transform: translate(-50%, -50%)');
+    const tl = cabelo().add({ targets: el, duration: [0, 100], x: [0, 100], xPercent: [0, 10] });
+
+    tl.render(100);
+    expect(el.style.transform).toBe('translate(-50%, -50%) translateX(100px) translate(10%, 0)');
+
+    tl.destroy({ revert: true });
+    expect(el.style.transform).toBe('translate(-50%, -50%)');
+  });
+});
+
+describe('tween callbacks', () => {
+  function setup() {
+    const el = box();
+    const onEnter = vi.fn();
+    const onLeave = vi.fn();
+    const onUpdate = vi.fn(() => el.style.opacity);
+    const tl = cabelo().add({ targets: el, duration: [100, 200], opacity: [0, 1], onEnter, onLeave, onUpdate });
+
+    return { el, tl, onEnter, onLeave, onUpdate };
+  }
+
+  test('onEnter and onLeave fire when crossing the tween', () => {
+    const { el, tl, onEnter, onLeave } = setup();
+
+    tl.render(0);
+    expect(onEnter).not.toHaveBeenCalled();
+
+    tl.render(150);
+    expect(onEnter).toHaveBeenCalledTimes(1);
+    expect(onEnter.mock.calls[0][0]).toMatchObject({ target: el, direction: 'down', position: 150, progress: 0.5 });
+
+    tl.render(160);
+    expect(onEnter).toHaveBeenCalledTimes(1);
+
+    tl.render(300);
+    expect(onLeave).toHaveBeenCalledTimes(1);
+    expect(onLeave.mock.calls[0][0]).toMatchObject({ direction: 'down', progress: 1 });
+
+    tl.render(150);
+    expect(onEnter).toHaveBeenCalledTimes(2);
+    expect(onEnter.mock.calls[1][0]).toMatchObject({ direction: 'up' });
+  });
+
+  test('jumping over the tween calls both', () => {
+    const { tl, onEnter, onLeave } = setup();
+
+    tl.render(0);
+    tl.render(500);
+    expect(onEnter).toHaveBeenCalledTimes(1);
+    expect(onLeave).toHaveBeenCalledTimes(1);
+  });
+
+  test('onEnter fires on the first render when it starts inside', () => {
+    const { tl, onEnter, onLeave } = setup();
+
+    tl.render(150);
+    expect(onEnter).toHaveBeenCalledTimes(1);
+
+    const other = setup();
+    other.tl.render(500);
+    expect(other.onEnter).not.toHaveBeenCalled();
+    expect(other.onLeave).not.toHaveBeenCalled();
+    expect(onLeave).not.toHaveBeenCalled();
+  });
+
+  test('onUpdate fires when the progress changes, after rendering', () => {
+    const { tl, onUpdate } = setup();
+
+    tl.render(0);
+    expect(onUpdate).toHaveBeenCalledTimes(1);
+    expect(onUpdate.mock.calls[0][0].progress).toBe(0);
+
+    tl.render(50);
+    expect(onUpdate).toHaveBeenCalledTimes(1);
+
+    tl.render(150);
+    expect(onUpdate).toHaveBeenCalledTimes(2);
+    expect(onUpdate.mock.results[1].value).toBe('0.5');
+
+    tl.render(400);
+    tl.render(500);
+    expect(onUpdate).toHaveBeenCalledTimes(3);
+    expect(onUpdate.mock.calls[2][0].progress).toBe(1);
+  });
+
+  test('are not animated properties', () => {
+    setup();
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  test('nested tweens have their own callbacks', () => {
+    const el = box();
+    const parent = vi.fn();
+    const nested = vi.fn();
+
+    const tl = cabelo().add({
+      targets: el,
+      duration: [0, 100],
+      x: [0, 100],
+      onUpdate: parent,
+      opacity: { duration: [100, 200], value: [0, 1], onUpdate: nested }
+    });
+
+    tl.render(50);
+    expect(parent.mock.calls[0][0].progress).toBe(0.5);
+    expect(nested.mock.calls[0][0].progress).toBe(0);
+
+    tl.render(150);
+    expect(nested.mock.calls[1][0].progress).toBe(0.5);
+    expect(parent).toHaveBeenCalledTimes(2);
+  });
+});
+
 describe('nested tweens', () => {
   test('have their own duration', () => {
     const el = box();

@@ -14,7 +14,7 @@ export { normalizeEasing } from '../easing.js';
 // affected by rotating or scaling.
 export const validTransforms = [
   'perspective',
-  'translateX', 'translateY', 'translateZ',
+  'translateX', 'translateY', 'translateZ', 'xPercent', 'yPercent',
   'rotate', 'rotateX', 'rotateY', 'rotateZ',
   'skew', 'skewX', 'skewY',
   'scale', 'scaleX', 'scaleY', 'scaleZ'
@@ -33,7 +33,20 @@ export function mapPropToCSSProp(prop) {
   return mappedCSSProps[prop] || prop;
 }
 
+// Transforms that aren't CSS functions of their own. `xPercent` and `yPercent`
+// translate by a percentage of the element's size, on top of `x` and `y`.
+const transformFunctions = {
+  xPercent: (value) => `translate(${value}, 0)`,
+  yPercent: (value) => `translate(0, ${value})`
+};
+
+export function transformToString(propName, value) {
+  const fn = transformFunctions[propName];
+  return fn ? fn(value) : `${propName}(${value})`;
+}
+
 export function getTransformUnit(propName) {
+  if (propName in transformFunctions) return '%';
   if (stringContains(propName, 'translate') || propName === 'perspective') return 'px';
   if (stringContains(propName, 'rotate') || stringContains(propName, 'skew')) return 'deg';
 }
@@ -186,7 +199,7 @@ export function mapPropToTween(propName, propValue, parentTween) {
     [propName]: is.und(propValue.value) ? propValue.values : propValue.value
   };
 
-  ['from', 'to', 'easing', 'round', 'immediateRender', 'trigger']
+  ['from', 'to', 'easing', 'round', 'immediateRender', 'trigger', 'onEnter', 'onLeave', 'onUpdate']
     .forEach((key) => {
       if (!is.und(propValue[key])) {
         tween[key] = propValue[key];

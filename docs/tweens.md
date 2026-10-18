@@ -20,6 +20,7 @@ tl.add({
 - [Nested tweens](#nested-tweens)
 - [Easing](#easing)
 - [Options](#options)
+- [Callbacks](#callbacks)
 - [Overlapping tweens](#overlapping-tweens)
 
 ## Targets
@@ -209,6 +210,7 @@ Properties that don't match any of these are ignored, with a warning in the cons
 | --- | --- |
 | `x`, `y`, `z` (aliases for `translateX`, `translateY`, `translateZ`) | `px` |
 | `translateX`, `translateY`, `translateZ` | `px` |
+| `xPercent`, `yPercent` | `%` |
 | `rotate`, `rotateX`, `rotateY`, `rotateZ` | `deg` |
 | `skew`, `skewX`, `skewY` | `deg` |
 | `scale`, `scaleX`, `scaleY`, `scaleZ` | none |
@@ -217,6 +219,17 @@ Properties that don't match any of these are ignored, with a warning in the cons
 Transforms of all the tweens of a target are combined into a single `transform`, always in this order: `perspective`, translations, rotations, skews, scales. This means scaling or rotating an element never changes how far it moves.
 
 Transforms that were already set inline on the element, and that cabelo doesn't animate, are kept. For example, an element with `style="transform: translate(-50%, -50%)"` stays centered while you animate its `rotate`.
+
+`xPercent` and `yPercent` translate by a percentage of the element's own size, on top of `x` and `y`. They're rendered as `translate()`, so they don't replace a `translateX()` or `translateY()` set inline:
+
+```js
+tl.add({
+  targets: '.slide',
+  duration: [0, 1000],
+  xPercent: [0, -100], // slides out by its own width
+  x: [0, 20]           // plus 20px
+});
+```
 
 ## Nested tweens
 
@@ -239,7 +252,7 @@ tl.add({
 });
 ```
 
-A nested tween accepts `value` (or `values`), `duration`, `from`, `to`, `trigger`, `easing`, `round` and `immediateRender`. Anything it doesn't set is inherited from its parent: positions, `trigger`, easing, rounding and `immediateRender`.
+A nested tween accepts `value` (or `values`), `duration`, `from`, `to`, `trigger`, `easing`, `round`, `immediateRender` and its own [callbacks](#callbacks). Anything it doesn't set is inherited from its parent: positions, `trigger`, easing, rounding and `immediateRender`.
 
 ## Easing
 
@@ -285,9 +298,43 @@ Easing['bounce'] = (t) => /* ... */ t;
 | `from`, `to` | | Alternative to `duration`. |
 | `trigger` | the target | The element relative positions are measured from. See [measuring another element](#measuring-another-element). |
 | `easing` | `'linear'` | See [easing](#easing). |
-| `round` | `false` | `true` rounds values to integers, a number rounds to that many decimals. Handy for counters. Color channels are always rounded. |
+| `round` | `false` | `true` rounds values to integers, a number rounds to that many decimals. Handy for counters. Color channels, `zIndex` and `order` are always rounded to integers. |
 | `edgeClassName` | `false` | Adds `cabelo-before`, `cabelo-inside` or `cabelo-after` to the target depending on where the scroll position is relative to the tween. Pass a string to use another prefix: `edgeClassName: 'hero'` adds `hero-before`, and so on. |
 | `immediateRender` | `true` | When `false`, the tween doesn't touch the target until the scroll position reaches its first position. Before that, the target keeps its original value. |
+| `onEnter`, `onLeave`, `onUpdate` | | See [callbacks](#callbacks). |
+
+## Callbacks
+
+Tweens accept three callbacks, called once per target:
+
+| Callback | Called |
+| --- | --- |
+| `onEnter` | When the scroll position enters the tween, from either side. Also on the first render, if the page starts inside it. |
+| `onLeave` | When the scroll position leaves the tween, to either side. |
+| `onUpdate` | Whenever the progress of the tween changes, including the first render. Once the tween is done, it's called a last time with `progress: 1` (or `0`, when scrolling back above it). |
+
+Scrolling fast enough to jump over a tween calls both `onEnter` and `onLeave`. Callbacks run after the targets are rendered, so they can read the new values, and receive:
+
+| Property | Description |
+| --- | --- |
+| `target` | The target of the tween |
+| `progress` | How far through the tween the scroll position is, from 0 to 1 |
+| `direction` | `'down'` or `'up'` |
+| `scrollTop` | The current scroll position |
+| `position` | Same as `scrollTop` |
+
+```js
+tl.add({
+  targets: '.chart',
+  duration: ['top-bottom', 'bottom-top'],
+  opacity: [0, 1],
+  onEnter: ({ target }) => target.classList.add('is-live'),
+  onLeave: ({ target }) => target.classList.remove('is-live'),
+  onUpdate: ({ target, progress }) => target.dataset.progress = progress.toFixed(2)
+});
+```
+
+[Nested tweens](#nested-tweens) can have their own callbacks, and don't inherit their parent's. To run code without animating anything, use a [hook](hooks.md).
 
 ## Overlapping tweens
 

@@ -1,4 +1,4 @@
-import { parseTransform, setTweenProgress, validTransforms } from './utils/tween.js';
+import { parseTransform, setTweenProgress, transformToString, validTransforms } from './utils/tween.js';
 
 const byTransformOrder = (a, b) => validTransforms.indexOf(a) - validTransforms.indexOf(b);
 
@@ -141,7 +141,7 @@ class Track {
       .map((t) => `${t.name}(${t.value})`);
 
     return base
-      .concat(animated.map((name) => `${name}(${transforms[name]})`))
+      .concat(animated.map((name) => transformToString(name, transforms[name])))
       .join(' ');
   }
 
