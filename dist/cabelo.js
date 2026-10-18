@@ -1,1 +1,2100 @@
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.cabelo=e():t.cabelo=e()}(window,(function(){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var i=e[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var i in t)n.d(r,i,function(e){return t[e]}.bind(null,i));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=21)}([function(t,e,n){"use strict";var r=n(12)();t.exports=function(t){return t!==r&&null!==t}},function(t,e,n){(function(e){var n=/^\[object .+?Constructor\]$/,r=/^(?:0|[1-9]\d*)$/,i="object"==typeof e&&e&&e.Object===Object&&e,o="object"==typeof self&&self&&self.Object===Object&&self,u=i||o||Function("return this")();function a(t,e,n){switch(n.length){case 0:return t.call(e);case 1:return t.call(e,n[0]);case 2:return t.call(e,n[0],n[1]);case 3:return t.call(e,n[0],n[1],n[2])}return t.apply(e,n)}function s(t,e){return!!(t?t.length:0)&&function(t,e,n){if(e!=e)return function(t,e,n,r){var i=t.length,o=n+(r?1:-1);for(;r?o--:++o<i;)if(e(t[o],o,t))return o;return-1}(t,h,n);var r=n-1,i=t.length;for(;++r<i;)if(t[r]===e)return r;return-1}(t,e,0)>-1}function c(t,e,n){for(var r=-1,i=t?t.length:0;++r<i;)if(n(e,t[r]))return!0;return!1}function l(t,e){for(var n=-1,r=t?t.length:0,i=Array(r);++n<r;)i[n]=e(t[n],n,t);return i}function f(t,e){for(var n=-1,r=e.length,i=t.length;++n<r;)t[i+n]=e[n];return t}function h(t){return t!=t}function p(t,e){return t.has(e)}function d(t,e){return function(n){return t(e(n))}}var v,g=Array.prototype,y=Function.prototype,b=Object.prototype,m=u["__core-js_shared__"],_=(v=/[^.]+$/.exec(m&&m.keys&&m.keys.IE_PROTO||""))?"Symbol(src)_1."+v:"",w=y.toString,x=b.hasOwnProperty,O=b.toString,j=RegExp("^"+w.call(x).replace(/[\\^$.*+?()[\]{}|]/g,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$"),k=u.Symbol,E=d(Object.getPrototypeOf,Object),S=b.propertyIsEnumerable,A=g.splice,T=k?k.isConcatSpreadable:void 0,I=Object.getOwnPropertySymbols,P=Math.max,C=Y(u,"Map"),M=Y(Object,"create");function z(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}function D(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}function F(t){var e=-1,n=t?t.length:0;for(this.clear();++e<n;){var r=t[e];this.set(r[0],r[1])}}function $(t){var e=-1,n=t?t.length:0;for(this.__data__=new F;++e<n;)this.add(t[e])}function H(t,e){var n=J(t)||K(t)?function(t,e){for(var n=-1,r=Array(t);++n<t;)r[n]=e(n);return r}(t.length,String):[],r=n.length,i=!!r;for(var o in t)!e&&!x.call(t,o)||i&&("length"==o||G(o,r))||n.push(o);return n}function R(t,e){for(var n,r,i=t.length;i--;)if((n=t[i][0])===(r=e)||n!=n&&r!=r)return i;return-1}function L(t){return!(!tt(t)||(e=t,_&&_ in e))&&(W(t)||function(t){var e=!1;if(null!=t&&"function"!=typeof t.toString)try{e=!!(t+"")}catch(t){}return e}(t)?j:n).test(function(t){if(null!=t){try{return w.call(t)}catch(t){}try{return t+""}catch(t){}}return""}(t));var e}function q(t){if(!tt(t))return function(t){var e=[];if(null!=t)for(var n in Object(t))e.push(n);return e}(t);var e,n,r,i=(n=(e=t)&&e.constructor,r="function"==typeof n&&n.prototype||b,e===r),o=[];for(var u in t)("constructor"!=u||!i&&x.call(t,u))&&o.push(u);return o}function N(t){return function(t,e,n){var r=e(t);return J(t)?r:f(r,n(t))}(t,nt,Z)}function V(t,e){var n,r,i=t.__data__;return("string"==(r=typeof(n=e))||"number"==r||"symbol"==r||"boolean"==r?"__proto__"!==n:null===n)?i["string"==typeof e?"string":"hash"]:i.map}function Y(t,e){var n=function(t,e){return null==t?void 0:t[e]}(t,e);return L(n)?n:void 0}z.prototype.clear=function(){this.__data__=M?M(null):{}},z.prototype.delete=function(t){return this.has(t)&&delete this.__data__[t]},z.prototype.get=function(t){var e=this.__data__;if(M){var n=e[t];return"__lodash_hash_undefined__"===n?void 0:n}return x.call(e,t)?e[t]:void 0},z.prototype.has=function(t){var e=this.__data__;return M?void 0!==e[t]:x.call(e,t)},z.prototype.set=function(t,e){return this.__data__[t]=M&&void 0===e?"__lodash_hash_undefined__":e,this},D.prototype.clear=function(){this.__data__=[]},D.prototype.delete=function(t){var e=this.__data__,n=R(e,t);return!(n<0)&&(n==e.length-1?e.pop():A.call(e,n,1),!0)},D.prototype.get=function(t){var e=this.__data__,n=R(e,t);return n<0?void 0:e[n][1]},D.prototype.has=function(t){return R(this.__data__,t)>-1},D.prototype.set=function(t,e){var n=this.__data__,r=R(n,t);return r<0?n.push([t,e]):n[r][1]=e,this},F.prototype.clear=function(){this.__data__={hash:new z,map:new(C||D),string:new z}},F.prototype.delete=function(t){return V(this,t).delete(t)},F.prototype.get=function(t){return V(this,t).get(t)},F.prototype.has=function(t){return V(this,t).has(t)},F.prototype.set=function(t,e){return V(this,t).set(t,e),this},$.prototype.add=$.prototype.push=function(t){return this.__data__.set(t,"__lodash_hash_undefined__"),this},$.prototype.has=function(t){return this.__data__.has(t)};var X=I?d(I,Object):ut,Z=I?function(t){for(var e=[];t;)f(e,X(t)),t=E(t);return e}:ut;function B(t){return J(t)||K(t)||!!(T&&t&&t[T])}function G(t,e){return!!(e=null==e?9007199254740991:e)&&("number"==typeof t||r.test(t))&&t>-1&&t%1==0&&t<e}function U(t){if("string"==typeof t||function(t){return"symbol"==typeof t||et(t)&&"[object Symbol]"==O.call(t)}(t))return t;var e=t+"";return"0"==e&&1/t==-1/0?"-0":e}function K(t){return function(t){return et(t)&&Q(t)}(t)&&x.call(t,"callee")&&(!S.call(t,"callee")||"[object Arguments]"==O.call(t))}var J=Array.isArray;function Q(t){return null!=t&&function(t){return"number"==typeof t&&t>-1&&t%1==0&&t<=9007199254740991}(t.length)&&!W(t)}function W(t){var e=tt(t)?O.call(t):"";return"[object Function]"==e||"[object GeneratorFunction]"==e}function tt(t){var e=typeof t;return!!t&&("object"==e||"function"==e)}function et(t){return!!t&&"object"==typeof t}function nt(t){return Q(t)?H(t,!0):q(t)}var rt,it,ot=(rt=function(t,e){return null==t?{}:(e=l(function t(e,n,r,i,o){var u=-1,a=e.length;for(r||(r=B),o||(o=[]);++u<a;){var s=e[u];n>0&&r(s)?n>1?t(s,n-1,r,i,o):f(o,s):i||(o[o.length]=s)}return o}(e,1),U),function(t,e){return function(t,e,n){for(var r=-1,i=e.length,o={};++r<i;){var u=e[r],a=t[u];n(a,u)&&(o[u]=a)}return o}(t=Object(t),e,(function(e,n){return n in t}))}(t,function(t,e,n,r){var i,o=-1,u=s,a=!0,f=t.length,h=[],d=e.length;if(!f)return h;n&&(e=l(e,(i=n,function(t){return i(t)}))),r?(u=c,a=!1):e.length>=200&&(u=p,a=!1,e=new $(e));t:for(;++o<f;){var v=t[o],g=n?n(v):v;if(v=r||0!==v?v:0,a&&g==g){for(var y=d;y--;)if(e[y]===g)continue t;h.push(v)}else u(e,g,r)||h.push(v)}return h}(N(t),e)))},it=P(void 0===it?rt.length-1:it,0),function(){for(var t=arguments,e=-1,n=P(t.length-it,0),r=Array(n);++e<n;)r[e]=t[it+e];e=-1;for(var i=Array(it+1);++e<it;)i[e]=t[e];return i[it]=r,a(rt,this,i)});function ut(){return[]}t.exports=ot}).call(this,n(20))},function(t,e,n){"use strict";var r,i,o,u,a,s,c,l=n(5),f=n(19),h=Function.prototype.apply,p=Function.prototype.call,d=Object.create,v=Object.defineProperty,g=Object.defineProperties,y=Object.prototype.hasOwnProperty,b={configurable:!0,enumerable:!1,writable:!0};i=function(t,e){var n,i;return f(e),i=this,r.call(this,t,n=function(){o.call(i,t,n),h.call(e,this,arguments)}),n.__eeOnceListener__=e,this},a={on:r=function(t,e){var n;return f(e),y.call(this,"__ee__")?n=this.__ee__:(n=b.value=d(null),v(this,"__ee__",b),b.value=null),n[t]?"object"==typeof n[t]?n[t].push(e):n[t]=[n[t],e]:n[t]=e,this},once:i,off:o=function(t,e){var n,r,i,o;if(f(e),!y.call(this,"__ee__"))return this;if(!(n=this.__ee__)[t])return this;if("object"==typeof(r=n[t]))for(o=0;i=r[o];++o)i!==e&&i.__eeOnceListener__!==e||(2===r.length?n[t]=r[o?0:1]:r.splice(o,1));else r!==e&&r.__eeOnceListener__!==e||delete n[t];return this},emit:u=function(t){var e,n,r,i,o;if(y.call(this,"__ee__")&&(i=this.__ee__[t]))if("object"==typeof i){for(n=arguments.length,o=new Array(n-1),e=1;e<n;++e)o[e-1]=arguments[e];for(i=i.slice(),e=0;r=i[e];++e)h.call(r,this,o)}else switch(arguments.length){case 1:p.call(i,this);break;case 2:p.call(i,this,arguments[1]);break;case 3:p.call(i,this,arguments[1],arguments[2]);break;default:for(n=arguments.length,o=new Array(n-1),e=1;e<n;++e)o[e-1]=arguments[e];h.call(i,this,o)}}},s={on:l(r),once:l(i),off:l(o),emit:l(u)},c=g({},s),t.exports=e=function(t){return null==t?d(c):g(Object(t),s)},e.methods=a},function(t,e,n){"use strict";t.exports=(t,{include:e,exclude:n}={})=>{const r=t=>{const r=e=>"string"==typeof e?t===e:e.test(t);return e?e.some(r):!n||!n.some(r)};for(const[e,n]of(t=>{const e=new Set;do{for(const n of Reflect.ownKeys(t))e.add([t,n])}while((t=Reflect.getPrototypeOf(t))&&t!==Object.prototype);return e})(t.constructor.prototype)){if("constructor"===n||!r(n))continue;const i=Reflect.getOwnPropertyDescriptor(e,n);i&&"function"==typeof i.value&&(t[n]=t[n].bind(t))}return t}},function(t,e){var n="function"==typeof Float32Array;function r(t,e){return 1-3*e+3*t}function i(t,e){return 3*e-6*t}function o(t){return 3*t}function u(t,e,n){return((r(e,n)*t+i(e,n))*t+o(e))*t}function a(t,e,n){return 3*r(e,n)*t*t+2*i(e,n)*t+o(e)}function s(t){return t}t.exports=function(t,e,r,i){if(!(0<=t&&t<=1&&0<=r&&r<=1))throw new Error("bezier x values must be in [0, 1] range");if(t===e&&r===i)return s;for(var o=n?new Float32Array(11):new Array(11),c=0;c<11;++c)o[c]=u(.1*c,t,r);function l(e){for(var n=0,i=1;10!==i&&o[i]<=e;++i)n+=.1;--i;var s=n+.1*((e-o[i])/(o[i+1]-o[i])),c=a(s,t,r);return c>=.001?function(t,e,n,r){for(var i=0;i<4;++i){var o=a(e,n,r);if(0===o)return e;e-=(u(e,n,r)-t)/o}return e}(e,s,t,r):0===c?s:function(t,e,n,r,i){var o,a,s=0;do{(o=u(a=e+(n-e)/2,r,i)-t)>0?n=a:e=a}while(Math.abs(o)>1e-7&&++s<10);return a}(e,n,n+.1,t,r)}return function(t){return 0===t?0:1===t?1:u(l(t),e,i)}}},function(t,e,n){"use strict";var r=n(6),i=n(14),o=n(15),u=n(16);(t.exports=function(t,e){var n,o,a,s,c;return arguments.length<2||"string"!=typeof t?(s=e,e=t,t=null):s=arguments[2],null==t?(n=a=!0,o=!1):(n=u.call(t,"c"),o=u.call(t,"e"),a=u.call(t,"w")),c={value:e,configurable:n,enumerable:o,writable:a},s?r(i(s),c):c}).gs=function(t,e,n){var a,s,c,l;return"string"!=typeof t?(c=n,n=e,e=t,t=null):c=arguments[3],null==e?e=void 0:o(e)?null==n?n=void 0:o(n)||(c=n,n=void 0):(c=e,e=n=void 0),null==t?(a=!0,s=!1):(a=u.call(t,"c"),s=u.call(t,"e")),l={get:e,set:n,configurable:a,enumerable:s},c?r(i(c),l):l}},function(t,e,n){"use strict";t.exports=n(7)()?Object.assign:n(8)},function(t,e,n){"use strict";t.exports=function(){var t,e=Object.assign;return"function"==typeof e&&(e(t={foo:"raz"},{bar:"dwa"},{trzy:"trzy"}),t.foo+t.bar+t.trzy==="razdwatrzy")}},function(t,e,n){"use strict";var r=n(9),i=n(13),o=Math.max;t.exports=function(t,e){var n,u,a,s=o(arguments.length,2);for(t=Object(i(t)),a=function(r){try{t[r]=e[r]}catch(t){n||(n=t)}},u=1;u<s;++u)r(e=arguments[u]).forEach(a);if(void 0!==n)throw n;return t}},function(t,e,n){"use strict";t.exports=n(10)()?Object.keys:n(11)},function(t,e,n){"use strict";t.exports=function(){try{return Object.keys("primitive"),!0}catch(t){return!1}}},function(t,e,n){"use strict";var r=n(0),i=Object.keys;t.exports=function(t){return i(r(t)?Object(t):t)}},function(t,e,n){"use strict";t.exports=function(){}},function(t,e,n){"use strict";var r=n(0);t.exports=function(t){if(!r(t))throw new TypeError("Cannot use null or undefined");return t}},function(t,e,n){"use strict";var r=n(0),i=Array.prototype.forEach,o=Object.create,u=function(t,e){var n;for(n in t)e[n]=t[n]};t.exports=function(t){var e=o(null);return i.call(arguments,(function(t){r(t)&&u(Object(t),e)})),e}},function(t,e,n){"use strict";t.exports=function(t){return"function"==typeof t}},function(t,e,n){"use strict";t.exports=n(17)()?String.prototype.contains:n(18)},function(t,e,n){"use strict";var r="razdwatrzy";t.exports=function(){return"function"==typeof r.contains&&(!0===r.contains("dwa")&&!1===r.contains("foo"))}},function(t,e,n){"use strict";var r=String.prototype.indexOf;t.exports=function(t){return r.call(this,t,arguments[1])>-1}},function(t,e,n){"use strict";t.exports=function(t){if("function"!=typeof t)throw new TypeError(t+" is not a function");return t}},function(t,e){var n;n=function(){return this}();try{n=n||new Function("return this")()}catch(t){"object"==typeof window&&(n=window)}t.exports=n},function(t,e,n){"use strict";n.r(e),n.d(e,"Easing",(function(){return w}));var r=n(2),i=n.n(r),o=n(1),u=n.n(o),a=n(3),s=n.n(a);function c(t){return function(t){if(Array.isArray(t))return l(t)}(t)||function(t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t))return Array.from(t)}(t)||function(t,e){if(!t)return;if("string"==typeof t)return l(t,e);var n=Object.prototype.toString.call(t).slice(8,-1);"Object"===n&&t.constructor&&(n=t.constructor.name);if("Map"===n||"Set"===n)return Array.from(t);if("Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return l(t,e)}(t)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function l(t,e){(null==e||e>t.length)&&(e=t.length);for(var n=0,r=new Array(e);n<e;n++)r[n]=t[n];return r}function f(t,e){return t.indexOf(e)>-1}function h(t,e,n){return Math.min(Math.max(t,e),n)}function p(t){return Math.max.apply(Math,c(t))}function d(t,e){return Object.assign({},t,e)}var v={arr:function(t){return Array.isArray(t)},obj:function(t){return f(Object.prototype.toString.call(t),"Object")},pth:function(t){return v.obj(t)&&t.hasOwnProperty("totalLength")},svg:function(t){return t instanceof SVGElement},dom:function(t){return t.nodeType||v.svg(t)},str:function(t){return"string"==typeof t},fnc:function(t){return"function"==typeof t},und:function(t){return void 0===t},hex:function(t){return/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(t)},rgb:function(t){return/^rgb/.test(t)},hsl:function(t){return/^hsl/.test(t)},col:function(t){return v.hex(t)||v.rgb(t)||v.hsl(t)}},g=v;function y(t){return g.rgb(t)?(n=/rgb\((\d+,\s*[\d]+,\s*[\d]+)\)/g.exec(e=t))?"rgba(".concat(n[1],",1)"):e:g.hex(t)?function(t){var e=t.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i,(function(t,e,n,r){return e+e+n+n+r+r})),n=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e),r=parseInt(n[1],16),i=parseInt(n[2],16),o=parseInt(n[3],16);return"rgba(".concat(r,",").concat(i,",").concat(o,",1)")}(t):g.hsl(t)?function(t){var e,n,r,i=/hsl\((\d+),\s*([\d.]+)%,\s*([\d.]+)%\)/g.exec(t)||/hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*([\d.]+)\)/g.exec(t),o=parseInt(i[1])/360,u=parseInt(i[2])/100,a=parseInt(i[3])/100,s=i[4]||1;function c(t,e,n){return n<0&&(n+=1),n>1&&(n-=1),n<1/6?t+6*(e-t)*n:n<.5?e:n<2/3?t+(e-t)*(2/3-n)*6:t}if(0==u)e=n=r=a;else{var l=a<.5?a*(1+u):a+u-a*u,f=2*a-l;e=c(f,l,o+1/3),n=c(f,l,o),r=c(f,l,o-1/3)}return"rgba(".concat(255*e,",").concat(255*n,",").concat(255*r,",").concat(s,")")}(t):void 0;var e,n}var b,m=n(4),_=n.n(m),w={linear:[.25,.25,.75,.75],"ease-in-cubic":[.55,.055,.675,.19],"ease-out-cubic":[.215,.61,.355,1],"ease-in-out-cubic":[.645,.045,.355,1],"ease-in-circ":[.6,.04,.98,.335],"ease-out-circ":[.075,.82,.165,1],"ease-in-out-circ":[.785,.135,.15,.86],"ease-in-expo":[.95,.05,.795,.035],"ease-out-expo":[.19,1,.22,1],"ease-in-out-expo":[1,0,0,1],"ease-in-quad":[.55,.085,.68,.53],"ease-out-quad":[.25,.46,.45,.94],"ease-in-out-quad":[.455,.03,.515,.955],"ease-in-quart":[.895,.03,.685,.22],"ease-out-quart":[.165,.84,.44,1],"ease-in-out-quart":[.77,0,.175,1],"ease-in-quint":[.755,.05,.855,.06],"ease-out-quint":[.23,1,.32,1],"ease-in-out-quint":[.86,0,.07,1],"ease-in-sine":[.47,0,.745,.715],"ease-out-sine":[.39,.575,.565,1],"ease-in-out-sine":[.445,.05,.55,.95],"ease-in-back":[.6,-.28,.735,.045],"ease-out-back":[.175,.885,.32,1.275],"ease-in-out-back":[.68,-.55,.265,1.55]},x={values:{},prefix:(b="transform",S(document.body,b)?b:"-webkit-".concat(b))};var O=["translateX","translateY","translateZ","rotate","rotateX","rotateY","rotateZ","scale","scaleX","scaleY","scaleZ","skewX","skewY","perspective"],j={x:"translateX",y:"translateY"};function k(t,e){Object.keys(x.values).length&&x.values[e]&&(t.style[x.prefix]=Object.keys(x.values[e]).map((function(t){return x.values[e][t]})).join(" "))}function E(t,e){return g.dom(t)&&(n=e,O.some((function(t){return t===n})))?"transform":g.dom(t)&&(t.getAttribute(e)||g.svg(t)&&t[e])?"attribute":g.dom(t)&&"transform"!==e&&S(t,e)?"css":void 0;var n}function S(t,e){if(e in t.style)return getComputedStyle(t).getPropertyValue(e.replace(/([a-z])([A-Z])/g,"$1-$2").toLowerCase())||"0"}function A(t,e,n){return g.fnc(t)?t(e,n):t}function T(t,e,n){var r=/-?\d*\.?\d+/g,i=function(t,e){switch(E(t,e)){case"transform":return function(t,e){var n=function(t){return f(t,"translate")||"perspective"===t?"px":f(t,"rotate")||f(t,"skew")?"deg":void 0}(e),r=f(e,"scale")?1:0+n,i=t.style.transform;if(!i)return r;var o=[],u=[],a=[],s=/(\w+)\((.+?)\)/g;for(;o=s.exec(i);)u.push(o[1]),a.push(o[2]);var c=a.filter((function(t,n){return u[n]===e}));return c.length?c[0]:r}(t,e);case"css":return S(t,e);case"attribute":return t.getAttribute(e)}return t[e]||0}(t,e),o=I(n)||I(i),u=function(t,e){if(g.col(t))return y(t);var n=I(t),r=n?t.substr(0,t.length-n.length):t;return e&&!/\s/g.test(t)?r+e:r}(n,o)+"";return{original:u,numbers:u.match(r)?u.match(r).map(Number):[0],strings:g.str(n)||o?u.split(r):[]}}function I(t){var e=/([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(t);if(e)return e[2]}function P(t,e,n){return r={targets:n.targets,duration:e.duration},i=t,o=e.value,i in r?Object.defineProperty(r,i,{value:o,enumerable:!0,configurable:!0,writable:!0}):r[i]=o,r;var r,i,o}var C={css:function(t,e,n){return t.style[e]=n},attribute:function(t,e,n){return t.setAttribute(e,n)},transform:function(t,e,n,r){x.values[r]||(x.values[r]=[]),x.values[r][e]="".concat(e,"(").concat(n,")")}};function M(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}var z=function(){function t(e){var n,r=this;!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),this.id=e.id,this.target=e.target,this.targetIndex=e.targetIndex,this.name=(n=e.name,j[n]||n),this.easing=e.easing,this.type=E(this.target,this.name),this.values=A(e.values,this.target,this.targetIndex).map((function(t){return T(r.target,r.name,t)})),this.isColor=g.col(this.values[0].original),this.round=void 0!==e.round?e.round:this.isColor}var e,n,r;return e=t,(n=[{key:"tweenValue",value:function(t,e,n){return t+(e-t)*this.easing(n)}},{key:"formatValue",value:function(t,e){return e.length?e.map((function(n,r){var i=e[r+1],o=t[r];return isNaN(o)?"":i?0===r?n+o+i:o+i:o+" "})).join(""):t[0]}},{key:"setValue",value:function(t){C[this.type](this.target,this.name,t,this.id)}},{key:"updateEdge",value:function(t,e){var n=this.values,r=n[0],i=n[n.length-1],o=t?r:i,u=this.formatValue(o.numbers,o.strings);this.setValue(u)}},{key:"tick",value:function(t,e,n){var r=this,i=this.values[e.index]||{},o=this.values[e.nextIndex]||{},u=i.numbers.map((function(e,n){var i=o.numbers[n],u=r.tweenValue(e,i,t);return r.round&&(u=Math.round(u)),u})),a=o.strings,s=this.formatValue(u,a);this.setValue(s)}}])&&M(e.prototype,n),r&&M(e,r),t}();function D(t){return function(t){if(Array.isArray(t))return F(t)}(t)||function(t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t))return Array.from(t)}(t)||function(t,e){if(!t)return;if("string"==typeof t)return F(t,e);var n=Object.prototype.toString.call(t).slice(8,-1);"Object"===n&&t.constructor&&(n=t.constructor.name);if("Map"===n||"Set"===n)return Array.from(t);if("Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return F(t,e)}(t)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function F(t,e){(null==e||e>t.length)&&(e=t.length);for(var n=0,r=new Array(e);n<e;n++)r[n]=t[n];return r}function $(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}var H={target:null,targetIndex:0,duration:[],from:null,to:null,easing:"linear",round:!1,edgeClassName:!1,immediateRender:!0,instance:null},R="before",L="after",q={BEFORE:"cabelo-before",INSIDE:"cabelo-inside",AFTER:"cabelo-after"},N=[],V=function(){function t(e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),this._tween=d(H,e),this.target=this._tween.target,this.targetIndex=this._tween.targetIndex,this.instance=this._tween.instance,this.id=this.getID(),this.duration=this.getDuration(),this.easing=function(t){var e=g.str(t)?w[t]:t;return _.a.apply(this,e)}(this._tween.easing),this.props=this.getProps(),this.edge=null}var e,n,r;return e=t,(n=[{key:"getID",value:function(){var t=N.indexOf(this.target);return-1===t&&(N.push(this.target),t=N.indexOf(this.target)),t}},{key:"getDuration",value:function(){var t=this,e=A(this._tween.duration,this.target,this.targetIndex);return e.length&&(this._tween.from||this._tween.to)&&console.warn("You can't use `duration` and `from` or `to` in the same tween.",this._tween),this._tween.from&&this._tween.to?e=[this._tween.from,this._tween.to]:this._tween.to&&(e=[0,this._tween.to]),e.map((function(e){return null!==String(e).match(/^[a-z]+-[a-z]+$/)?function(t,e,n,r){var i=e.split("-"),o=i[0],u=i[1],a=t.getBoundingClientRect(),s=n(),c=r(),l=0;return"top"===u&&(l-=0),"middle"===u&&(l-=s/2),"bottom"===u&&(l-=s),"top"===o&&(l+=a.top+c),"middle"===o&&(l+=a.top+c+a.height/2),"bottom"===o&&(l+=a.top+c+a.height),l}(t.target,e,t.instance.getClientHeight,t.instance.getScrollTop):e}))}},{key:"getProps",value:function(){var t=this;return Object.keys(this._tween).filter((function(t){return!H.hasOwnProperty(t)})).map((function(e){return new z({id:t.id,target:t.target,targetIndex:t._tween.targetIndex,name:e,values:t._tween[e],easing:t.easing,round:t._tween.round})}))}},{key:"getMaxDuration",value:function(){return p(this.duration)}},{key:"updateClass",value:function(t){var e;if(this._tween.edgeClassName){var n=Object.values(q).filter((function(e){return e!==t}));this.target.classList.add(t),(e=this.target.classList).remove.apply(e,D(n))}}},{key:"updateEdges",value:function(t){var e=this.duration,n=e[0],r=e[e.length-1],i=t<n,o=t>r;if(i||o){if(i&&this.edge!==R||o&&this.edge!==L){if(i&&!this._tween.immediateRender)return;i?this.updateClass(q.BEFORE):this.updateClass(q.AFTER),this.props.forEach((function(t){t.updateEdge(i,o)})),k(this.target,this.id)}this.edge=i?R:L}else null!==this.edge&&(this.updateClass(q.INSIDE),this.edge=null)}},{key:"updateProgress",value:function(t){var e=this;this.duration.forEach((function(n,r){var i=r+1,o=n,u=e.duration[i];if(t>=o&&t<=u){var a=(t-o)/(u-o);e.props.forEach((function(e){e.tick(a,{index:r,nextIndex:i},t)})),k(e.target,e.id)}}))}},{key:"tick",value:function(t){this.updateEdges(t),this.updateProgress(t)}}])&&$(e.prototype,n),r&&$(e,r),t}();function Y(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}var X="enter",Z="leave",B=function(){function t(e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),this.tween=e,this.edge=Z}var e,n,r;return e=t,(n=[{key:"tick",value:function(t){t>=this.tween.duration?this.edge!==X&&(this.enter(),this.edge=X):this.edge!==Z&&(this.leave(),this.edge=Z)}},{key:"enter",value:function(){this.tween.enter&&this.tween.enter()}},{key:"leave",value:function(){this.tween.leave&&this.tween.leave()}},{key:"getMaxDuration",value:function(){return this.tween.duration}}])&&Y(e.prototype,n),r&&Y(e,r),t}();var G=function(t){return Array.from(document.querySelectorAll(t))},U=function(t){if(null==t)throw new Error("Cannot tween a null target.");return g.str(t)&&(t=G(t)),t instanceof NodeList||t instanceof HTMLCollection?t=[].slice.call(t):g.arr(t)||(t=[t]),t=function t(e){return e.reduce((function(e,n){return e.concat(g.arr(n)?t(n):n)}),[])}(t=t.map((function(t){return g.str(t)?G(t):t})))};function K(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}var J="begin",Q="complete",W="update",tt="ready",et="scroll",nt="resize",rt="up",it="down",ot={container:document.scrollingElement||document.documentElement,forceHeight:!0,debug:!1},ut=function(){function t(e){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t),this.options=d(ot,e),this.container=this.options.container,this.isDocument=this.container===document.documentElement||this.container===document.body,this.tweens=[],this.ticking=!1,this.began=!1,this.lastScrollTop=0,this.scrollTop=0,s()(this),this.events()}var e,n,r;return e=t,(n=[{key:"add",value:function(t){var e=this,n=this.getNestedTweens(t);return t=u()(t,n),U(t.targets).forEach((function(n,r){var i=d(u()(t,["targets"]),{target:n,targetIndex:r,instance:e});e.tweens.push(new V(i))})),this}},{key:"hook",value:function(t){return this.tweens.push(new B(t)),this}},{key:"tick",value:function(){var t=this;this.tweens.forEach((function(e){return e.tick(t.scrollTop)}))}},{key:"animate",value:function(){var t=this;this.lastScrollTop=this.scrollTop,this.scrollTop=this.getScrollTop(),this.ticking||(requestAnimationFrame((function(){t.tick(),t.ticking=!1,t.emitter.emit(W,{scrollTop:t.scrollTop,direction:t.getDirection()})})),this.ticking=!0,0!==this.scrollTop||this.began||(this.began=!0,this.emitter.emit(J)),this.scrollTop>=this.getTotalDuration()&&(this.completed=!0,this.emitter.emit(Q)))}},{key:"getNestedTweens",value:function(t){var e=this,n=[];return Object.keys(t).forEach((function(r){var i,o=t[r];i=o,g.obj(i)&&(e.add(P(r,o,t)),n.push(r))})),n}},{key:"getScrollTop",value:function(){return this.container.scrollTop||0}},{key:"setScrollTop",value:function(t){this.isDocument?window.scrollTo(0,t):this.container.scrollTop=t}},{key:"getTotalDuration",value:function(){return p(this.tweens.map((function(t){return t.getMaxDuration()})))}},{key:"getDirection",value:function(){return this.scrollTop>=this.lastScrollTop?it:rt}},{key:"getClientHeight",value:function(){return this.container.clientHeight}},{key:"getHeight",value:function(){return this.container.offsetHeight}},{key:"setHeight",value:function(t){this.container.style.height="".concat(t,"px")}},{key:"unsetHeight",value:function(){this.container.style.height=""}},{key:"scrollTo",value:function(t,e){var n=this.getScrollTop();return"start"===t&&(t=0),"end"===t&&(t=this.getHeight()),function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:function(){},n=0,r=0,i=0,o=1e3*t.duration,u=null,a=new Promise((function(t){return u=t})),s=function(a){n=a,r||(r=n);var s=h(i=n-r,0,o)/o;s=isNaN(s)?1:s;var l=t.from+s*(t.to-t.from);e(Math.round(l)),i<o?c():u()},c=function(t){requestAnimationFrame(s)};return c(),a}({duration:e,from:n,to:t},this.setScrollTop)}},{key:"on",value:function(t,e){return this.emitter.on(t,e),this}},{key:"off",value:function(t,e){return this.emitter.off(t,e),this}},{key:"events",value:function(){this.emitter=i()(),this.scrollEl=this.isDocument?window:this.container,this.scrollEl.addEventListener(et,this.animate),void 0!==window.ResizeObserver?(this.resizeObserver=new ResizeObserver(this.refresh),this.resizeObserver.observe(this.container)):this.scrollEl.addEventListener(nt,this.animate)}},{key:"reflow",value:function(){var t=this.getClientHeight(),e=this.getTotalDuration();return this.options.forceHeight&&this.setHeight(t+e),this}},{key:"refresh",value:function(){return this.reflow(),this}},{key:"destroy",value:function(){return this.scrollEl.removeEventListener(et,this.animate),this.resizeObserver?this.resizeObserver.disconnect():this.scrollEl.removeEventListener(nt,this.refresh),this.unsetHeight(),this}},{key:"init",value:function(){return this.refresh(),this.animate(),this.emitter.emit(tt),this}}])&&K(e.prototype,n),r&&K(e,r),t}(),at=[];e.default=function(t){var e=new ut(t);return at.push(e),e}}]).default}));
+/*! cabelo v0.2.1 | MIT License | https://github.com/felipemarcos/cabelo */
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.cabelo = factory());
+})(this, (function () { 'use strict';
+
+  class Emitter {
+    constructor() {
+      this.listeners = {};
+    }
+
+    on(eventName, listener) {
+      (this.listeners[eventName] = this.listeners[eventName] || []).push(listener);
+    }
+
+    once(eventName, listener) {
+      const wrapper = (...args) => {
+        this.off(eventName, wrapper);
+        listener(...args);
+      };
+
+      wrapper.listener = listener;
+      this.on(eventName, wrapper);
+    }
+
+    off(eventName, listener) {
+      if (!eventName) {
+        this.listeners = {};
+        return;
+      }
+
+      if (!listener) {
+        delete this.listeners[eventName];
+        return;
+      }
+
+      const listeners = this.listeners[eventName] || [];
+      this.listeners[eventName] = listeners.filter((l) => l !== listener && l.listener !== listener);
+    }
+
+    emit(eventName, ...args) {
+      (this.listeners[eventName] || [])
+        .slice()
+        .forEach((listener) => listener(...args));
+    }
+  }
+
+  function stringContains(str, text) {
+    return str.indexOf(text) > -1;
+  }
+
+  function arrayContains(arr, val) {
+    return arr.some(a => a === val);
+  }
+
+  function minMaxValue(val, min, max) {
+    return Math.min(Math.max(val, min), max);
+  }
+
+  function maxValue(arr) {
+    return Math.max(...arr);
+  }
+
+  function minValue(arr) {
+    return Math.min(...arr);
+  }
+
+  function stringToHyphens(str) {
+    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  }
+
+  function assign(target, sources) {
+    return Object.assign({}, target, sources);
+  }
+
+  function omit(obj, keys) {
+    const result = {};
+
+    Object.keys(obj)
+      .filter((key) => !arrayContains(keys, key))
+      .forEach((key) => result[key] = obj[key]);
+
+    return result;
+  }
+
+  function toArray(value) {
+    return Array.isArray(value) ? value : [value];
+  }
+
+  function roundTo(value, decimals) {
+    const factor = Math.pow(10, decimals);
+    return Math.round(value * factor) / factor;
+  }
+
+  function warn(...args) {
+    if (typeof console !== 'undefined') {
+      console.warn('[cabelo]', ...args);
+    }
+  }
+
+  const is = {
+    arr: a => Array.isArray(a),
+    obj: a => Object.prototype.toString.call(a) === '[object Object]',
+    svg: a => typeof SVGElement !== 'undefined' && a instanceof SVGElement,
+    dom: a => !!a && (a.nodeType === 1 || is.svg(a)),
+    str: a => typeof a === 'string',
+    num: a => typeof a === 'number' && !isNaN(a),
+    fnc: a => typeof a === 'function',
+    und: a => typeof a === 'undefined',
+    nil: a => a === null || typeof a === 'undefined',
+    hex: a => /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(a),
+    rgb: a => /^rgba?\(/i.test(a),
+    hsl: a => /^hsla?\(/i.test(a),
+    col: a => (is.hex(a) || is.rgb(a) || is.hsl(a))
+  };
+
+  const CSS_KEYWORDS = ['inherit', 'initial', 'unset', 'revert', 'currentcolor'];
+
+  // Matches hex, rgb(a) and hsl(a) colors inside a larger string, e.g. a box-shadow.
+  const COLOR_RGX = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b|(?:rgba?|hsla?)\([^)]*\)/gi;
+
+  const namedColors = {};
+
+  function channels(value) {
+    // Supports both `rgb(1, 2, 3, .5)` and `rgb(1 2 3 / 50%)`
+    return value
+      .slice(value.indexOf('(') + 1, value.lastIndexOf(')'))
+      .split(/[\s,/]+/)
+      .filter(Boolean);
+  }
+
+  function alpha(value) {
+    if (is.und(value)) {
+      return 1;
+    }
+
+    return /%$/.test(value) ? parseFloat(value) / 100 : parseFloat(value);
+  }
+
+  function rgbToRgba(rgbValue) {
+    const values = channels(rgbValue);
+
+    if (values.length < 3) {
+      return rgbValue;
+    }
+
+    const [r, g, b] = values.map((value) => {
+      return /%$/.test(value) ? Math.round(parseFloat(value) * 2.55) : parseFloat(value);
+    });
+
+    return `rgba(${r},${g},${b},${alpha(values[3])})`;
+  }
+
+  function hexToRgba(hexValue) {
+    let hex = hexValue.replace('#', '');
+
+    if (hex.length <= 4) {
+      hex = hex.split('').map((char) => char + char).join('');
+    }
+
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    const a = hex.length === 8 ? Math.round(parseInt(hex.slice(6, 8), 16) / 255 * 1000) / 1000 : 1;
+
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function hslToRgba(hslValue) {
+    const values = channels(hslValue);
+    const h = (parseFloat(values[0]) % 360 + 360) % 360 / 360;
+    const s = parseFloat(values[1]) / 100;
+    const l = parseFloat(values[2]) / 100;
+    const a = alpha(values[3]);
+
+    function hue2rgb(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    }
+
+    let r, g, b;
+
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return `rgba(${Math.round(r * 255)},${Math.round(g * 255)},${Math.round(b * 255)},${a})`;
+  }
+
+  // Resolves named colors (`red`, `transparent`, ...) using the browser itself.
+  function namedColorToRgba(name) {
+    if (!is.str(name) || !/^[a-z]+$/i.test(name) || typeof document === 'undefined' || !document.body) {
+      return;
+    }
+
+    const key = name.toLowerCase();
+
+    if (CSS_KEYWORDS.indexOf(key) > -1) {
+      return;
+    }
+
+    if (!(key in namedColors)) {
+      const el = document.createElement('i');
+      el.style.color = key;
+
+      let color;
+
+      if (el.style.color) {
+        document.body.appendChild(el);
+        color = getComputedStyle(el).color;
+        document.body.removeChild(el);
+      }
+
+      namedColors[key] = is.rgb(color) ? rgbToRgba(color) : undefined;
+    }
+
+    return namedColors[key];
+  }
+
+  function colorToRgb(val) {
+    if (is.rgb(val)) return rgbToRgba(val);
+    if (is.hex(val)) return hexToRgba(val);
+    if (is.hsl(val)) return hslToRgba(val);
+    return namedColorToRgba(val);
+  }
+
+  // Converts every color found inside `value` to rgba so that complex values
+  // like `0 0 10px #fff` can be interpolated number by number.
+  function normalizeColors(value) {
+    return value.replace(COLOR_RGX, (color) => colorToRgb(color) || color);
+  }
+
+  // Cubic bezier timing function, as defined by CSS `cubic-bezier(x1, y1, x2, y2)`.
+  // Solves x(t) with Newton's method and falls back to bisection when the slope
+  // is too flat for Newton to converge.
+
+  const EPSILON = 1e-7;
+  const NEWTON_ITERATIONS = 8;
+  const BISECTION_ITERATIONS = 40;
+
+  const linear$2 = (x) => x;
+
+  function bezier(x1, y1, x2, y2) {
+    if (!(x1 >= 0 && x1 <= 1 && x2 >= 0 && x2 <= 1)) {
+      throw new Error('[cabelo] Bezier x values must be in the [0, 1] range.');
+    }
+
+    if (x1 === y1 && x2 === y2) {
+      return linear$2;
+    }
+
+    // Polynomial coefficients, with P0 = (0, 0) and P3 = (1, 1)
+    const cx = 3 * x1;
+    const bx = 3 * (x2 - x1) - cx;
+    const ax = 1 - cx - bx;
+
+    const cy = 3 * y1;
+    const by = 3 * (y2 - y1) - cy;
+    const ay = 1 - cy - by;
+
+    const sampleX = (t) => ((ax * t + bx) * t + cx) * t;
+    const sampleY = (t) => ((ay * t + by) * t + cy) * t;
+    const slopeX = (t) => (3 * ax * t + 2 * bx) * t + cx;
+
+    function solveT(x) {
+      let t = x;
+
+      for (let i = 0; i < NEWTON_ITERATIONS; i++) {
+        const error = sampleX(t) - x;
+
+        if (Math.abs(error) < EPSILON) {
+          return t;
+        }
+
+        const slope = slopeX(t);
+
+        if (Math.abs(slope) < 1e-6) {
+          break;
+        }
+
+        t -= error / slope;
+      }
+
+      let lo = 0;
+      let hi = 1;
+      t = x;
+
+      for (let i = 0; i < BISECTION_ITERATIONS; i++) {
+        const value = sampleX(t);
+
+        if (Math.abs(value - x) < EPSILON) {
+          break;
+        }
+
+        if (x > value) {
+          lo = t;
+        } else {
+          hi = t;
+        }
+
+        t = (lo + hi) / 2;
+      }
+
+      return t;
+    }
+
+    return (x) => {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      return sampleY(solveT(x));
+    };
+  }
+
+  // Named easings. Each entry is either the four `cubic-bezier()` control points
+  // or a function that maps a progress in [0, 1] to an eased progress.
+  // Add your own with `Easing['my-easing'] = [x1, y1, x2, y2]`.
+  const Easing = {
+    'linear'            : [0.250, 0.250, 0.750, 0.750],
+
+    'ease'              : [0.250, 0.100, 0.250, 1.000],
+    'ease-in'           : [0.420, 0.000, 1.000, 1.000],
+    'ease-out'          : [0.000, 0.000, 0.580, 1.000],
+    'ease-in-out'       : [0.420, 0.000, 0.580, 1.000],
+
+    'ease-in-cubic'     : [0.550, 0.055, 0.675, 0.190],
+    'ease-out-cubic'    : [0.215, 0.610, 0.355, 1.000],
+    'ease-in-out-cubic' : [0.645, 0.045, 0.355, 1.000],
+
+    'ease-in-circ'      : [0.600, 0.040, 0.980, 0.335],
+    'ease-out-circ'     : [0.075, 0.820, 0.165, 1.000],
+    'ease-in-out-circ'  : [0.785, 0.135, 0.150, 0.860],
+
+    'ease-in-expo'      : [0.950, 0.050, 0.795, 0.035],
+    'ease-out-expo'     : [0.190, 1.000, 0.220, 1.000],
+    'ease-in-out-expo'  : [1.000, 0.000, 0.000, 1.000],
+
+    'ease-in-quad'      : [0.550, 0.085, 0.680, 0.530],
+    'ease-out-quad'     : [0.250, 0.460, 0.450, 0.940],
+    'ease-in-out-quad'  : [0.455, 0.030, 0.515, 0.955],
+
+    'ease-in-quart'     : [0.895, 0.030, 0.685, 0.220],
+    'ease-out-quart'    : [0.165, 0.840, 0.440, 1.000],
+    'ease-in-out-quart' : [0.770, 0.000, 0.175, 1.000],
+
+    'ease-in-quint'     : [0.755, 0.050, 0.855, 0.060],
+    'ease-out-quint'    : [0.230, 1.000, 0.320, 1.000],
+    'ease-in-out-quint' : [0.860, 0.000, 0.070, 1.000],
+
+    'ease-in-sine'      : [0.470, 0.000, 0.745, 0.715],
+    'ease-out-sine'     : [0.390, 0.575, 0.565, 1.000],
+    'ease-in-out-sine'  : [0.445, 0.050, 0.550, 0.950],
+
+    'ease-in-back'      : [0.600, -0.28, 0.735, 0.045],
+    'ease-out-back'     : [0.175,  0.885, 0.320, 1.275],
+    'ease-in-out-back'  : [0.680, -0.55, 0.265, 1.550]
+  };
+
+  const linear$1 = (t) => t;
+
+  function steps(count, position = 'end') {
+    const jumpStart = position === 'start' || position === 'jump-start';
+
+    return (t) => {
+      if (t >= 1) return 1;
+      if (t <= 0) return jumpStart ? 1 / count : 0;
+
+      const step = jumpStart ? Math.ceil(t * count) : Math.floor(t * count);
+      return Math.min(step, count) / count;
+    };
+  }
+
+  function parseFunction(easing) {
+    const match = /^([a-z-]+)\(([^)]*)\)$/i.exec(easing.trim());
+
+    if (!match) {
+      return;
+    }
+
+    const args = match[2].split(',').map((arg) => arg.trim());
+
+    if (match[1] === 'cubic-bezier' && args.length === 4) {
+      return bezier(...args.map(Number));
+    }
+
+    if (match[1] === 'steps') {
+      return steps(Math.max(1, parseInt(args[0], 10) || 1), args[1]);
+    }
+  }
+
+  const cache = {};
+
+  /*
+    Turns any supported easing definition into an easing function.
+    @param {string|number[]|function} easing
+    @returns {function}
+  */
+  function normalizeEasing(easing) {
+    if (is.fnc(easing)) {
+      return easing;
+    }
+
+    if (is.arr(easing)) {
+      return bezier(...easing);
+    }
+
+    if (!is.str(easing)) {
+      return linear$1;
+    }
+
+    if (Easing[easing] !== cache[easing]?.source) {
+      delete cache[easing];
+    }
+
+    if (!cache[easing]) {
+      const definition = Easing[easing];
+      let fn;
+
+      if (definition) {
+        fn = is.fnc(definition) ? definition : bezier(...definition);
+      } else {
+        fn = parseFunction(easing);
+      }
+
+      if (!fn) {
+        warn(`Unknown easing "${easing}", falling back to "linear".`);
+        fn = linear$1;
+      }
+
+      cache[easing] = { fn, source: definition };
+    }
+
+    return cache[easing].fn;
+  }
+
+  // Transforms are always applied in this order, so that translating is not
+  // affected by rotating or scaling.
+  const validTransforms = [
+    'perspective',
+    'translateX', 'translateY', 'translateZ',
+    'rotate', 'rotateX', 'rotateY', 'rotateZ',
+    'skew', 'skewX', 'skewY',
+    'scale', 'scaleX', 'scaleY', 'scaleZ'
+  ];
+
+  const mappedCSSProps = {
+    x: 'translateX',
+    y: 'translateY',
+    z: 'translateZ'
+  };
+
+  const NUMBER_RGX = /-?\d*\.?\d+(?:e[-+]?\d+)?/gi;
+  const UNIT_RGX = /([+-]?[0-9#.]+)(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vmin|vmax|svh|lvh|dvh|svw|lvw|dvw|vw|vh|deg|rad|grad|turn)?$/;
+
+  function mapPropToCSSProp(prop) {
+    return mappedCSSProps[prop] || prop;
+  }
+
+  function getTransformUnit(propName) {
+    if (stringContains(propName, 'translate') || propName === 'perspective') return 'px';
+    if (stringContains(propName, 'rotate') || stringContains(propName, 'skew')) return 'deg';
+  }
+
+  function getAnimationType(el, prop) {
+    if (!is.dom(el)) {
+      return el != null && typeof el === 'object' ? 'object' : undefined;
+    }
+
+    if (prop.indexOf('--') === 0) return 'var';
+    if (arrayContains(validTransforms, prop)) return 'transform';
+    if (el.getAttribute(prop) != null || (is.svg(el) && prop in el)) return 'attribute';
+    if (prop !== 'transform' && getCSSValue(el, prop)) return 'css';
+    if (prop in el) return 'object';
+  }
+
+  function getCSSValue(el, prop) {
+    if (prop.indexOf('--') === 0) {
+      return getComputedStyle(el).getPropertyValue(prop).trim() || el.style.getPropertyValue(prop).trim() || '0';
+    }
+
+    if (prop in el.style) {
+      return getComputedStyle(el).getPropertyValue(stringToHyphens(prop)) || '0';
+    }
+  }
+
+  function getUnit(val) {
+    const split = UNIT_RGX.exec(val);
+    if (split) return split[2];
+  }
+
+  function validateValue(val, unit) {
+    const color = colorToRgb(val);
+
+    if (color) {
+      return color;
+    }
+
+    if (is.str(val) && /\s|\(/.test(val)) {
+      return normalizeColors(val);
+    }
+
+    const originalUnit = getUnit(val);
+    const unitLess = originalUnit ? String(val).slice(0, -originalUnit.length) : val;
+    const isNumeric = /^[-+]?\d*\.?\d+(e[-+]?\d+)?$/i.test(String(unitLess).trim());
+
+    return unit && isNumeric ? unitLess + unit : unitLess;
+  }
+
+  function getFunctionValue(val, el, index, total) {
+    if (!is.fnc(val)) return val;
+    return val(el, index, total);
+  }
+
+  /*
+    Splits a value in numbers and the strings between them, so
+    'rgba(255,0,0,1)' becomes [255, 0, 0, 1] and ['rgba(', ',', ',', ',', ')'].
+  */
+  function decomposeValue(target, prop, val, originalValue = getOriginalTargetValue(target, prop)) {
+    const unit = getUnit(val) || getUnit(originalValue);
+    const value = validateValue(val, unit) + '';
+    const numbers = value.match(NUMBER_RGX);
+
+    return {
+      original: value,
+      numbers: numbers ? numbers.map(Number) : [],
+      strings: (is.str(val) || unit) ? value.split(NUMBER_RGX) : [],
+      isColor: is.rgb(value) && !/\s/.test(value)
+    };
+  }
+
+  function composeValue(numbers, strings) {
+    if (!strings.length) {
+      return numbers[0];
+    }
+
+    return strings.reduce((output, string, index) => {
+      return output + string + (index < numbers.length ? numbers[index] : '');
+    }, '');
+  }
+
+  function getTransformValue(el, propName) {
+    const defaultUnit = getTransformUnit(propName);
+    const defaultVal = stringContains(propName, 'scale') ? 1 : 0 + (defaultUnit || '');
+    const str = el.style.transform;
+
+    if (!str) {
+      return defaultVal;
+    }
+
+    const value = parseTransform(str)
+      .filter((t) => t.name === propName)
+      .map((t) => t.value);
+
+    return value.length ? value[0] : defaultVal;
+  }
+
+  function parseTransform(str) {
+    const rgx = /(\w+)\(([^)]*)\)/g;
+    const transforms = [];
+    let match;
+
+    while ((match = rgx.exec(str || ''))) {
+      transforms.push({ name: match[1], value: match[2] });
+    }
+
+    return transforms;
+  }
+
+  function getOriginalTargetValue(target, propName) {
+    switch (getAnimationType(target, propName)) {
+      case 'transform': return getTransformValue(target, propName);
+      case 'var':
+      case 'css': return getCSSValue(target, propName);
+      case 'attribute': return target.getAttribute(propName);
+    }
+    return target[propName] || 0;
+  }
+
+  function isRelativeOperator(value) {
+    return is.str(value) && /^(\*=|\+=|-=)/.test(value);
+  }
+
+  function getRelativeValue(to, from) {
+    const operator = /^(\*=|\+=|-=)/.exec(to);
+
+    if (!operator) {
+      return to;
+    }
+
+    const u = getUnit(to) || getUnit(from) || '';
+    const x = parseFloat(from) || 0;
+    const y = parseFloat(to.replace(operator[0], ''));
+
+    switch (operator[0][0]) {
+      case '+': return x + y + u;
+      case '-': return x - y + u;
+      case '*': return x * y + u;
+    }
+  }
+
+  function isPropATween(prop) {
+    return is.obj(prop);
+  }
+
+  function mapPropToTween(propName, propValue, parentTween) {
+    const tween = {
+      targets: parentTween.targets,
+      duration: propValue.duration,
+      [propName]: is.und(propValue.value) ? propValue.values : propValue.value
+    };
+
+    ['from', 'to', 'easing', 'round', 'immediateRender', 'trigger']
+      .forEach((key) => {
+        if (!is.und(propValue[key])) {
+          tween[key] = propValue[key];
+        }
+      });
+
+    return tween;
+  }
+
+  const setTweenProgress = {
+    css: (t, p, v) => t.style[p] = v,
+    var: (t, p, v) => t.style.setProperty(p, v),
+    attribute: (t, p, v) => t.setAttribute(p, v),
+    object: (t, p, v) => t[p] = v
+  };
+
+  function flattenArray(arr) {
+    return arr.reduce((a, b) => a.concat(is.arr(b) ? flattenArray(b) : b), []);
+  }
+
+  const getNode = (node) => {
+    return Array.from(document.querySelectorAll(node));
+  };
+
+  const getTargets = (targets) => {
+    if (targets == null) {
+      throw new Error('[cabelo] Cannot tween a null target.');
+    }
+
+    if (is.str(targets)) {
+      targets = getNode(targets);
+    }
+
+    if (typeof NodeList !== 'undefined' && (targets instanceof NodeList || targets instanceof HTMLCollection)) {
+      targets = Array.from(targets);
+    } else if (!is.arr(targets)) {
+      targets = [targets];
+    }
+
+    targets = targets
+      .map((target) => {
+        return is.str(target) ? getNode(target) : target;
+      });
+
+    // Remove empty values and duplicates
+    return flattenArray(targets)
+      .filter((target, index, arr) => target != null && arr.indexOf(target) === index);
+  };
+
+  function getElement(el) {
+    return is.str(el) ? document.querySelector(el) : el;
+  }
+
+  function isDocumentElement(el) {
+    return el === document.documentElement || el === document.body || el === document.scrollingElement;
+  }
+
+  // Relative positions describe a scroll position by aligning a point of the
+  // target element with a point of the viewport (or scroll container):
+  //
+  //   'top-bottom'        the target's top edge meets the viewport's bottom edge
+  //   'center-center'     the target's center meets the viewport's center
+  //   'bottom-top+100'    100px after the target's bottom edge meets the viewport's top
+  //   'top-bottom-25%'    25% of the viewport size before the target's top meets the bottom
+
+  const ANCHORS = {
+    top: 0,
+    left: 0,
+    start: 0,
+    middle: 0.5,
+    center: 0.5,
+    bottom: 1,
+    right: 1,
+    end: 1
+  };
+
+  const RELATIVE_RGX = /^([a-z]+)-([a-z]+)(?:\s*([+-])\s*(\d*\.?\d+)(px|%)?)?$/;
+
+  function parseRelativeValue(value) {
+    const match = RELATIVE_RGX.exec(String(value).trim());
+
+    if (!match || !(match[1] in ANCHORS) || !(match[2] in ANCHORS)) {
+      return null;
+    }
+
+    const sign = match[3] === '-' ? -1 : 1;
+
+    return {
+      target: ANCHORS[match[1]],
+      viewport: ANCHORS[match[2]],
+      offset: match[4] ? sign * parseFloat(match[4]) : 0,
+      percent: match[5] === '%'
+    };
+  }
+
+  function isRelativeValue(value) {
+    return parseRelativeValue(value) !== null;
+  }
+
+  /*
+    Converts a relative position to an absolute scroll position.
+    @param {object} rect The target `start` offset and `size` inside the scrollable content
+    @param {string} value The relative position, e.g. 'top-bottom'
+    @param {number} viewportSize The size of the viewport (or scroll container)
+    @returns {number}
+  */
+  function relativeToAbsoluteValue(rect, value, viewportSize) {
+    const relative = parseRelativeValue(value);
+
+    if (!relative) {
+      return 0;
+    }
+
+    const offset = relative.percent ? viewportSize * relative.offset / 100 : relative.offset;
+
+    return rect.start + rect.size * relative.target - viewportSize * relative.viewport + offset;
+  }
+
+  const linear = (t) => t;
+
+  class Prop {
+    constructor(options) {
+      this.tween = options.tween || null;
+      this.target = options.target;
+      this.targetIndex = options.targetIndex || 0;
+      this.name = mapPropToCSSProp(options.name);
+      this.easing = options.easing || linear;
+      this.round = is.und(options.round) ? false : options.round;
+      this.type = getAnimationType(this.target, this.name);
+
+      this.input = options.values;
+      this.total = options.total || 1;
+      // Function values may depend on the layout, so they are evaluated again on refresh
+      this.isDynamic = is.fnc(this.input) || (is.arr(this.input) && this.input.some(is.fnc));
+      // The value before any animation, used by single and relative values
+      this.original = this.type ? getOriginalTargetValue(this.target, this.name) : null;
+
+      this.values = this.type ? this.getValues() : [];
+      this.isColor = !!this.values.length && this.values.every((value) => value.isColor);
+    }
+
+    refresh() {
+      if (this.isDynamic && this.type) {
+        this.values = this.getValues();
+      }
+
+      return this;
+    }
+
+    getValues() {
+      const { target, targetIndex, name, original, total } = this;
+
+      let values = getFunctionValue(this.input, target, targetIndex, total);
+
+      // A single value animates from the current value to it
+      if (!is.arr(values)) {
+        values = [original, values];
+      } else if (values.length === 1) {
+        values = [original, values[0]];
+      }
+
+      let previous = original;
+
+      return values
+        .map((value) => getFunctionValue(value, target, targetIndex, total))
+        .map((value) => {
+          // Values like '+=100' are relative to the previous value
+          const resolved = isRelativeOperator(value) ? getRelativeValue(value, previous) : value;
+          previous = resolved;
+          return resolved;
+        })
+        .map((value) => decomposeValue(target, name, value, original));
+    }
+
+    // Positions where each value should be reached. When there are more values
+    // than positions, the values are spread evenly between the first and last position.
+    getPositions() {
+      const positions = this.tween ? this.tween.positions : [];
+
+      if (positions.length === 2 && this.values.length > 2) {
+        const [start, end] = positions;
+        const steps = this.values.length - 1;
+        return this.values.map((value, index) => start + (end - start) * index / steps);
+      }
+
+      return positions;
+    }
+
+    format(value) {
+      return composeValue(value.numbers, value.strings);
+    }
+
+    tweenValue(start, end, position) {
+      return start + (end - start) * this.easing(position);
+    }
+
+    interpolate(start, end, progress) {
+      // Values that can't be interpolated, like 'none' or 'block', switch as soon
+      // as the segment starts.
+      if (!start.numbers.length || !end.numbers.length) {
+        return this.format(progress > 0 ? end : start);
+      }
+
+      const eased = this.easing(progress);
+
+      // '100px' to '50vw' can't be interpolated number by number, so we let CSS do it.
+      if (this.hasMixedUnits(start, end)) {
+        const from = roundTo(start.numbers[0] * (1 - eased), 4);
+        const to = roundTo(end.numbers[0] * eased, 4);
+        return `calc(${from}${start.strings[1]} + ${to}${end.strings[1]})`;
+      }
+
+      // Use the strings (units, separators) of the end value, unless it is a bare number
+      const base = end.strings.length ? end : start;
+      const isColor = start.isColor && end.isColor;
+
+      const numbers = end.numbers
+        .map((endNumber, index) => {
+          const startNumber = is.und(start.numbers[index]) ? endNumber : start.numbers[index];
+          let value = startNumber + (endNumber - startNumber) * eased;
+
+          if (isColor) {
+            value = index < 3 ? Math.round(value) : roundTo(value, 3);
+          } else if (this.round !== false) {
+            value = roundTo(value, this.round === true ? 0 : this.round);
+          }
+
+          return value;
+        });
+
+      return composeValue(numbers, base.strings);
+    }
+
+    hasMixedUnits(start, end) {
+      const isDimension = (value) => value.numbers.length === 1 && value.strings.length === 2 && !value.strings[0];
+
+      return isDimension(start) && isDimension(end) &&
+        start.strings[1] !== end.strings[1] &&
+        start.numbers[0] !== 0 && end.numbers[0] !== 0;
+    }
+
+    valueAt(position) {
+      const values = this.values;
+      const positions = this.getPositions();
+      const last = Math.min(positions.length, values.length) - 1;
+
+      if (last < 0) {
+        return;
+      }
+
+      if (position < positions[0]) {
+        return this.format(values[0]);
+      }
+
+      for (let i = 0; i < last; i++) {
+        if (position < positions[i + 1]) {
+          const progress = (position - positions[i]) / (positions[i + 1] - positions[i]);
+          return this.interpolate(values[i], values[i + 1], progress);
+        }
+      }
+
+      return this.format(values[last]);
+    }
+  }
+
+  const defaultOptions$1 = {
+    target: null,
+    targetIndex: 0,
+    targetCount: 1,
+
+    duration: null,
+    from: null,
+    to: null,
+    trigger: null,
+    easing: 'linear',
+    round: false,
+
+    edgeClassName: false,
+    immediateRender: true,
+    instance: null
+  };
+
+  // Keys that configure a tween instead of describing an animated property.
+  const reservedKeys = Object.keys(defaultOptions$1).concat(['targets']);
+
+  const EDGE = {
+    BEFORE: 'before',
+    INSIDE: 'inside',
+    AFTER: 'after'
+  };
+
+  /*
+    Normalizes the different ways of defining when a tween happens:
+    `duration: [0, 1000]`, `duration: 1000`, `from: 200, to: 800` or `to: 800`.
+  */
+  function getRawPositions(options) {
+    const { duration, from, to } = options;
+    const hasFromOrTo = !is.nil(from) || !is.nil(to);
+
+    if (!is.nil(duration) && hasFromOrTo) {
+      warn('You can\'t use `duration` and `from` or `to` in the same tween.', options);
+    }
+
+    if (hasFromOrTo) {
+      if (is.nil(to)) {
+        warn('`from` requires a `to` value.', options);
+        return [from, from];
+      }
+
+      return [is.nil(from) ? 0 : from, to];
+    }
+
+    if (is.nil(duration)) {
+      return [];
+    }
+
+    return duration;
+  }
+
+  /*
+    Turns a position (a number, numeric string or relative value) into a number.
+  */
+  function resolvePosition(position, target, instance) {
+    if (is.num(position)) {
+      return position;
+    }
+
+    if (isRelativeValue(position)) {
+      if (!target || !instance) {
+        warn(`Relative position "${position}" requires a target element.`);
+        return 0;
+      }
+
+      return instance.getRelativePosition(target, position);
+    }
+
+    const number = parseFloat(position);
+
+    if (isNaN(number)) {
+      warn(`Invalid position "${position}".`);
+      return 0;
+    }
+
+    return number;
+  }
+
+  /*
+    The element that relative positions are measured from: the `trigger` option
+    (an element, selector or function) or the target itself.
+  */
+  function getTrigger(trigger, target, index, total) {
+    if (is.nil(trigger)) {
+      return target;
+    }
+
+    const el = getElement(getFunctionValue(trigger, target, index, total));
+
+    if (!el) {
+      warn('Trigger not found.', trigger);
+    }
+
+    return el || target;
+  }
+
+  function resolvePositions(raw, target, index, total, instance) {
+    let positions = getFunctionValue(raw, target, index, total);
+
+    if (!is.arr(positions)) {
+      positions = is.nil(positions) ? [] : [0, positions];
+    }
+
+    positions = positions
+      .map((position) => getFunctionValue(position, target, index, total))
+      .map((position) => resolvePosition(position, target, instance));
+
+    return positions.length === 1 ? [positions[0], positions[0]] : positions;
+  }
+
+  class Tween {
+    constructor(tween) {
+      this._tween = assign(defaultOptions$1, tween);
+      this.target = this._tween.target;
+      this.targetIndex = this._tween.targetIndex;
+      this.instance = this._tween.instance;
+
+      this.easing = normalizeEasing(this._tween.easing);
+      this.rawPositions = getRawPositions(this._tween);
+      this.positions = [];
+      this.edge = null;
+
+      this.edgeClassNames = this.getEdgeClassNames();
+      this.props = this.getProps();
+
+      this.measure();
+      this.validate();
+    }
+
+    getProps() {
+      return Object
+        .keys(this._tween)
+        .filter((p) => reservedKeys.indexOf(p) === -1)
+        .map((name) => {
+          return new Prop({
+            tween: this,
+
+            target: this.target,
+            targetIndex: this.targetIndex,
+            total: this._tween.targetCount,
+
+            name: name,
+            values: this._tween[name],
+
+            easing: this.easing,
+            round: this._tween.round
+          });
+        })
+        .filter((prop) => {
+          if (!prop.type) {
+            warn(`Can't animate "${prop.name}" on`, this.target);
+          }
+
+          return !!prop.type;
+        });
+    }
+
+    getEdgeClassNames() {
+      const option = this._tween.edgeClassName;
+
+      if (!option) {
+        return null;
+      }
+
+      const prefix = is.str(option) ? option : 'cabelo';
+
+      return {
+        [EDGE.BEFORE]: `${prefix}-before`,
+        [EDGE.INSIDE]: `${prefix}-inside`,
+        [EDGE.AFTER]: `${prefix}-after`
+      };
+    }
+
+    // Calculates the scroll positions of the tween. Called again on every refresh,
+    // as relative positions depend on the layout.
+    measure() {
+      const { trigger, targetCount } = this._tween;
+      const measured = getTrigger(trigger, this.target, this.targetIndex, targetCount);
+
+      this.positions = resolvePositions(
+        this.rawPositions,
+        measured,
+        this.targetIndex,
+        targetCount,
+        this.instance
+      );
+
+      return this;
+    }
+
+    validate() {
+      if (!this.positions.length) {
+        warn('A tween needs a `duration` (or `from` and `to`).', this._tween);
+      }
+
+      this.props.forEach((prop) => {
+        const count = prop.values.length;
+        const positions = this.positions.length;
+
+        if (count !== positions && !(positions === 2 && count > 2)) {
+          warn(`"${prop.name}" has ${count} values but ${positions} positions.`);
+        }
+      });
+    }
+
+    // Measures the positions and evaluates function values again.
+    refresh() {
+      this.measure();
+      this.props.forEach((prop) => prop.refresh());
+
+      return this;
+    }
+
+    get start() {
+      return this.positions.length ? minValue(this.positions) : 0;
+    }
+
+    get end() {
+      return this.positions.length ? maxValue(this.positions) : 0;
+    }
+
+    getMaxDuration() {
+      return this.end;
+    }
+
+    getEdge(position) {
+      if (position < this.positions[0]) return EDGE.BEFORE;
+      if (position > this.positions[this.positions.length - 1]) return EDGE.AFTER;
+      return EDGE.INSIDE;
+    }
+
+    updateClass(className) {
+      if (!this.edgeClassNames || !this.target.classList) {
+        return;
+      }
+
+      const toRemove = Object.values(this.edgeClassNames)
+        .filter((name) => name !== className);
+
+      this.target.classList.remove(...toRemove);
+
+      if (className) {
+        this.target.classList.add(className);
+      }
+    }
+
+    updateEdges(position) {
+      const edge = this.getEdge(position);
+
+      if (edge === this.edge) {
+        return;
+      }
+
+      if (edge === EDGE.BEFORE && !this._tween.immediateRender && this.edge === null) {
+        return;
+      }
+
+      this.edge = edge;
+
+      if (this.edgeClassNames) {
+        this.updateClass(this.edgeClassNames[edge]);
+      }
+    }
+
+    tick(position) {
+      this.updateEdges(position);
+    }
+
+    revert() {
+      this.updateClass(null);
+      this.edge = null;
+    }
+  }
+
+  const EDGES = {
+    ENTER: 'enter',
+    LEAVE: 'leave'
+  };
+
+  /*
+    Hooks call `enter` and `leave` when the scroll position crosses a point, or
+    enters and leaves a range:
+
+      { duration: 500, enter() {}, leave() {} }
+      { targets: '.item', duration: ['top-bottom', 'bottom-top'], className: 'is-visible' }
+
+    When there are multiple targets, the instance creates one hook per target.
+  */
+  class Hook {
+    constructor(t, instance, target = null, targetIndex = 0, targetCount = 1) {
+      this.tween = t;
+      this.instance = instance;
+      this.target = target;
+      this.targetIndex = targetIndex;
+      this.targetCount = targetCount;
+      this.edge = EDGES.LEAVE;
+      this.raw = !is.und(t.duration) ? t.duration : t.at;
+      this.positions = [];
+
+      if (is.nil(this.raw)) {
+        warn('A hook needs a `duration` (or `at`) value.', t);
+      }
+
+      this.measure();
+    }
+
+    measure() {
+      const { target, targetIndex, targetCount } = this;
+
+      if (is.nil(this.raw)) {
+        return this;
+      }
+
+      const measured = getTrigger(this.tween.trigger, target, targetIndex, targetCount);
+      const raw = toArray(getFunctionValue(this.raw, target, targetIndex, targetCount));
+      const positions = resolvePositions(raw, measured, targetIndex, targetCount, this.instance);
+
+      // A single position is a point: the hook is entered at and after it
+      this.positions = raw.length === 1 ? [positions[0], Infinity] : positions;
+
+      return this;
+    }
+
+    get start() {
+      return this.positions.length ? this.positions[0] : 0;
+    }
+
+    get end() {
+      const end = this.positions[this.positions.length - 1];
+      return isFinite(end) ? end : this.start;
+    }
+
+    tick(scrollY, direction) {
+      const [start, end] = this.positions;
+      const inside = scrollY >= start && scrollY <= end;
+      const details = { direction, scrollTop: scrollY, position: scrollY, target: this.target };
+
+      if (inside) {
+        if (this.edge !== EDGES.ENTER) {
+          this.edge = EDGES.ENTER;
+          this.enter(details);
+        }
+      } else {
+        if (this.edge !== EDGES.LEAVE) {
+          this.edge = EDGES.LEAVE;
+          this.leave(details);
+        }
+      }
+    }
+
+    toggleClass(force) {
+      const className = this.tween.className;
+
+      if (className && this.target && this.target.classList) {
+        this.target.classList.toggle(className, force);
+      }
+    }
+
+    enter(details) {
+      this.toggleClass(true);
+
+      if (this.tween.enter) {
+        this.tween.enter(details);
+      }
+    }
+
+    leave(details) {
+      this.toggleClass(false);
+
+      if (this.tween.leave) {
+        this.tween.leave(details);
+      }
+    }
+
+    getMaxDuration() {
+      return this.end;
+    }
+
+    revert() {
+      this.toggleClass(false);
+      this.edge = EDGES.LEAVE;
+    }
+  }
+
+  const byTransformOrder = (a, b) => validTransforms.indexOf(a) - validTransforms.indexOf(b);
+
+  /*
+    A track holds every animated property of a single target. Rendering asks each
+    property "what is your value at this scroll position?", so overlapping tweens
+    on the same property resolve the same way no matter how fast you scroll:
+
+      - the tween that started most recently (before the current position) wins;
+      - before every tween started, the earliest tween sets its first value.
+  */
+  class Track {
+    constructor(target) {
+      this.target = target;
+      this.props = new Map();
+      this.transformOrder = [];
+      this.originals = {};
+      this.rendered = {};
+      this.isElement = !!(target && target.style);
+
+      this.baseTransform = this.isElement ? target.style.transform : '';
+      this.renderedTransform = this.baseTransform;
+    }
+
+    add(prop) {
+      const { name, type } = prop;
+
+      if (!this.props.has(name)) {
+        this.props.set(name, []);
+        this.saveOriginal(prop);
+      }
+
+      if (type === 'transform' && this.transformOrder.indexOf(name) === -1) {
+        this.transformOrder.push(name);
+        this.transformOrder.sort(byTransformOrder);
+      }
+
+      this.props.get(name).push(prop);
+    }
+
+    remove(tween) {
+      this.props.forEach((props, name) => {
+        const remaining = props.filter((prop) => prop.tween !== tween);
+
+        if (remaining.length) {
+          this.props.set(name, remaining);
+          return;
+        }
+
+        this.revertProp(name, props[0].type);
+        this.props.delete(name);
+        this.transformOrder = this.transformOrder.filter((n) => n !== name);
+      });
+
+      if (!this.transformOrder.length) {
+        this.revertTransform();
+      }
+    }
+
+    get isEmpty() {
+      return this.props.size === 0;
+    }
+
+    saveOriginal(prop) {
+      const { target, name, type } = prop;
+
+      switch (type) {
+        case 'css': this.originals[name] = target.style[name]; break;
+        case 'var': this.originals[name] = target.style.getPropertyValue(name); break;
+        case 'attribute': this.originals[name] = target.getAttribute(name); break;
+        case 'object': this.originals[name] = target[name]; break;
+      }
+    }
+
+    getActiveProp(props, position) {
+      let active = null;
+
+      props.forEach((prop) => {
+        if (prop.tween.start <= position && (!active || prop.tween.start >= active.tween.start)) {
+          active = prop;
+        }
+      });
+
+      if (active) {
+        return active;
+      }
+
+      props.forEach((prop) => {
+        if (!active || prop.tween.start < active.tween.start) {
+          active = prop;
+        }
+      });
+
+      // `immediateRender: false` leaves the original value alone until the tween starts
+      return active && active.tween._tween.immediateRender ? active : null;
+    }
+
+    render(position) {
+      const transforms = {};
+
+      this.props.forEach((props, name) => {
+        const prop = this.getActiveProp(props, position);
+        const type = props[0].type;
+
+        if (type === 'transform') {
+          if (prop) {
+            transforms[name] = prop.valueAt(position);
+          }
+          return;
+        }
+
+        if (!prop) {
+          this.revertProp(name, type);
+          return;
+        }
+
+        this.setValue(name, type, prop.valueAt(position));
+      });
+
+      if (this.transformOrder.length) {
+        this.setTransform(transforms);
+      }
+    }
+
+    setValue(name, type, value) {
+      if (this.rendered[name] === value) {
+        return;
+      }
+
+      this.rendered[name] = value;
+      setTweenProgress[type](this.target, name, value);
+    }
+
+    composeTransform(transforms) {
+      const animated = this.transformOrder.filter((name) => name in transforms);
+
+      // Keep the transforms that were already set and are not being animated
+      const base = parseTransform(this.baseTransform)
+        .filter((t) => animated.indexOf(t.name) === -1)
+        .map((t) => `${t.name}(${t.value})`);
+
+      return base
+        .concat(animated.map((name) => `${name}(${transforms[name]})`))
+        .join(' ');
+    }
+
+    setTransform(transforms) {
+      const transform = this.composeTransform(transforms);
+
+      if (transform === this.renderedTransform) {
+        return;
+      }
+
+      this.renderedTransform = transform;
+      this.target.style.transform = transform;
+    }
+
+    revertProp(name, type) {
+      if (!(name in this.rendered)) {
+        return;
+      }
+
+      const original = this.originals[name];
+      const target = this.target;
+
+      delete this.rendered[name];
+
+      switch (type) {
+        case 'css': target.style[name] = original || ''; break;
+        case 'var': original ? target.style.setProperty(name, original) : target.style.removeProperty(name); break;
+        case 'attribute': original === null ? target.removeAttribute(name) : target.setAttribute(name, original); break;
+        case 'object': target[name] = original; break;
+      }
+    }
+
+    revertTransform() {
+      if (this.isElement && this.renderedTransform !== this.baseTransform) {
+        this.target.style.transform = this.baseTransform;
+        this.renderedTransform = this.baseTransform;
+      }
+    }
+
+    // Temporarily removes the animated transforms, so the target can be measured
+    // without them. Returns a function that puts them back.
+    suspendTransform() {
+      if (!this.isElement || this.renderedTransform === this.baseTransform) {
+        return () => {};
+      }
+
+      const transform = this.renderedTransform;
+      this.target.style.transform = this.baseTransform;
+
+      return () => this.target.style.transform = transform;
+    }
+
+    revert() {
+      this.props.forEach((props, name) => this.revertProp(name, props[0].type));
+      this.revertTransform();
+    }
+  }
+
+  /*
+    Animate a value from `props.from` to `props.to` in `props.duration` seconds.
+    @param {object} props `{ from, to, duration, easing }`
+    @param {function} update Called on every frame with the current value
+    @returns {Promise} A promise that resolves when the animation is complete.
+      The promise has a `cancel()` method that stops the animation.
+  */
+  function animate (props, update = () => {}) {
+    const duration = (props.duration || 0) * 1000;
+    const easing = normalizeEasing(props.easing || 'ease-in-out-cubic');
+
+    let startTime = null;
+    let raf = null;
+    let resolve = null;
+    let cancelled = false;
+
+    const promise = new Promise(_resolve => resolve = _resolve);
+
+    const step = (now) => {
+      if (cancelled) {
+        return;
+      }
+
+      if (startTime === null) {
+        startTime = now;
+      }
+
+      const elapsed = now - startTime;
+      // Duration might be zero seconds, so we jump straight to the end.
+      const progress = duration > 0 ? minMaxValue(elapsed / duration, 0, 1) : 1;
+
+      update(Math.round(props.from + easing(progress) * (props.to - props.from)));
+
+      if (progress < 1) {
+        raf = requestAnimationFrame(step);
+      } else {
+        resolve(true);
+      }
+    };
+
+    raf = requestAnimationFrame(step);
+
+    promise.cancel = () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      resolve(false);
+    };
+
+    return promise;
+  }
+
+  const EVENTS = {
+    BEGIN: 'begin',
+    COMPLETE: 'complete',
+    UPDATE: 'update',
+    READY: 'ready',
+    REFRESH: 'refresh',
+    SCROLL: 'scroll',
+    RESIZE: 'resize'
+  };
+
+  const DIRECTION = {
+    UP: 'up',
+    DOWN: 'down'
+  };
+
+  const AXIS = {
+    y: { scroll: 'scrollTop', client: 'clientHeight', start: 'top', size: 'height', border: 'clientTop', minSize: 'minHeight' },
+    x: { scroll: 'scrollLeft', client: 'clientWidth', start: 'left', size: 'width', border: 'clientLeft', minSize: 'minWidth' }
+  };
+
+  const defaultOptions = {
+    container: null,
+    axis: 'y',
+    forceHeight: true
+  };
+
+  // Options that a nested property tween inherits from its parent tween.
+  const inheritedOptions = ['easing', 'round', 'immediateRender', 'trigger'];
+
+  class Instance {
+    constructor(options) {
+      this.options = assign(defaultOptions, options);
+
+      const container = getElement(this.options.container);
+
+      if (this.options.container && !container) {
+        warn('Container not found, using the document instead.', this.options.container);
+      }
+
+      this.isDocument = !container || isDocumentElement(container);
+      this.container = this.isDocument ? (document.scrollingElement || document.documentElement) : container;
+      this.axis = AXIS[this.options.axis] || AXIS.y;
+
+      this.tweens = [];
+      this.hooks = [];
+      this.tracks = new Map();
+      this.emitter = new Emitter();
+
+      this.ticking = false;
+      this.initialized = false;
+      this.destroyed = false;
+      this.began = false;
+      this.completed = false;
+
+      this.lastScrollTop = null;
+      this.scrollTop = 0;
+      this.direction = DIRECTION.DOWN;
+      this.start = 0;
+      this.end = 0;
+
+      this.animate = this.animate.bind(this);
+      this.refresh = this.refresh.bind(this);
+      this.scheduleRefresh = this.scheduleRefresh.bind(this);
+      this.setScrollTop = this.setScrollTop.bind(this);
+      this.getScrollTop = this.getScrollTop.bind(this);
+      this.getClientHeight = this.getClientHeight.bind(this);
+    }
+
+    /*
+      Adds a tween. Properties that are objects become their own tween:
+      `scale: { duration: [0, 500], value: [0, 1] }`.
+    */
+    add(tween) {
+      // get extra tweens from current tween if there are any
+      const propsToRemove = this.getNestedTweens(tween);
+      tween = omit(tween, propsToRemove);
+
+      // create new target
+      const targets = getTargets(tween.targets);
+
+      if (!targets.length) {
+        warn('No targets found for', tween.targets);
+      }
+
+      targets
+        .forEach((target, targetIndex) => {
+          const newTween = new Tween(assign(
+            omit(tween, ['targets']),
+            {
+              target,
+              targetIndex,
+              targetCount: targets.length,
+              instance: this
+            }
+          ));
+
+          this.tweens.push(newTween);
+          this.addToTrack(newTween);
+        });
+
+      this.invalidate();
+
+      return this;
+    }
+
+    hook(t) {
+      if (is.nil(t.targets)) {
+        this.hooks.push(new Hook(t, this));
+      } else {
+        const targets = getTargets(t.targets);
+
+        targets.forEach((target, index) => {
+          this.hooks.push(new Hook(t, this, target, index, targets.length));
+        });
+      }
+
+      this.invalidate();
+
+      return this;
+    }
+
+    // Removes every tween and hook of the given targets (or all of them) and
+    // restores the original values of the animated properties.
+    remove(targets) {
+      const list = is.nil(targets) ? null : getTargets(targets);
+      const matches = (target) => list === null || list.indexOf(target) > -1;
+
+      this.tweens = this.tweens.filter((tween) => {
+        if (!matches(tween.target)) {
+          return true;
+        }
+
+        tween.revert();
+
+        const track = this.tracks.get(tween.target);
+
+        if (track) {
+          track.remove(tween);
+
+          if (track.isEmpty) {
+            this.tracks.delete(tween.target);
+          }
+        }
+
+        return false;
+      });
+
+      this.hooks = this.hooks.filter((hook) => {
+        const remove = list === null || (hook.target && matches(hook.target));
+
+        if (remove) {
+          hook.revert();
+        }
+
+        return !remove;
+      });
+
+      this.invalidate();
+
+      return this;
+    }
+
+    addToTrack(tween) {
+      let track = this.tracks.get(tween.target);
+
+      if (!track) {
+        track = new Track(tween.target);
+        this.tracks.set(tween.target, track);
+      }
+
+      tween.props.forEach((prop) => track.add(prop));
+    }
+
+    // After the timeline changes, an initialized instance needs to be measured again.
+    invalidate() {
+      this.updateBounds();
+
+      if (this.initialized) {
+        this.scheduleRefresh();
+      }
+    }
+
+    // Renders every tween at the given scroll position.
+    render(scrollTop = this.getScrollTop()) {
+      const previous = this.lastScrollTop;
+
+      if (previous !== null && scrollTop !== previous) {
+        this.direction = scrollTop > previous ? DIRECTION.DOWN : DIRECTION.UP;
+      }
+
+      this.lastScrollTop = scrollTop;
+      this.scrollTop = scrollTop;
+
+      this.tweens.forEach((tween) => tween.tick(scrollTop));
+      this.tracks.forEach((track) => track.render(scrollTop));
+      this.hooks.forEach((hook) => hook.tick(scrollTop, this.direction));
+
+      this.updateState(scrollTop);
+
+      this.emitter.emit(EVENTS.UPDATE, {
+        scrollTop,
+        position: scrollTop,
+        progress: this.getProgress(),
+        direction: this.direction
+      });
+
+      return this;
+    }
+
+    tick() {
+      return this.render(this.scrollTop);
+    }
+
+    // Emits `begin` when the scroll position moves past the start of the
+    // timeline and `complete` when it reaches the end.
+    updateState(scrollTop) {
+      const began = scrollTop > this.start;
+      const completed = scrollTop >= this.end;
+      const details = { scrollTop, position: scrollTop, direction: this.direction };
+
+      if (began && !this.began) {
+        this.emitter.emit(EVENTS.BEGIN, details);
+      }
+
+      if (completed && !this.completed) {
+        this.emitter.emit(EVENTS.COMPLETE, details);
+      }
+
+      this.began = began;
+      this.completed = completed;
+    }
+
+    // Scroll handler. Rendering happens at most once per frame.
+    animate() {
+      if (this.ticking || this.destroyed) {
+        return;
+      }
+
+      this.ticking = true;
+
+      this.raf = requestAnimationFrame(() => {
+        this.ticking = false;
+        this.render();
+      });
+    }
+
+    getNestedTweens(tween) {
+      const removeProps = [];
+
+      Object.keys(tween)
+        .filter((p) => reservedKeys.indexOf(p) === -1)
+        .forEach((p) => {
+          const values = tween[p];
+
+          if (isPropATween(values)) {
+            this.add(this.inheritOptions(mapPropToTween(p, values, tween), tween));
+            removeProps.push(p);
+          }
+        });
+
+      return removeProps;
+    }
+
+    inheritOptions(child, parent) {
+      const hasPosition = ['duration', 'from', 'to'].some((key) => !is.nil(child[key]));
+
+      if (!hasPosition) {
+        ['duration', 'from', 'to'].forEach((key) => {
+          if (!is.nil(parent[key])) {
+            child[key] = parent[key];
+          }
+        });
+      }
+
+      inheritedOptions.forEach((key) => {
+        if (is.und(child[key]) && !is.und(parent[key])) {
+          child[key] = parent[key];
+        }
+      });
+
+      return child;
+    }
+
+    getScrollTop() {
+      return this.container[this.axis.scroll] || 0;
+    }
+
+    setScrollTop(newScrollTop) {
+      if (this.isDocument) {
+        const isX = this.axis === AXIS.x;
+        window.scrollTo(isX ? newScrollTop : window.scrollX, isX ? window.scrollY : newScrollTop);
+      } else {
+        this.container[this.axis.scroll] = newScrollTop;
+      }
+    }
+
+    getProgress() {
+      const length = this.end - this.start;
+
+      if (length <= 0) {
+        return this.scrollTop >= this.end ? 1 : 0;
+      }
+
+      return minMaxValue((this.scrollTop - this.start) / length, 0, 1);
+    }
+
+    get progress() {
+      return this.getProgress();
+    }
+
+    get duration() {
+      return this.end;
+    }
+
+    getTotalDuration() {
+      return this.end;
+    }
+
+    updateBounds() {
+      const items = this.tweens.concat(this.hooks).filter((item) => item.positions.length);
+
+      this.start = items.length ? minValue(items.map((item) => item.start)) : 0;
+      this.end = items.length ? maxValue(items.map((item) => item.getMaxDuration())) : 0;
+    }
+
+    getDirection() {
+      return this.direction;
+    }
+
+    // The size of the viewport (or the scroll container) along the scroll axis.
+    getClientHeight() {
+      const el = this.isDocument ? document.documentElement : this.container;
+      return el[this.axis.client];
+    }
+
+    getHeight() {
+      return this.container.offsetHeight;
+    }
+
+    // The start and size of an element inside the scrollable content.
+    getRect(el) {
+      const { start, size, border } = this.axis;
+      const rect = el.getBoundingClientRect();
+      let offset = this.getScrollTop();
+
+      if (!this.isDocument) {
+        offset -= this.container.getBoundingClientRect()[start] + this.container[border];
+      }
+
+      return {
+        start: rect[start] + offset,
+        size: rect[size]
+      };
+    }
+
+    getRelativePosition(el, value) {
+      if (!el || !el.getBoundingClientRect) {
+        warn(`Relative position "${value}" requires a DOM element target.`);
+        return 0;
+      }
+
+      return relativeToAbsoluteValue(this.getRect(el), value, this.getClientHeight());
+    }
+
+    // Element that receives the forced height: the document itself, or the
+    // first child of a custom scroll container.
+    getSizeTarget() {
+      if (this.isDocument) {
+        return this.container;
+      }
+
+      return getElement(this.options.content) || this.container.firstElementChild;
+    }
+
+    setHeight(height) {
+      const target = this.getSizeTarget();
+      const value = `${height}px`;
+
+      if (target && target.style[this.axis.minSize] !== value) {
+        target.style[this.axis.minSize] = value;
+      }
+    }
+
+    unsetHeight() {
+      const target = this.getSizeTarget();
+
+      if (target) {
+        target.style[this.axis.minSize] = '';
+      }
+    }
+
+    /*
+      Smoothly scrolls to a position.
+      @param {number|string|Element} to A position, 'start' (0), 'end' (the end of
+        the timeline), an element or a selector
+      @param {number} duration Duration in seconds
+      @param {string|array|function} easing
+      @returns {Promise<boolean>} Resolves with `false` if it was cancelled by another scroll
+    */
+    scrollTo(to, duration = 0, easing) {
+      const from = this.getScrollTop();
+
+      if (to === 'start') {
+        to = 0;
+      } else if (to === 'end') {
+        to = this.end;
+      } else if (is.dom(to) || (is.str(to) && isNaN(parseFloat(to)))) {
+        const el = getElement(to);
+
+        if (!el) {
+          warn('Cannot scroll to a missing element.', to);
+        }
+
+        to = el ? this.getRect(el).start : from;
+      }
+
+      this.stopScroll();
+
+      const props = { duration, from, to: parseFloat(to) || 0, easing };
+      this.scrolling = animate(props, this.setScrollTop);
+
+      return this.scrolling;
+    }
+
+    stopScroll() {
+      if (this.scrolling) {
+        this.scrolling.cancel();
+        this.scrolling = null;
+      }
+
+      return this;
+    }
+
+    on(eventName, listener) {
+      this.emitter.on(eventName, listener);
+      return this;
+    }
+
+    once(eventName, listener) {
+      this.emitter.once(eventName, listener);
+      return this;
+    }
+
+    off(eventName, listener) {
+      this.emitter.off(eventName, listener);
+      return this;
+    }
+
+    events() {
+      this.scrollEl = this.isDocument ? window : this.container;
+
+      this.scrollEl.addEventListener(EVENTS.SCROLL, this.animate, { passive: true });
+      window.addEventListener(EVENTS.RESIZE, this.scheduleRefresh);
+
+      if (typeof window.ResizeObserver !== 'undefined') {
+        const content = this.isDocument ? document.body : this.getSizeTarget();
+
+        this.resizeObserver = new ResizeObserver(this.scheduleRefresh);
+        this.resizeObserver.observe(this.isDocument ? document.documentElement : this.container);
+
+        if (content) {
+          this.resizeObserver.observe(content);
+        }
+      }
+    }
+
+    // Measures the relative positions again and updates the scrollable size.
+    reflow() {
+      // Measure the elements without the transforms we applied to them
+      const restore = [];
+      this.tracks.forEach((track) => restore.push(track.suspendTransform()));
+
+      this.tweens.forEach((tween) => tween.refresh());
+      this.hooks.forEach((hook) => hook.measure());
+
+      restore.forEach((fn) => fn());
+
+      this.updateBounds();
+
+      if (this.options.forceHeight) {
+        this.setHeight(this.getClientHeight() + Math.max(0, this.end));
+      }
+
+      return this;
+    }
+
+    scheduleRefresh() {
+      if (this.refreshing || this.destroyed) {
+        return;
+      }
+
+      this.refreshing = true;
+
+      requestAnimationFrame(() => {
+        this.refreshing = false;
+        this.refresh();
+      });
+    }
+
+    refresh() {
+      if (this.destroyed) {
+        return this;
+      }
+
+      this.reflow();
+      this.render();
+      this.emitter.emit(EVENTS.REFRESH);
+
+      return this;
+    }
+
+    /*
+      Removes the listeners. Pass `{ revert: true }` to also restore every
+      animated property to its original value.
+    */
+    destroy(options = {}) {
+      if (this.scrollEl) {
+        this.scrollEl.removeEventListener(EVENTS.SCROLL, this.animate);
+        window.removeEventListener(EVENTS.RESIZE, this.scheduleRefresh);
+      }
+
+      if (this.resizeObserver) {
+        this.resizeObserver.disconnect();
+        this.resizeObserver = null;
+      }
+
+      cancelAnimationFrame(this.raf);
+      this.stopScroll();
+
+      if (this.options.forceHeight) {
+        this.unsetHeight();
+      }
+
+      if (options.revert) {
+        this.tweens.forEach((tween) => tween.revert());
+        this.hooks.forEach((hook) => hook.revert());
+        this.tracks.forEach((track) => track.revert());
+      }
+
+      this.destroyed = true;
+      this.initialized = false;
+
+      return this;
+    }
+
+    init() {
+      if (this.initialized) {
+        return this.refresh();
+      }
+
+      this.destroyed = false;
+      this.initialized = true;
+
+      this.events();
+      this.refresh();
+
+      this.emitter.emit(EVENTS.READY);
+
+      return this;
+    }
+  }
+
+  function cabelo(options) {
+    return new Instance(options);
+  }
+
+  cabelo.Easing = Easing;
+  cabelo.Instance = Instance;
+
+  // The UMD build exposes a single function. `Easing` and `Instance` are
+  // available as `cabelo.Easing` and `cabelo.Instance`.
+
+  return cabelo;
+
+}));
