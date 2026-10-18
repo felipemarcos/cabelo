@@ -1,5 +1,5 @@
-import { normalizeEasing } from '../src/utils/tween';
-import Prop from '../src/prop';
+import { normalizeEasing } from '../src/utils/tween.js';
+import Prop from '../src/prop.js';
 
 const div = document.createElement('div');
 

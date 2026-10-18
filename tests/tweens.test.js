@@ -4,7 +4,7 @@ import {
   getAnimationType,
   mapPropToTween,
   mapPropToCSSProp
-} from '../src/utils/tween';
+} from '../src/utils/tween.js';
 
 const div = document.createElement('div');
 div.setAttribute('title', 'Test');

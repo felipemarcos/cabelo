@@ -1,27 +1,20 @@
-import { assign, maxValue } from './utils';
-import is from './utils/is';
-import {
-  getFunctionValue,
-  updateTransform,
-  normalizeEasing
-} from './utils/tween';
+import { assign, maxValue, minValue, warn } from './utils/index.js';
+import is from './utils/is.js';
+import { getFunctionValue, normalizeEasing } from './utils/tween.js';
+import { getElement } from './utils/dom.js';
+import { isRelativeValue } from './utils/relative.js';
 
-import {
-  isRelativeValue,
-  relativeToAbsoluteValue
-} from './utils/relative';
+import Prop from './prop.js';
 
-import transforms from './transforms';
-
-import Prop from './prop';
-
-const defaultOptions = {
+export const defaultOptions = {
   target: null,
   targetIndex: 0,
+  targetCount: 1,
 
-  duration: [],
+  duration: null,
   from: null,
   to: null,
+  trigger: null,
   easing: 'linear',
   round: false,
 
@@ -30,19 +23,101 @@ const defaultOptions = {
   instance: null
 };
 
+// Keys that configure a tween instead of describing an animated property.
+export const reservedKeys = Object.keys(defaultOptions).concat(['targets']);
+
 const EDGE = {
   BEFORE: 'before',
+  INSIDE: 'inside',
   AFTER: 'after'
 };
 
-const CLASSNAMES = {
-  BEFORE: 'cabelo-before',
-  INSIDE: 'cabelo-inside',
-  AFTER: 'cabelo-after'
-};
+/*
+  Normalizes the different ways of defining when a tween happens:
+  `duration: [0, 1000]`, `duration: 1000`, `from: 200, to: 800` or `to: 800`.
+*/
+export function getRawPositions(options) {
+  const { duration, from, to } = options;
+  const hasFromOrTo = !is.nil(from) || !is.nil(to);
 
-//
-const cachedTargets = [];
+  if (!is.nil(duration) && hasFromOrTo) {
+    warn('You can\'t use `duration` and `from` or `to` in the same tween.', options);
+  }
+
+  if (hasFromOrTo) {
+    if (is.nil(to)) {
+      warn('`from` requires a `to` value.', options);
+      return [from, from];
+    }
+
+    return [is.nil(from) ? 0 : from, to];
+  }
+
+  if (is.nil(duration)) {
+    return [];
+  }
+
+  return duration;
+}
+
+/*
+  Turns a position (a number, numeric string or relative value) into a number.
+*/
+export function resolvePosition(position, target, instance) {
+  if (is.num(position)) {
+    return position;
+  }
+
+  if (isRelativeValue(position)) {
+    if (!target || !instance) {
+      warn(`Relative position "${position}" requires a target element.`);
+      return 0;
+    }
+
+    return instance.getRelativePosition(target, position);
+  }
+
+  const number = parseFloat(position);
+
+  if (isNaN(number)) {
+    warn(`Invalid position "${position}".`);
+    return 0;
+  }
+
+  return number;
+}
+
+/*
+  The element that relative positions are measured from: the `trigger` option
+  (an element, selector or function) or the target itself.
+*/
+export function getTrigger(trigger, target, index, total) {
+  if (is.nil(trigger)) {
+    return target;
+  }
+
+  const el = getElement(getFunctionValue(trigger, target, index, total));
+
+  if (!el) {
+    warn('Trigger not found.', trigger);
+  }
+
+  return el || target;
+}
+
+export function resolvePositions(raw, target, index, total, instance) {
+  let positions = getFunctionValue(raw, target, index, total);
+
+  if (!is.arr(positions)) {
+    positions = is.nil(positions) ? [] : [0, positions];
+  }
+
+  positions = positions
+    .map((position) => getFunctionValue(position, target, index, total))
+    .map((position) => resolvePosition(position, target, instance));
+
+  return positions.length === 1 ? [positions[0], positions[0]] : positions;
+}
 
 class Tween {
   constructor(tween) {
@@ -51,63 +126,29 @@ class Tween {
     this.targetIndex = this._tween.targetIndex;
     this.instance = this._tween.instance;
 
-    this.id = this.getID();
-    this.duration = this.getDuration();
     this.easing = normalizeEasing(this._tween.easing);
-    this.props = this.getProps();
+    this.rawPositions = getRawPositions(this._tween);
+    this.positions = [];
     this.edge = null;
-  }
 
-  getID() {
-    let index = cachedTargets.indexOf(this.target);
+    this.edgeClassNames = this.getEdgeClassNames();
+    this.props = this.getProps();
 
-    if (index === -1) {
-      cachedTargets.push(this.target);
-      index = cachedTargets.indexOf(this.target);
-    }
-
-    return index;
-  }
-
-  getDuration() {
-    let durations = getFunctionValue(this._tween.duration, this.target, this.targetIndex);
-
-    if (durations.length && (this._tween.from || this._tween.to)) {
-      console.warn('You can\'t use `duration` and `from` or `to` in the same tween.', this._tween);
-    }
-
-    if (this._tween.from && this._tween.to) {
-      durations = [this._tween.from, this._tween.to];
-    } else if (this._tween.to) {
-      durations = [0, this._tween.to];
-    }
-
-    return durations
-      .map((duration) => {
-        if (isRelativeValue(duration)) {
-          return relativeToAbsoluteValue(
-            this.target,
-            duration,
-            this.instance.getClientHeight,
-            this.instance.getScrollTop
-          );
-        }
-
-        return duration;
-      });
+    this.measure();
+    this.validate();
   }
 
   getProps() {
     return Object
       .keys(this._tween)
-      // remove default properties
-      .filter((p) => !defaultOptions.hasOwnProperty(p))
+      .filter((p) => reservedKeys.indexOf(p) === -1)
       .map((name) => {
         return new Prop({
-          id: this.id,
+          tween: this,
 
           target: this.target,
-          targetIndex: this._tween.targetIndex,
+          targetIndex: this.targetIndex,
+          total: this._tween.targetCount,
 
           name: name,
           values: this._tween[name],
@@ -115,85 +156,130 @@ class Tween {
           easing: this.easing,
           round: this._tween.round
         });
+      })
+      .filter((prop) => {
+        if (!prop.type) {
+          warn(`Can't animate "${prop.name}" on`, this.target);
+        }
+
+        return !!prop.type;
       });
+  }
+
+  getEdgeClassNames() {
+    const option = this._tween.edgeClassName;
+
+    if (!option) {
+      return null;
+    }
+
+    const prefix = is.str(option) ? option : 'cabelo';
+
+    return {
+      [EDGE.BEFORE]: `${prefix}-before`,
+      [EDGE.INSIDE]: `${prefix}-inside`,
+      [EDGE.AFTER]: `${prefix}-after`
+    };
+  }
+
+  // Calculates the scroll positions of the tween. Called again on every refresh,
+  // as relative positions depend on the layout.
+  measure() {
+    const { trigger, targetCount } = this._tween;
+    const measured = getTrigger(trigger, this.target, this.targetIndex, targetCount);
+
+    this.positions = resolvePositions(
+      this.rawPositions,
+      measured,
+      this.targetIndex,
+      targetCount,
+      this.instance
+    );
+
+    return this;
+  }
+
+  validate() {
+    if (!this.positions.length) {
+      warn('A tween needs a `duration` (or `from` and `to`).', this._tween);
+    }
+
+    this.props.forEach((prop) => {
+      const count = prop.values.length;
+      const positions = this.positions.length;
+
+      if (count !== positions && !(positions === 2 && count > 2)) {
+        warn(`"${prop.name}" has ${count} values but ${positions} positions.`);
+      }
+    });
+  }
+
+  // Measures the positions and evaluates function values again.
+  refresh() {
+    this.measure();
+    this.props.forEach((prop) => prop.refresh());
+
+    return this;
+  }
+
+  get start() {
+    return this.positions.length ? minValue(this.positions) : 0;
+  }
+
+  get end() {
+    return this.positions.length ? maxValue(this.positions) : 0;
   }
 
   getMaxDuration() {
-    return maxValue(this.duration);
+    return this.end;
+  }
+
+  getEdge(position) {
+    if (position < this.positions[0]) return EDGE.BEFORE;
+    if (position > this.positions[this.positions.length - 1]) return EDGE.AFTER;
+    return EDGE.INSIDE;
   }
 
   updateClass(className) {
-    if (!this._tween.edgeClassName) {
+    if (!this.edgeClassNames || !this.target.classList) {
       return;
     }
 
-    const toRemove = Object.values(CLASSNAMES)
+    const toRemove = Object.values(this.edgeClassNames)
       .filter((name) => name !== className);
 
-    this.target.classList.add(className);
     this.target.classList.remove(...toRemove);
-  }
 
-  updateEdges(scrollTop) {
-    const durations = this.duration;
-
-    const firstDuration = durations[0];
-    const lastDuration = durations[durations.length - 1];
-    const beforeFirst = scrollTop < firstDuration;
-    const afterLast = scrollTop > lastDuration;
-
-    if (beforeFirst || afterLast) {
-      if (beforeFirst && this.edge !== EDGE.BEFORE || afterLast && this.edge !== EDGE.AFTER) {
-        if (beforeFirst && !this._tween.immediateRender) {
-          return;
-        }
-
-        if (beforeFirst) {
-          this.updateClass(CLASSNAMES.BEFORE);
-        } else {
-          this.updateClass(CLASSNAMES.AFTER);
-        }
-
-        this.props.forEach((prop) => {
-          prop.updateEdge(beforeFirst, afterLast);
-        });
-
-        updateTransform(this.target, this.id);
-      }
-
-      this.edge = beforeFirst ? EDGE.BEFORE : EDGE.AFTER;
-    } else if (this.edge !== null) {
-      this.updateClass(CLASSNAMES.INSIDE);
-      this.edge = null;
+    if (className) {
+      this.target.classList.add(className);
     }
   }
 
-  updateProgress(scrollTop) {
-    this.duration
-      .forEach((duration, index) => {
-        const nextIndex = index + 1;
+  updateEdges(position) {
+    const edge = this.getEdge(position);
 
-        const start = duration;
-        const end = this.duration[nextIndex];
+    if (edge === this.edge) {
+      return;
+    }
 
-        if (scrollTop >= start && scrollTop <= end) {
-          const progress = (scrollTop - start) / (end - start);
+    if (edge === EDGE.BEFORE && !this._tween.immediateRender && this.edge === null) {
+      return;
+    }
 
-          this.props.forEach((prop) => {
-            prop.tick(progress, { index, nextIndex }, scrollTop);
-          });
+    this.edge = edge;
 
-          updateTransform(this.target, this.id);
-        }
-      });
+    if (this.edgeClassNames) {
+      this.updateClass(this.edgeClassNames[edge]);
+    }
   }
 
-  tick(scrollTop) {
-    // If we are before/after the first/last duration, set the styles accordingly.
-    this.updateEdges(scrollTop);
+  tick(position) {
+    this.updateEdges(position);
+  }
 
-    // Update props progress
-    this.updateProgress(scrollTop);
+  revert() {
+    this.updateClass(null);
+    this.edge = null;
   }
 }
 

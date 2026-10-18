@@ -1,4 +1,4 @@
-import is from './is';
+import is from './is.js';
 
 function flattenArray(arr) {
   return arr.reduce((a, b) => a.concat(is.arr(b) ? flattenArray(b) : b), []);
@@ -10,15 +10,15 @@ export const getNode = (node) => {
 
 export const getTargets = (targets) => {
   if (targets == null) {
-    throw new Error('Cannot tween a null target.');
+    throw new Error('[cabelo] Cannot tween a null target.');
   }
 
   if (is.str(targets)) {
     targets = getNode(targets);
   }
 
-  if (targets instanceof NodeList || targets instanceof HTMLCollection) {
-    targets = [].slice.call(targets);
+  if (typeof NodeList !== 'undefined' && (targets instanceof NodeList || targets instanceof HTMLCollection)) {
+    targets = Array.from(targets);
   } else if (!is.arr(targets)) {
     targets = [targets];
   }
@@ -28,7 +28,15 @@ export const getTargets = (targets) => {
       return is.str(target) ? getNode(target) : target;
     });
 
-  targets = flattenArray(targets);
+  // Remove empty values and duplicates
+  return flattenArray(targets)
+    .filter((target, index, arr) => target != null && arr.indexOf(target) === index);
+};
 
-  return targets;
+export function getElement(el) {
+  return is.str(el) ? document.querySelector(el) : el;
+}
+
+export function isDocumentElement(el) {
+  return el === document.documentElement || el === document.body || el === document.scrollingElement;
 }

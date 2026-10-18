@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horizontal Test</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .scroller {
+      position: fixed;
+      inset: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .track {
+      display: flex;
+      align-items: center;
+      gap: 40vw;
+      height: 100%;
+      padding: 0 50vw;
+    }
+
+    .slide {
+      flex: none;
+      width: 240px;
+      height: 240px;
+      border-radius: 12px;
+      background-color: #3F51B5;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroller">
+    <div class="track">
+      <div class="slide"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+    </div>
+  </div>
+
+  <span class="scroll-position">0</span>
+
+  <script src="../dist/cabelo.js"></script>
+  <script>
+    // Each slide grows and turns pink while it crosses the center of the scroller
+    cabelo({ container: '.scroller', axis: 'x', forceHeight: false })
+      .add({
+        targets: '.slide',
+        duration: ['left-right', 'center-center', 'right-left'],
+        scale: [0.6, 1.2, 0.6],
+        rotate: [-20, 0, 20],
+        backgroundColor: ['#3F51B5', '#E91E63', '#3F51B5'],
+        easing: 'ease-in-out-sine'
+      })
+      .on('update', ({ scrollTop }) => {
+        document.querySelector('.scroll-position').textContent = scrollTop;
+      })
+      .init();
+  </script>
+</body>
+</html>

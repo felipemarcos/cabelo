@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pinned Test</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .spacer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 32px;
+    }
+
+    /* The section is tall, and its content sticks to the viewport while it scrolls by */
+    .pinned {
+      height: 400vh;
+    }
+
+    .sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .track {
+      display: flex;
+      gap: 48px;
+      height: 100%;
+      align-items: center;
+      padding: 0 48px;
+      width: max-content;
+    }
+
+    .panel {
+      width: 60vw;
+      height: 60vh;
+      border-radius: 12px;
+      background-color: #3F51B5;
+    }
+
+    .panel:nth-child(even) {
+      background-color: #E91E63;
+    }
+  </style>
+</head>
+<body>
+  <section class="spacer">Scroll down</section>
+
+  <section class="pinned">
+    <div class="sticky">
+      <div class="track">
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+        <div class="panel"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="spacer">The end</section>
+
+  <script src="../dist/cabelo.js"></script>
+  <script>
+    const track = document.querySelector('.track');
+
+    // The sticky element moves while it's pinned, so the positions are measured
+    // from the tall section around it instead.
+    const tl = cabelo({ forceHeight: false })
+      .add({
+        targets: track,
+        trigger: '.pinned',
+        duration: ['top-top', 'bottom-bottom'],
+        x: [0, () => -(track.scrollWidth - innerWidth)]
+      })
+      .init();
+  </script>
+</body>
+</html>

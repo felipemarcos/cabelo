@@ -1,14 +1,12 @@
-import Instance from './instance';
-import Easing from './easing';
-
-let instances = [];
+import Instance from './instance.js';
+import Easing from './easing.js';
 
 function cabelo(options) {
-  const instance = new Instance(options);
-  instances.push(instance);
-
-  return instance;
+  return new Instance(options);
 }
 
-export { Easing };
+cabelo.Easing = Easing;
+cabelo.Instance = Instance;
+
+export { Easing, Instance };
 export default cabelo;
