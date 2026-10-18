@@ -1,4 +1,4 @@
-/*! cabelo v0.2.1 | MIT License | https://github.com/felipemarcos/cabelo */
+/*! cabelo v1.0.0 | MIT License | https://github.com/felipemarcos/cabelo */
 class Emitter {
   constructor() {
     this.listeners = {};
