@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # create the GitHub release
+  id-token: write # npm trusted publishing (OIDC) and provenance
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # Trusted publishing needs npm 11.5.1 or newer, which ships with Node 24
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Check the tag matches package.json
+        run: |
+          version="v$(node -p "require('./package.json').version")"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+
+      - run: npm run typecheck
+
+      # prepublishOnly runs the tests and the build
+      - name: Publish to npm
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            npm publish --tag next
+          else
+            npm publish
+          fi
+
+      - name: Create the GitHub release
+        run: |
+          flags=(--generate-notes --verify-tag)
+          [[ "$GITHUB_REF_NAME" == *-* ]] && flags+=(--prerelease)
+          gh release create "$GITHUB_REF_NAME" "${flags[@]}"
+        env:
+          GH_TOKEN: ${{ github.token }}

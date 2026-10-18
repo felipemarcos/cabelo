@@ -45,7 +45,7 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "prepublishOnly": "npm test && npm run build",
-    "release": "np --no-yarn"
+    "release": "np --no-yarn --no-publish --no-release-draft"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^1.0.0",
