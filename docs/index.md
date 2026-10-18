@@ -55,8 +55,7 @@ cabelo()
     duration: [0, 1000],   // from 0px to 1000px of scroll
     y: [-200, 0],          // move from -200px to 0
     opacity: [0, 1]
-  })
-  .init();
+  });
 ```
 
 Continue with the [getting started guide](getting-started.md).

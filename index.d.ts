@@ -162,6 +162,12 @@ declare namespace cabelo {
      * Defaults to the container's first child.
      */
     content?: string | Element;
+
+    /**
+     * Calls `init()` once the calls chained after `cabelo()` have run.
+     * Defaults to `true`.
+     */
+    autoInit?: boolean;
   }
 
   type Direction = 'up' | 'down';
@@ -251,6 +257,22 @@ declare namespace cabelo {
   }
 
   const Easing: Record<string, [number, number, number, number] | EasingFunction>;
+
+  // The shared timeline of the page scroll, created on first use. Each
+  // function calls the method of the same name and returns that timeline.
+
+  function add(tween: TweenOptions): Instance;
+  function hook(hook: HookOptions): Instance;
+  function remove(targets?: Targets): Instance;
+  function on<K extends keyof EventMap>(eventName: K, listener: EventMap[K]): Instance;
+  function once<K extends keyof EventMap>(eventName: K, listener: EventMap[K]): Instance;
+  function off<K extends keyof EventMap>(eventName?: K, listener?: EventMap[K]): Instance;
+  function refresh(): Instance;
+  function render(scrollTop?: number): Instance;
+  function scrollTo(to: number | string | Element, duration?: number, easing?: EasingDefinition): ScrollPromise;
+  function stopScroll(): Instance;
+  /** Destroys the shared timeline, if there is one. The next `cabelo.add()` starts a new one. */
+  function destroy(options?: DestroyOptions): Instance | undefined;
 }
 
 declare function cabelo(options?: cabelo.Options): cabelo.Instance;

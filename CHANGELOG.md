@@ -28,6 +28,8 @@ A rewrite of the internals with many new features and fixes. The API is the same
 - `content` option, for the element that receives the forced size in a custom container.
 - `remove(targets)`, `render(position)`, `once()`, `stopScroll()`, the `refresh` event, and the `progress`, `direction`, `start`, `end` and `duration` properties.
 - `update` events include the timeline `progress`.
+- Timelines start on their own once the code that created them has run, so calling `init()` is optional. `autoInit: false` turns this off.
+- A shared page timeline: `cabelo.add()`, `cabelo.hook()`, `cabelo.remove()`, `cabelo.on()` and the other methods add to one timeline for the page scroll, created on first use. `cabelo.destroy()` destroys it.
 - `scrollTo()` accepts an element or a selector and an easing, and returns a cancellable promise.
 - `destroy({ revert: true })` restores every animated property, transform and class.
 - Transforms already set inline on an element (and not animated) are kept.
@@ -56,7 +58,7 @@ A rewrite of the internals with many new features and fixes. The API is the same
 These may require changes to existing code:
 
 - **Events**: `begin` fires when the scroll position moves past the start of the timeline (instead of once, on init, at position 0), and again every time it leaves the start. `complete` fires once each time the end is reached.
-- **Listeners**: scroll and resize listeners are added by `init()`, not when the instance is created.
+- **Listeners**: scroll and resize listeners are added by `init()`, not when the instance is created. Timelines call `init()` on their own right after the code that created them has run, so a timeline you meant to start later needs `autoInit: false`.
 - **`ready`** fires at the end of `init()`, after the first render.
 - **Transform order**: transforms are applied in a fixed order (perspective, translate, rotate, skew, scale) instead of the order they were first used. Scaling no longer shrinks translations that were declared after it.
 - **`forceHeight`** sets `min-height` instead of `height`. In a custom container, it sizes the container's first child (or `content`) instead of the container itself.

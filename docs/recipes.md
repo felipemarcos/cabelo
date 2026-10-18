@@ -26,8 +26,7 @@ cabelo({ forceHeight: false })
     targets: '.reveal',
     duration: ['top-bottom-100', 'bottom-top'],
     className: 'is-visible'
-  })
-  .init();
+  });
 ```
 
 ```css
@@ -66,8 +65,7 @@ cabelo({ forceHeight: false })
       const distance = innerHeight * parseFloat(el.dataset.speed);
       return [-distance, distance];
     }
-  })
-  .init();
+  });
 ```
 
 Function values are evaluated again when the window is resized, so the distances stay proportional to the viewport.
@@ -88,8 +86,7 @@ cabelo({ forceHeight: false })
     targets: '.progress',
     duration: () => [0, document.documentElement.scrollHeight - innerHeight],
     scaleX: [0, 1]
-  })
-  .init();
+  });
 ```
 
 To measure progress through an article instead of the whole page, use the article as the [`trigger`](tweens.md#measuring-another-element):
@@ -130,8 +127,7 @@ cabelo({ forceHeight: false })
     trigger: '.pinned',
     duration: ['top-top', 'bottom-bottom'],
     x: [0, () => -(track.scrollWidth - innerWidth)]
-  })
-  .init();
+  });
 ```
 
 ## Counters
@@ -203,10 +199,9 @@ Plain objects can be targets. Animate the values you need and draw on `update`:
 ```js
 const camera = { z: 10, rotation: 0 };
 
-cabelo()
+cabelo
   .add({ targets: camera, duration: [0, 3000], z: [10, 2], rotation: [0, Math.PI] })
-  .on('update', () => renderScene(camera))
-  .init();
+  .on('update', () => renderScene(camera));
 ```
 
 Cabelo renders at most once per frame while scrolling, so `update` is a good place to draw.
@@ -217,8 +212,7 @@ Pass the scrolling element as `container`. Relative positions are measured insid
 
 ```js
 cabelo({ container: '.scroller', forceHeight: false })
-  .add({ targets: '.scroller .item', duration: ['top-bottom', 'bottom-top'], opacity: [0, 1, 0] })
-  .init();
+  .add({ targets: '.scroller .item', duration: ['top-bottom', 'bottom-top'], opacity: [0, 1, 0] });
 ```
 
 For horizontal scrolling, set `axis: 'x'`. Positions are measured from the left, and the anchors `left`, `center` and `right` read more naturally:
@@ -229,8 +223,7 @@ cabelo({ container: '.gallery', axis: 'x', forceHeight: false })
     targets: '.gallery .slide',
     duration: ['left-right', 'center-center', 'right-left'],
     scale: [0.8, 1, 0.8]
-  })
-  .init();
+  });
 ```
 
 With `forceHeight` on, a custom container's first child (or the `content` option) gets the forced size.
@@ -266,8 +259,7 @@ function Hero() {
 
   useEffect(() => {
     const tl = cabelo({ forceHeight: false })
-      .add({ targets: ref.current, duration: [0, 600], opacity: [1, 0], y: [0, -100] })
-      .init();
+      .add({ targets: ref.current, duration: [0, 600], opacity: [1, 0], y: [0, -100] });
 
     return () => tl.destroy({ revert: true });
   }, []);
@@ -278,12 +270,22 @@ function Hero() {
 
 Importing cabelo doesn't touch `window` or `document`, so it's safe in server-rendered apps. Only create timelines in the browser.
 
-## Respecting reduced motion
-
-Skip the scroll animations for people who prefer reduced motion, and show the final state instead:
+Components that share the [page timeline](api.md#page-timeline) remove their own targets instead of destroying it:
 
 ```js
-const tl = cabelo({ forceHeight: false })
+useEffect(() => {
+  cabelo.add({ targets: ref.current, duration: ['top-bottom', 'bottom-top'], y: [-50, 50] });
+
+  return () => cabelo.remove(ref.current);
+}, []);
+```
+
+## Respecting reduced motion
+
+Skip the scroll animations for people who prefer reduced motion, and show the final state instead. `autoInit: false` keeps the timeline from starting on its own:
+
+```js
+const tl = cabelo({ forceHeight: false, autoInit: false })
   .add({ targets: '.title', duration: [0, 600], y: [100, 0], opacity: [0, 1] });
 
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -301,7 +303,7 @@ Cabelo refreshes automatically when the window or the page changes size. If some
 document.fonts.ready.then(() => tl.refresh());
 ```
 
-New tweens can be added at any time, even after `init()`:
+New tweens can be added at any time, even after the timeline has started:
 
 ```js
 loadMore().then((items) => {

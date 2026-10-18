@@ -33,7 +33,8 @@ const AXIS = {
 const defaultOptions = {
   container: null,
   axis: 'y',
-  forceHeight: true
+  forceHeight: true,
+  autoInit: true
 };
 
 // Options that a nested property tween inherits from its parent tween.
@@ -76,6 +77,16 @@ class Instance {
     this.setScrollTop = this.setScrollTop.bind(this);
     this.getScrollTop = this.getScrollTop.bind(this);
     this.getClientHeight = this.getClientHeight.bind(this);
+
+    // Starts once the calls chained after `cabelo()` have run, unless `init()`
+    // or `destroy()` was called first.
+    if (this.options.autoInit) {
+      Promise.resolve().then(() => {
+        if (!this.initialized && !this.destroyed) {
+          this.init();
+        }
+      });
+    }
   }
 
   /*

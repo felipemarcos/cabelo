@@ -97,8 +97,7 @@
       })
       .on('update', ({ scrollTop }) => {
         document.querySelector('.scroll-position').textContent = `${scrollTop} (zoom: ${state.zoom.toFixed(2)})`;
-      })
-      .init();
+      });
   </script>
 </body>
 </html>
