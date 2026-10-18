@@ -13,8 +13,7 @@ cabelo()
     duration: [0, 1000],   // from 0px to 1000px of scroll
     y: [-200, 0],          // move from -200px to 0
     opacity: [0, 1]
-  })
-  .init();
+  });
 ```
 
 - **Anything is animatable**: transforms, CSS properties, CSS variables, colors, SVG attributes, DOM properties like `textContent`, and plain JavaScript objects.
@@ -80,11 +79,20 @@ tl
     duration: ['top-bottom', 'bottom-top'],
     y: [-50, 50]
   })
-  .on('update', ({ progress }) => console.log(`${Math.round(progress * 100)}%`))
-  .init();
+  .on('update', ({ progress }) => console.log(`${Math.round(progress * 100)}%`));
 ```
 
-Call `init()` once you've added your tweens. It measures everything, makes the page tall enough to scroll through the whole timeline (see [`forceHeight`](docs/api.md#options)) and starts listening to scroll events.
+The timeline starts on its own once the chain has run: it measures everything, makes the page tall enough to scroll through the whole timeline (see [`forceHeight`](docs/api.md#options)) and starts listening to scroll events.
+
+Effects spread across a page don't each need their own timeline. `cabelo.add()`, `cabelo.hook()` and `cabelo.on()` add to one shared timeline for the page scroll:
+
+```js
+// hero.js
+cabelo.add({ targets: '.hero', duration: [0, 600], opacity: [1, 0] });
+
+// gallery.js
+cabelo.add({ targets: '.photo', duration: ['top-bottom', 'bottom-top'], y: [-50, 50] });
+```
 
 ## How it works
 

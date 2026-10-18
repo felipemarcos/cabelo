@@ -23,7 +23,7 @@ tl.hook({
 | A single position: `1500`, `'top-center'` | at or after it |
 | A range: `[1000, 2000]`, `['top-bottom', 'bottom-top']` | between both positions |
 
-`enter` is called when the scroll position goes from outside to inside, and `leave` when it goes from inside to outside. If the page is already inside when you call `init()` (for example after a reload halfway down), `enter` is called right away.
+`enter` is called when the scroll position goes from outside to inside, and `leave` when it goes from inside to outside. If the page is already inside when the timeline starts (for example after a reload halfway down), `enter` is called right away.
 
 ## Targets and classes
 

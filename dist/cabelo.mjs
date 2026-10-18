@@ -1613,7 +1613,8 @@ const AXIS = {
 const defaultOptions = {
   container: null,
   axis: 'y',
-  forceHeight: true
+  forceHeight: true,
+  autoInit: true
 };
 
 // Options that a nested property tween inherits from its parent tween.
@@ -1656,6 +1657,16 @@ class Instance {
     this.setScrollTop = this.setScrollTop.bind(this);
     this.getScrollTop = this.getScrollTop.bind(this);
     this.getClientHeight = this.getClientHeight.bind(this);
+
+    // Starts once the calls chained after `cabelo()` have run, unless `init()`
+    // or `destroy()` was called first.
+    if (this.options.autoInit) {
+      Promise.resolve().then(() => {
+        if (!this.initialized && !this.destroyed) {
+          this.init();
+        }
+      });
+    }
   }
 
   /*
@@ -2156,6 +2167,31 @@ class Instance {
 function cabelo(options) {
   return new Instance(options);
 }
+
+// The shared timeline of the page scroll, behind `cabelo.add()` and friends.
+// Created on first use, so importing cabelo stays free of side effects.
+let page = null;
+
+function getPage() {
+  if (!page || page.destroyed) {
+    page = new Instance();
+  }
+
+  return page;
+}
+
+['add', 'hook', 'remove', 'on', 'once', 'off', 'refresh', 'render', 'scrollTo', 'stopScroll']
+  .forEach((method) => {
+    cabelo[method] = (...args) => getPage()[method](...args);
+  });
+
+// Destroys the shared timeline. The next `cabelo.add()` starts a new one.
+cabelo.destroy = (options) => {
+  const instance = page;
+  page = null;
+
+  return instance ? instance.destroy(options) : undefined;
+};
 
 cabelo.Easing = Easing;
 cabelo.Instance = Instance;

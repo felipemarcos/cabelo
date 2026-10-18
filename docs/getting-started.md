@@ -12,6 +12,8 @@ const tl = cabelo();
 
 `cabelo()` creates a timeline (an `Instance`) bound to the page scroll. Pass `{ container: '.scroller' }` to use a scrollable element instead, or `{ axis: 'x' }` for horizontal scrolling. See [options](api.md#options).
 
+If you don't need a reference to the timeline, `cabelo.add()` adds to a [shared page timeline](api.md#page-timeline) instead.
+
 ## 2. Add a tween
 
 A tween animates one or more **targets** between scroll **positions**:
@@ -31,13 +33,9 @@ tl.add({
 
 Despite its name, `duration` is not a length of time: scroll positions are the timeline.
 
-## 3. Initialize
+## 3. Let it start
 
-```js
-tl.init();
-```
-
-`init()` does three things:
+There is nothing to call: once the code that adds the tweens has run, the timeline starts on its own by calling `init()`, which does three things:
 
 1. Measures every tween (relative positions depend on the layout).
 2. Makes the page tall enough to scroll through the whole timeline. With the tween above, the page can scroll at least 600px, even if its content is short. Turn this off with `cabelo({ forceHeight: false })` when your content already provides the scroll height.
@@ -48,9 +46,10 @@ All methods return the timeline, so you can chain them:
 ```js
 cabelo()
   .add({ targets: '.hero', duration: [0, 600], opacity: [1, 0] })
-  .add({ targets: '.title', duration: [200, 800], y: [100, 0] })
-  .init();
+  .add({ targets: '.title', duration: [200, 800], y: [100, 0] });
 ```
+
+To decide yourself when it starts, create it with `cabelo({ autoInit: false })` and call `tl.init()`.
 
 ## 4. Tie animations to elements
 

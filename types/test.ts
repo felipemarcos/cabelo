@@ -58,3 +58,20 @@ export { position };
 const options: cabelo.TweenOptions = { targets: '.box', duration: [0, 100], x: [0, 100] };
 const hookOptions: cabelo.HookOptions = { at: 'top-center', targets: '.box' };
 cabelo().add(options).hook(hookOptions);
+
+// Shared page timeline
+const page: Instance = cabelo
+  .add({ targets: '.photo', duration: ['top-bottom', 'bottom-top'], y: [-60, 60] })
+  .hook({ targets: '.card', duration: ['top-bottom', 'bottom-top'], className: 'is-visible' });
+
+cabelo.hook({ duration: 100 }).on('update', ({ progress }) => progress);
+cabelo.on('ready', () => {});
+cabelo.remove('.photo').refresh();
+cabelo.scrollTo('.card', 1).then((completed: boolean) => completed);
+cabelo.destroy({ revert: true });
+cabelo({ autoInit: false }).init();
+
+// @ts-expect-error unknown event
+cabelo.on('nope', () => {});
+
+export { page };
