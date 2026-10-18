@@ -664,6 +664,37 @@ describe('relative positions', () => {
 });
 
 describe('lifecycle', () => {
+  test('starts on its own after the chain', async () => {
+    const ready = vi.fn();
+    const tl = cabelo().add({ targets: box(), duration: [0, 100], opacity: [0, 1] }).on('ready', ready);
+
+    expect(tl.initialized).toBe(false);
+
+    await null;
+    expect(tl.initialized).toBe(true);
+    expect(ready).toHaveBeenCalledTimes(1);
+    tl.destroy();
+  });
+
+  test('does not start twice after init()', async () => {
+    const ready = vi.fn();
+    const tl = cabelo().on('ready', ready).init();
+
+    await null;
+    expect(ready).toHaveBeenCalledTimes(1);
+    tl.destroy();
+  });
+
+  test('does not start after destroy() or with autoInit: false', async () => {
+    const destroyed = cabelo();
+    destroyed.destroy();
+    const manual = cabelo({ autoInit: false });
+
+    await null;
+    expect(destroyed.initialized).toBe(false);
+    expect(manual.initialized).toBe(false);
+  });
+
   test('forceHeight makes the document tall enough', () => {
     const el = box();
     Object.defineProperty(document.documentElement, 'clientHeight', { value: 800, configurable: true });
@@ -864,4 +895,58 @@ test('scrollTo a missing element stays in place', async () => {
 
   expect(await tl.scrollTo('#nope')).toBe(true);
   expect(warn).toHaveBeenCalled();
+});
+
+describe('page timeline', () => {
+  afterEach(() => {
+    cabelo.destroy();
+  });
+
+  test('cabelo.add() and friends share one timeline', () => {
+    const tl = cabelo.add({ targets: box(), duration: [0, 100], opacity: [0, 1] });
+
+    expect(tl).toBeInstanceOf(Instance);
+    expect(cabelo.hook({ duration: 10 })).toBe(tl);
+    expect(cabelo.on('update', () => {})).toBe(tl);
+    expect(cabelo.add({ targets: box(), duration: [0, 200], opacity: [0, 1] })).toBe(tl);
+    expect(tl.tweens.length).toBe(2);
+    expect(tl.hooks.length).toBe(1);
+  });
+
+  test('starts on its own', async () => {
+    const tl = cabelo.add({ targets: box(), duration: [0, 100], opacity: [0, 1] });
+
+    await null;
+    expect(tl.initialized).toBe(true);
+  });
+
+  test('remove() and render() reach the shared timeline', () => {
+    const el = box();
+    const tl = cabelo.add({ targets: el, duration: [0, 100], opacity: [0, 1] });
+
+    cabelo.render(50);
+    expect(el.style.opacity).toBe('0.5');
+
+    cabelo.remove(el);
+    expect(tl.tweens.length).toBe(0);
+    expect(el.style.opacity).toBe('');
+  });
+
+  test('a new timeline is created after destroy()', () => {
+    const tl = cabelo.add({ targets: box(), duration: [0, 100], opacity: [0, 1] });
+
+    expect(cabelo.destroy()).toBe(tl);
+    expect(tl.destroyed).toBe(true);
+
+    const next = cabelo.add({ targets: box(), duration: [0, 100], opacity: [0, 1] });
+    expect(next).not.toBe(tl);
+    expect(next.tweens.length).toBe(1);
+
+    next.destroy();
+    expect(cabelo.add({ targets: box(), duration: [0, 100], opacity: [0, 1] })).not.toBe(next);
+  });
+
+  test('destroy() without a shared timeline does nothing', () => {
+    expect(cabelo.destroy()).toBeUndefined();
+  });
 });

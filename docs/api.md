@@ -1,6 +1,7 @@
 # API reference
 
 - [`cabelo(options)`](#cabelooptions)
+- [Page timeline](#page-timeline)
 - [Options](#options)
 - [Methods](#methods)
 - [Properties](#properties)
@@ -10,7 +11,7 @@
 
 ## `cabelo(options)`
 
-Creates a timeline. Returns an `Instance`.
+Creates a timeline. Returns an `Instance`. It starts on its own (see [`init()`](#init)) once the code that created it has run, so the tweens, hooks and listeners chained after `cabelo()` are all in place before the first render.
 
 ```js
 import cabelo, { Easing, Instance } from 'cabelo';
@@ -20,6 +21,22 @@ const tl = cabelo({ forceHeight: false });
 
 With the browser build, `cabelo` is a global, and `Easing` and `Instance` are available as `cabelo.Easing` and `cabelo.Instance`.
 
+## Page timeline
+
+`cabelo.add()`, `cabelo.hook()`, `cabelo.remove()`, `cabelo.on()`, `cabelo.once()`, `cabelo.off()`, `cabelo.refresh()`, `cabelo.render()`, `cabelo.scrollTo()` and `cabelo.stopScroll()` call the method of the same name on a timeline shared by the whole page. It is created, with the default options, the first time one of them is called, and starts on its own like any other timeline. Each of them returns what the method returns, so they can be chained:
+
+```js
+cabelo
+  .add({ targets: '.hero', duration: [0, 600], opacity: [1, 0] })
+  .hook({ targets: '.card', duration: ['top-bottom', 'bottom-top'], className: 'is-visible' });
+
+cabelo.on('update', ({ progress }) => console.log(progress));
+```
+
+Use it when separate parts of a page add their own effects: they share one set of scroll and resize listeners, and none of them has to keep a reference to the timeline. Create a timeline with `cabelo()` when you need other [options](#options), like a scroll container, or events and `progress` for a group of tweens only.
+
+`cabelo.destroy(options?)` destroys the shared timeline, if there is one, and returns it. The next `cabelo.add()` creates a new one.
+
 ## Options
 
 | Option | Default | Description |
@@ -28,6 +45,7 @@ With the browser build, `cabelo` is a global, and `Easing` and `Instance` are av
 | `axis` | `'y'` | `'x'` for horizontal timelines. Positions, relative anchors and `forceHeight` follow the axis. |
 | `forceHeight` | `true` | Makes the content big enough to scroll through the whole timeline: sets `min-height` (or `min-width`) to the viewport size plus the last position of the timeline. On the document it's set on `<html>`; in a custom container, on its first child (or `content`). Turn it off when your content already provides the scroll length. |
 | `content` | first child of `container` | The element that receives the forced size in a custom container. |
+| `autoInit` | `true` | Calls `init()` once the code that created the timeline has run. Set it to `false` to call `init()` yourself, or not at all, like when you only [render](#render-position) a position. |
 
 ## Methods
 
@@ -63,6 +81,8 @@ tl.remove('.box');
 
 Measures every tween, applies `forceHeight`, renders the current scroll position and starts listening to `scroll` and `resize` events. Calling it again only refreshes.
 
+Timelines call it on their own unless created with `autoInit: false`, so you only need it to start a timeline earlier, or one that doesn't start on its own.
+
 ### `refresh()`
 
 Measures relative positions and evaluates function positions and values again, updates the forced size and renders. It runs automatically when the window is resized and, in browsers with `ResizeObserver`, when the page (or the container) changes size. Call it yourself after layout changes that don't change the size of the page, like moving an element around.
@@ -72,7 +92,7 @@ Measures relative positions and evaluates function positions and values again, u
 Renders every tween at a scroll position, the current one by default, without scrolling. Useful for tests, or to drive the timeline from something other than the scroll position:
 
 ```js
-const tl = cabelo({ forceHeight: false }).add({ /* ... */ });
+const tl = cabelo({ forceHeight: false, autoInit: false }).add({ /* ... */ });
 
 slider.addEventListener('input', () => tl.render(slider.valueAsNumber));
 ```
