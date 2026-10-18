@@ -447,7 +447,7 @@
   // affected by rotating or scaling.
   const validTransforms = [
     'perspective',
-    'translateX', 'translateY', 'translateZ',
+    'translateX', 'translateY', 'translateZ', 'xPercent', 'yPercent',
     'rotate', 'rotateX', 'rotateY', 'rotateZ',
     'skew', 'skewX', 'skewY',
     'scale', 'scaleX', 'scaleY', 'scaleZ'
@@ -466,7 +466,20 @@
     return mappedCSSProps[prop] || prop;
   }
 
+  // Transforms that aren't CSS functions of their own. `xPercent` and `yPercent`
+  // translate by a percentage of the element's size, on top of `x` and `y`.
+  const transformFunctions = {
+    xPercent: (value) => `translate(${value}, 0)`,
+    yPercent: (value) => `translate(0, ${value})`
+  };
+
+  function transformToString(propName, value) {
+    const fn = transformFunctions[propName];
+    return fn ? fn(value) : `${propName}(${value})`;
+  }
+
   function getTransformUnit(propName) {
+    if (propName in transformFunctions) return '%';
     if (stringContains(propName, 'translate') || propName === 'perspective') return 'px';
     if (stringContains(propName, 'rotate') || stringContains(propName, 'skew')) return 'deg';
   }
@@ -619,7 +632,7 @@
       [propName]: is.und(propValue.value) ? propValue.values : propValue.value
     };
 
-    ['from', 'to', 'easing', 'round', 'immediateRender', 'trigger']
+    ['from', 'to', 'easing', 'round', 'immediateRender', 'trigger', 'onEnter', 'onLeave', 'onUpdate']
       .forEach((key) => {
         if (!is.und(propValue[key])) {
           tween[key] = propValue[key];
@@ -740,6 +753,9 @@
 
   const linear = (t) => t;
 
+  // CSS properties that only accept integers, so they are always rounded
+  const integerProps = ['zIndex', 'order'];
+
   class Prop {
     constructor(options) {
       this.tween = options.tween || null;
@@ -749,6 +765,10 @@
       this.easing = options.easing || linear;
       this.round = is.und(options.round) ? false : options.round;
       this.type = getAnimationType(this.target, this.name);
+
+      if (this.type === 'css' && integerProps.indexOf(this.name) > -1) {
+        this.round = true;
+      }
 
       this.input = options.values;
       this.total = options.total || 1;
@@ -899,7 +919,11 @@
 
     edgeClassName: false,
     immediateRender: true,
-    instance: null
+    instance: null,
+
+    onEnter: null,
+    onLeave: null,
+    onUpdate: null
   };
 
   // Keys that configure a tween instead of describing an animated property.
@@ -1009,6 +1033,10 @@
       this.rawPositions = getRawPositions(this._tween);
       this.positions = [];
       this.edge = null;
+
+      // State of the callbacks, kept apart from `edge`, which `immediateRender` can hold back
+      this.callbackEdge = null;
+      this.progress = null;
 
       this.edgeClassNames = this.getEdgeClassNames();
       this.props = this.getProps();
@@ -1156,9 +1184,54 @@
       this.updateEdges(position);
     }
 
+    // How far through the tween a position is, from 0 to 1.
+    getProgress(position) {
+      const { start, end } = this;
+
+      if (end <= start) {
+        return position >= end ? 1 : 0;
+      }
+
+      return minMaxValue((position - start) / (end - start), 0, 1);
+    }
+
+    // Calls `onEnter`, `onLeave` and `onUpdate`. Runs after the targets were
+    // rendered, so callbacks can read the new values.
+    notify(position, direction) {
+      if (!this.positions.length) {
+        return;
+      }
+
+      const { onEnter, onLeave, onUpdate } = this._tween;
+      const edge = this.getEdge(position);
+      const previous = this.callbackEdge;
+      const progress = this.getProgress(position);
+      const details = { target: this.target, progress, direction, scrollTop: position, position };
+
+      this.callbackEdge = edge;
+
+      if (edge !== previous) {
+        const isInside = edge === EDGE.INSIDE;
+        const wasInside = previous === EDGE.INSIDE;
+        // Jumping from one side to the other goes through the tween
+        const crossed = previous !== null && !isInside && !wasInside;
+
+        if ((isInside || crossed) && onEnter) onEnter(details);
+        if ((wasInside || crossed) && onLeave) onLeave(details);
+      }
+
+      if (progress !== this.progress) {
+        this.progress = progress;
+
+        if (onUpdate) onUpdate(details);
+      }
+    }
+
     revert() {
       this.updateClass(null);
       this.edge = null;
+      this.callbackEdge = null;
+      this.progress = null;
     }
   }
 
@@ -1413,7 +1486,7 @@
         .map((t) => `${t.name}(${t.value})`);
 
       return base
-        .concat(animated.map((name) => `${name}(${transforms[name]})`))
+        .concat(animated.map((name) => transformToString(name, transforms[name])))
         .join(' ');
     }
 
@@ -1718,6 +1791,7 @@
 
       this.tweens.forEach((tween) => tween.tick(scrollTop));
       this.tracks.forEach((track) => track.render(scrollTop));
+      this.tweens.forEach((tween) => tween.notify(scrollTop, this.direction));
       this.hooks.forEach((hook) => hook.tick(scrollTop, this.direction));
 
       this.updateState(scrollTop);
