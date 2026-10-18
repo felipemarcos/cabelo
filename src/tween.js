@@ -1,4 +1,4 @@
-import { assign, maxValue, minValue, warn } from './utils/index.js';
+import { assign, maxValue, minMaxValue, minValue, warn } from './utils/index.js';
 import is from './utils/is.js';
 import { getFunctionValue, normalizeEasing } from './utils/tween.js';
 import { getElement } from './utils/dom.js';
@@ -20,7 +20,11 @@ export const defaultOptions = {
 
   edgeClassName: false,
   immediateRender: true,
-  instance: null
+  instance: null,
+
+  onEnter: null,
+  onLeave: null,
+  onUpdate: null
 };
 
 // Keys that configure a tween instead of describing an animated property.
@@ -130,6 +134,10 @@ class Tween {
     this.rawPositions = getRawPositions(this._tween);
     this.positions = [];
     this.edge = null;
+
+    // State of the callbacks, kept apart from `edge`, which `immediateRender` can hold back
+    this.callbackEdge = null;
+    this.progress = null;
 
     this.edgeClassNames = this.getEdgeClassNames();
     this.props = this.getProps();
@@ -277,9 +285,54 @@ class Tween {
     this.updateEdges(position);
   }
 
+  // How far through the tween a position is, from 0 to 1.
+  getProgress(position) {
+    const { start, end } = this;
+
+    if (end <= start) {
+      return position >= end ? 1 : 0;
+    }
+
+    return minMaxValue((position - start) / (end - start), 0, 1);
+  }
+
+  // Calls `onEnter`, `onLeave` and `onUpdate`. Runs after the targets were
+  // rendered, so callbacks can read the new values.
+  notify(position, direction) {
+    if (!this.positions.length) {
+      return;
+    }
+
+    const { onEnter, onLeave, onUpdate } = this._tween;
+    const edge = this.getEdge(position);
+    const previous = this.callbackEdge;
+    const progress = this.getProgress(position);
+    const details = { target: this.target, progress, direction, scrollTop: position, position };
+
+    this.callbackEdge = edge;
+
+    if (edge !== previous) {
+      const isInside = edge === EDGE.INSIDE;
+      const wasInside = previous === EDGE.INSIDE;
+      // Jumping from one side to the other goes through the tween
+      const crossed = previous !== null && !isInside && !wasInside;
+
+      if ((isInside || crossed) && onEnter) onEnter(details);
+      if ((wasInside || crossed) && onLeave) onLeave(details);
+    }
+
+    if (progress !== this.progress) {
+      this.progress = progress;
+
+      if (onUpdate) onUpdate(details);
+    }
+  }
+
   revert() {
     this.updateClass(null);
     this.edge = null;
+    this.callbackEdge = null;
+    this.progress = null;
   }
 }
 
