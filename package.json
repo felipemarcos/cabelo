@@ -1,31 +1,56 @@
 {
   "name": "cabelo",
-  "main": "dist/cabelo.js",
-  "license": "MIT",
   "version": "0.2.1",
-  "dependencies": {
-    "auto-bind": "4.0.0",
-    "bezier-easing": "^2.0.3",
-    "event-emitter": "^0.3.5",
-    "lodash.omit": "^4.5.0"
+  "description": "Tiny, dependency-free library to animate anything based on the scroll position",
+  "license": "MIT",
+  "author": "Felipe Marcos (http://felipemarcos.com)",
+  "repository": "felipemarcos/cabelo",
+  "homepage": "https://github.com/felipemarcos/cabelo#readme",
+  "bugs": "https://github.com/felipemarcos/cabelo/issues",
+  "keywords": [
+    "scroll",
+    "parallax",
+    "animation",
+    "scroll-animation",
+    "tween",
+    "timeline",
+    "css",
+    "svg"
+  ],
+  "main": "dist/cabelo.js",
+  "module": "dist/cabelo.mjs",
+  "unpkg": "dist/cabelo.min.js",
+  "jsdelivr": "dist/cabelo.min.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/cabelo.mjs",
+      "require": "./dist/cabelo.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "start": "node scripts/dev.mjs",
+    "build": "rollup -c",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p types",
+    "prepublishOnly": "npm test && npm run build",
+    "release": "np --no-yarn"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.10.4",
-    "babel-core": "^6.26.3",
-    "babel-jest": "^26.2.1",
-    "babel-loader": "^8.1.0",
-    "jest": "^26.2.1",
-    "np": "^6.3.2",
-    "regenerator-runtime": "^0.13.7",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --mode=development",
-    "build": "webpack --mode=production",
-    "test": "jest",
-    "release": "np --no-yarn"
+    "@rollup/plugin-terser": "^1.0.0",
+    "jsdom": "^27.0.0",
+    "np": "^10.2.0",
+    "rollup": "^4.50.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public"

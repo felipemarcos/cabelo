@@ -1,4 +1,4 @@
-import is from '../src/utils/is';
+import is from '../src/utils/is.js';
 
 const types = [
   {

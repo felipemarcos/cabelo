@@ -5,7 +5,7 @@ import {
   stringToHyphens,
   arrayContains,
   stringContains
-} from '../src/utils';
+} from '../src/utils/index.js';
 
 test('maxValue', () => {
   expect(maxValue([1, 2, 3, 10, 4, 5])).toBe(10);

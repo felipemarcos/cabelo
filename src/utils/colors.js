@@ -1,26 +1,64 @@
-import is from './is';
+import is from './is.js';
+
+const CSS_KEYWORDS = ['inherit', 'initial', 'unset', 'revert', 'currentcolor'];
+
+// Matches hex, rgb(a) and hsl(a) colors inside a larger string, e.g. a box-shadow.
+const COLOR_RGX = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b|(?:rgba?|hsla?)\([^)]*\)/gi;
+
+const namedColors = {};
+
+function channels(value) {
+  // Supports both `rgb(1, 2, 3, .5)` and `rgb(1 2 3 / 50%)`
+  return value
+    .slice(value.indexOf('(') + 1, value.lastIndexOf(')'))
+    .split(/[\s,/]+/)
+    .filter(Boolean);
+}
+
+function alpha(value) {
+  if (is.und(value)) {
+    return 1;
+  }
+
+  return /%$/.test(value) ? parseFloat(value) / 100 : parseFloat(value);
+}
 
 export function rgbToRgba(rgbValue) {
-  const rgb = /rgb\((\d+,\s*[\d]+,\s*[\d]+)\)/g.exec(rgbValue);
-  return rgb ? `rgba(${rgb[1]},1)` : rgbValue;
+  const values = channels(rgbValue);
+
+  if (values.length < 3) {
+    return rgbValue;
+  }
+
+  const [r, g, b] = values.map((value) => {
+    return /%$/.test(value) ? Math.round(parseFloat(value) * 2.55) : parseFloat(value);
+  });
+
+  return `rgba(${r},${g},${b},${alpha(values[3])})`;
 }
 
 export function hexToRgba(hexValue) {
-  const rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  const hex = hexValue.replace(rgx, (m, r, g, b) => r + r + g + g + b + b );
-  const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  const r = parseInt(rgb[1], 16);
-  const g = parseInt(rgb[2], 16);
-  const b = parseInt(rgb[3], 16);
-  return `rgba(${r},${g},${b},1)`;
+  let hex = hexValue.replace('#', '');
+
+  if (hex.length <= 4) {
+    hex = hex.split('').map((char) => char + char).join('');
+  }
+
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  const a = hex.length === 8 ? Math.round(parseInt(hex.slice(6, 8), 16) / 255 * 1000) / 1000 : 1;
+
+  return `rgba(${r},${g},${b},${a})`;
 }
 
 export function hslToRgba(hslValue) {
-  const hsl = /hsl\((\d+),\s*([\d.]+)%,\s*([\d.]+)%\)/g.exec(hslValue) || /hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*([\d.]+)\)/g.exec(hslValue);
-  const h = parseInt(hsl[1]) / 360;
-  const s = parseInt(hsl[2]) / 100;
-  const l = parseInt(hsl[3]) / 100;
-  const a = hsl[4] || 1;
+  const values = channels(hslValue);
+  const h = (parseFloat(values[0]) % 360 + 360) % 360 / 360;
+  const s = parseFloat(values[1]) / 100;
+  const l = parseFloat(values[2]) / 100;
+  const a = alpha(values[3]);
+
   function hue2rgb(p, q, t) {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
@@ -29,8 +67,10 @@ export function hslToRgba(hslValue) {
     if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
     return p;
   }
+
   let r, g, b;
-  if (s == 0) {
+
+  if (s === 0) {
     r = g = b = l;
   } else {
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
@@ -39,11 +79,49 @@ export function hslToRgba(hslValue) {
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1/3);
   }
-  return `rgba(${r * 255},${g * 255},${b * 255},${a})`;
+
+  return `rgba(${Math.round(r * 255)},${Math.round(g * 255)},${Math.round(b * 255)},${a})`;
+}
+
+// Resolves named colors (`red`, `transparent`, ...) using the browser itself.
+export function namedColorToRgba(name) {
+  if (!is.str(name) || !/^[a-z]+$/i.test(name) || typeof document === 'undefined' || !document.body) {
+    return;
+  }
+
+  const key = name.toLowerCase();
+
+  if (CSS_KEYWORDS.indexOf(key) > -1) {
+    return;
+  }
+
+  if (!(key in namedColors)) {
+    const el = document.createElement('i');
+    el.style.color = key;
+
+    let color;
+
+    if (el.style.color) {
+      document.body.appendChild(el);
+      color = getComputedStyle(el).color;
+      document.body.removeChild(el);
+    }
+
+    namedColors[key] = is.rgb(color) ? rgbToRgba(color) : undefined;
+  }
+
+  return namedColors[key];
 }
 
 export function colorToRgb(val) {
   if (is.rgb(val)) return rgbToRgba(val);
   if (is.hex(val)) return hexToRgba(val);
   if (is.hsl(val)) return hslToRgba(val);
+  return namedColorToRgba(val);
+}
+
+// Converts every color found inside `value` to rgba so that complex values
+// like `0 0 10px #fff` can be interpolated number by number.
+export function normalizeColors(value) {
+  return value.replace(COLOR_RGX, (color) => colorToRgb(color) || color);
 }
