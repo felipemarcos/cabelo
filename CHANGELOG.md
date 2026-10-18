@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 (2026-10-18)
 
 A rewrite of the internals with many new features and fixes. The API is the same, with the behavior changes listed below.
 

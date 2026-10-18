@@ -1,6 +1,6 @@
 {
   "name": "cabelo",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Tiny, dependency-free library to animate anything based on the scroll position",
   "license": "MIT",
   "author": "Felipe Marcos (http://felipemarcos.com)",
