@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reveal Test</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .intro,
+    .outro {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 32px;
+    }
+
+    .cards {
+      display: grid;
+      gap: 48px;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      height: 240px;
+      border-radius: 12px;
+      background-color: #3F51B5;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+
+    .card.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: #E91E63;
+      transform-origin: 0 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress"></div>
+
+  <section class="intro">Scroll down</section>
+
+  <section class="cards">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </section>
+
+  <section class="outro">The end</section>
+
+  <script src="../dist/cabelo.js"></script>
+  <script>
+    const tl = cabelo({ forceHeight: false });
+
+    tl
+      // Each card gets its own hook: visible while any part of it is on screen
+      .hook({
+        targets: '.card',
+        duration: ['top-bottom', 'bottom-top'],
+        className: 'is-visible'
+      })
+      // A reading progress bar. Function positions are evaluated again on every
+      // refresh, so this stays correct when the window is resized.
+      .add({
+        targets: '.progress',
+        duration: () => [0, document.documentElement.scrollHeight - innerHeight],
+        scaleX: [0, 1]
+      })
+      .init();
+  </script>
+</body>
+</html>
